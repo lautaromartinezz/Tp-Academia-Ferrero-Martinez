@@ -1,5 +1,7 @@
 using Domain.Services;
-using Domain.Model;
+using Domain.Model ;
+using DTOs;
+using Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,96 +27,96 @@ app.UseHttpsRedirection();
     
 
 
-app.MapGet("/clientes/{id}", (int id) =>
+app.MapGet("/materias/{id}", (int id) =>
 {
-    ClienteService clienteService = new ClienteService();
+    MateriaService materiaService = new MateriaService();
 
-    Cliente cliente = clienteService.Get(id);
+    Materia materia = materiaService.getOne(id);
 
-    if (cliente == null)
+    if (materia == null)
     {
         return Results.NotFound();
     }
 
-    var dto = new DTOs.Cliente
+    var dto = new DTOs.MateriaDTO
     {
-        Id = cliente.Id,
-        Nombre = cliente.Nombre,
-        Apellido = cliente.Apellido,
-        Email = cliente.Email,
-        FechaAlta = cliente.FechaAlta
+        Descripcion = materia.Descripcion,
+        HsTotales = materia.HsTotales,
+        HsSemanales = materia.HsSemanales,
+        IDPlan = materia.IDPlan,
+        Id = materia.Id
     };
 
     return Results.Ok(dto);
 })
-.WithName("GetCliente")
-.Produces<DTOs.Cliente>(StatusCodes.Status200OK)
+.WithName("GetMateria")
+.Produces<DTOs.MateriaDTO>(StatusCodes.Status200OK)
 .Produces(StatusCodes.Status404NotFound)
 .WithOpenApi();
 
-app.MapGet("/clientes", () =>
+app.MapGet("/materias", () =>
 {
-    ClienteService clienteService = new ClienteService();
+    MateriaService materiaService = new MateriaService();
 
-    var clientes = clienteService.GetAll();
+    var materias = materiaService.getAll();
 
-    var dtos = clientes.Select(cliente => new DTOs.Cliente
+    var dtos = materias.Select(materia=> new DTOs.MateriaDTO
     {
-        Id = cliente.Id,
-        Nombre = cliente.Nombre,
-        Apellido = cliente.Apellido,
-        Email = cliente.Email,
-        FechaAlta = cliente.FechaAlta
+        Descripcion = materia.Descripcion,
+        HsTotales = materia.HsTotales,
+        HsSemanales = materia.HsSemanales,
+        IDPlan = materia.IDPlan,
+        Id = materia.Id
     }).ToList();
 
     return Results.Ok(dtos);
 })
-.WithName("GetAllClientes")
-.Produces<List<DTOs.Cliente>>(StatusCodes.Status200OK)
+.WithName("GetAllMaterias")
+.Produces<List<DTOs.MateriaDTO>>(StatusCodes.Status200OK)
 .WithOpenApi();
 
-app.MapPost("/clientes", (DTOs.Cliente dto) =>
+app.MapPost("/materias", (DTOs.MateriaDTO dto) =>
 {
     try
     {
-        ClienteService clienteService = new ClienteService();
+        MateriaService materiaService = new MateriaService();
 
-        Cliente cliente = new Cliente(dto.Id, dto.Nombre, dto.Apellido, dto.Email, dto.FechaAlta);
+        Materia materia = new Materia(dto.HsSemanales, dto.Descripcion, dto.HsTotales, dto.IDPlan, dto.Id);
 
-        clienteService.Add(cliente);
+        materiaService.add(materia);
 
-        var dtoResultado = new DTOs.Cliente
+        var dtoResultado = new DTOs.MateriaDTO
         {
-            Id = cliente.Id,
-            Nombre = cliente.Nombre,
-            Apellido = cliente.Apellido,
-            Email = cliente.Email,
-            FechaAlta = cliente.FechaAlta
+            Descripcion = materia.Descripcion,
+            HsTotales = materia.HsTotales,
+            HsSemanales = materia.HsSemanales,
+            IDPlan = materia.IDPlan,
+            Id = materia.Id
         };
 
-        return Results.Created($"/clientes/{dtoResultado.Id}", dtoResultado);
+        return Results.Created($"/materias/{dtoResultado.Id}", dtoResultado);
     }
     catch (ArgumentException ex)
     {
         return Results.BadRequest(new { error = ex.Message });
     }
 })
-.WithName("AddCliente")
-.Produces<DTOs.Cliente>(StatusCodes.Status201Created)
+.WithName("AddMateria")
+.Produces<DTOs.MateriaDTO>(StatusCodes.Status201Created)
 .Produces(StatusCodes.Status400BadRequest)
 .WithOpenApi();
 
-app.MapPut("/clientes", (DTOs.Cliente dto) =>
+app.MapPut("/materias", (DTOs.MateriaDTO dto) =>
 {
     try
     {
-        ClienteService clienteService = new ClienteService();
+        MateriaService materiaService = new MateriaService();
 
-        Cliente cliente = new Cliente(dto.Id, dto.Nombre, dto.Apellido, dto.Email, dto.FechaAlta);
+        Materia materia = new Materia(dto.HsSemanales, dto.Descripcion, dto.HsTotales, dto.IDPlan, dto.Id);
 
-        var found = clienteService.Update(cliente);
+        var found = materiaService.update(materia);
 
-        if (!found)
+        if (found == null)
         {
             return Results.NotFound();
         }
@@ -126,18 +128,18 @@ app.MapPut("/clientes", (DTOs.Cliente dto) =>
         return Results.BadRequest(new { error = ex.Message });
     }
 })
-.WithName("UpdateCliente")
+.WithName("UpdateMateria")
 .Produces(StatusCodes.Status404NotFound)
 .Produces(StatusCodes.Status400BadRequest)
 .WithOpenApi();
 
-app.MapDelete("/clientes/{id}", (int id) =>
+app.MapDelete("/materias/{id}", (int id) =>
 {
-    ClienteService clienteService = new ClienteService();
+    MateriaService materiaService = new MateriaService();
 
-    var deleted = clienteService.Delete(id);
+    var deleted = materiaService.delete(id);
 
-    if (!deleted)
+    if (deleted != null)
     {
         return Results.NotFound();
     }
@@ -145,7 +147,7 @@ app.MapDelete("/clientes/{id}", (int id) =>
     return Results.NoContent();
         
 })
-.WithName("DeleteCliente")
+.WithName("DeleteMateria")
 .Produces(StatusCodes.Status204NoContent)
 .Produces(StatusCodes.Status404NotFound)
 .WithOpenApi();
