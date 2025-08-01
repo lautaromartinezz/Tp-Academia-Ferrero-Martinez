@@ -31,22 +31,12 @@ app.MapGet("/materias/{id}", (int id) =>
 {
     MateriaService materiaService = new MateriaService();
 
-    Materia materia = materiaService.getOne(id);
+    MateriaDTO dto= materiaService.getOne(id);
 
-    if (materia == null)
+    if (dto == null)
     {
         return Results.NotFound();
     }
-
-    var dto = new DTOs.MateriaDTO
-    {
-        Descripcion = materia.Descripcion,
-        HsTotales = materia.HsTotales,
-        HsSemanales = materia.HsSemanales,
-        IDPlan = materia.IDPlan,
-        Id = materia.Id
-    };
-
     return Results.Ok(dto);
 })
 .WithName("GetMateria")
@@ -58,43 +48,25 @@ app.MapGet("/materias", () =>
 {
     MateriaService materiaService = new MateriaService();
 
-    var materias = materiaService.getAll();
 
-    var dtos = materias.Select(materia=> new DTOs.MateriaDTO
-    {
-        Descripcion = materia.Descripcion,
-        HsTotales = materia.HsTotales,
-        HsSemanales = materia.HsSemanales,
-        IDPlan = materia.IDPlan,
-        Id = materia.Id
-    }).ToList();
+    var dtos = materiaService.getAll();
 
     return Results.Ok(dtos);
+
 })
 .WithName("GetAllMaterias")
 .Produces<List<DTOs.MateriaDTO>>(StatusCodes.Status200OK)
 .WithOpenApi();
 
-app.MapPost("/materias", (DTOs.MateriaDTO dto) =>
+app.MapPost("/materias", (MateriaDTO dto) =>
 {
     try
     {
         MateriaService materiaService = new MateriaService();
 
-        Materia materia = new Materia(dto.HsSemanales, dto.Descripcion, dto.HsTotales, dto.IDPlan, dto.Id);
+        MateriaDTO materiaDto = materiaService.add(dto);
 
-        materiaService.add(materia);
-
-        var dtoResultado = new DTOs.MateriaDTO
-        {
-            Descripcion = materia.Descripcion,
-            HsTotales = materia.HsTotales,
-            HsSemanales = materia.HsSemanales,
-            IDPlan = materia.IDPlan,
-            Id = materia.Id
-        };
-
-        return Results.Created($"/materias/{dtoResultado.Id}", dtoResultado);
+        return Results.Created($"/materias/{materiaDto.Id}", materiaDto);
     }
     catch (ArgumentException ex)
     {
@@ -112,9 +84,7 @@ app.MapPut("/materias", (DTOs.MateriaDTO dto) =>
     {
         MateriaService materiaService = new MateriaService();
 
-        Materia materia = new Materia(dto.HsSemanales, dto.Descripcion, dto.HsTotales, dto.IDPlan, dto.Id);
-
-        var found = materiaService.update(materia);
+        var found = materiaService.update(dto);
 
         if (found == null)
         {

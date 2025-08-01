@@ -5,24 +5,46 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Model;
 using Data;
+using DTOs;
 
 namespace Domain.Services
 {
     public class MateriaService
     {
-        public List<Materia> getAll()
+        public IEnumerable<MateriaDTO> getAll()
         {
-            return MateriaInMemory.materias;
+            return MateriaInMemory.materias.Select(materia => new MateriaDTO
+            {
+                Id = materia.Id,
+                Descripcion = materia.Descripcion,
+                HsTotales = materia.HsTotales,
+                HsSemanales = materia.HsSemanales,
+                IdPlan = materia.IdPlan,
+
+            }).ToList();
         }
 
-        public Materia getOne(int id)
+        public MateriaDTO getOne(int id)
         {
-            return MateriaInMemory.materias.Find(m => m.Id == id);
+            Materia? materia = MateriaInMemory.materias.Find(m => m.Id == id);
+            if (materia == null)
+                return null;
+            return new MateriaDTO
+            {
+                Id=materia.Id,
+                Descripcion = materia.Descripcion,
+                HsTotales = materia.HsTotales,
+                HsSemanales = materia.HsSemanales,
+                IdPlan = materia.IdPlan,
+            };
         }
 
-        public void add(Materia materia)
+        public MateriaDTO add(MateriaDTO dto)
         {
+            var id = GetNextId();
+            Materia materia = new Materia(dto.HsSemanales,dto.Descripcion, dto.HsTotales, dto.IdPlan, id);
             MateriaInMemory.materias.Add(materia);
+            return dto;
         }
         public Materia delete(int id)
         {
@@ -35,17 +57,33 @@ namespace Domain.Services
             return materiaToDelete;
         }
 
-        public Materia update(Materia materia)
+        public Materia update(MateriaDTO dto)
         {
-            Materia? materiaToUpdate = MateriaInMemory.materias.Find(m => m.Id == materia.Id);
+            Materia? materiaToUpdate = MateriaInMemory.materias.Find(m => m.Id == dto.Id);
             if (materiaToUpdate != null)
             {
-                if(materiaToUpdate.Descripcion != null) materiaToUpdate.Descripcion = materia.Descripcion;
-                if(materiaToUpdate.HsSemanales != null) materiaToUpdate.HsSemanales = materia.HsSemanales;
-                if(materiaToUpdate.HsTotales != null) materiaToUpdate.HsTotales = materia.HsTotales;
-            
+                materiaToUpdate.SetDescripcion(dto.Descripcion);
+                materiaToUpdate.SetHsSemanales(dto.HsSemanales);
+                materiaToUpdate.SetHsTotales(dto.HsTotales);
+
             }
             return materiaToUpdate;
+
+        }
+        private static int GetNextId()
+        {
+            int nextId;
+
+            if (MateriaInMemory.materias.Count > 0)
+            {
+                nextId = MateriaInMemory.materias.Max(x => x.Id) + 1;
+            }
+            else
+            {
+                nextId = 1;
+            }
+
+            return nextId;
         }
     }
 }
