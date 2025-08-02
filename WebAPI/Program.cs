@@ -107,9 +107,9 @@ app.MapDelete("/materias/{id}", (int id) =>
 {
     MateriaService materiaService = new MateriaService();
 
-    var deleted = materiaService.delete(id);
+    var deleted = materiaService.Delete(id);
 
-    if (deleted != null)
+    if (deleted != true)
     {
         return Results.NotFound();
     }

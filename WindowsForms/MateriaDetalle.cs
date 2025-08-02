@@ -119,7 +119,8 @@ namespace WindowsForms
             errorProvider.SetError(descripcionTextBox, string.Empty);
             errorProvider.SetError(hsSemanalesTextBox, string.Empty);
             errorProvider.SetError(hsTotalesTextBox, string.Empty);
-            errorProvider.SetError(idTextBox, string.Empty);
+            errorProvider.SetError(idPlanTextBox, string.Empty);
+
 
 
             if (this.descripcionTextBox.Text == string.Empty)
@@ -137,6 +138,11 @@ namespace WindowsForms
             {
                 isValid = false;
                 errorProvider.SetError(hsSemanalesTextBox, "Las horas totales es Requerido");
+            }
+            if (this.idPlanTextBox.Text == string.Empty)
+            {
+                isValid = false;
+                errorProvider.SetError(idPlanTextBox, "El IDPlan totales es Requerido");
             }
 
             return isValid;

@@ -46,15 +46,20 @@ namespace Domain.Services
             MateriaInMemory.materias.Add(materia);
             return dto;
         }
-        public Materia delete(int id)
+        public bool Delete(int id)
         {
-            Materia? materiaToDelete = MateriaInMemory.materias.Find(m => m.Id == id);
+            Materia? materiaToDelete = MateriaInMemory.materias.Find(x => x.Id == id);
 
             if (materiaToDelete != null)
             {
                 MateriaInMemory.materias.Remove(materiaToDelete);
+
+                return true;
             }
-            return materiaToDelete;
+            else
+            {
+                return false;
+            }
         }
 
         public Materia update(MateriaDTO dto)

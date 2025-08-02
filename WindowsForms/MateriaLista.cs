@@ -53,6 +53,7 @@ namespace WindowsForms
 
         private async void eliminarButton_Click(object sender, EventArgs e)
         {
+
             try
             {
                 int id = this.SelectedItem().Id;
@@ -63,11 +64,12 @@ namespace WindowsForms
                 {
                     await MateriaAPIClient.DeleteAsync(id);
                     this.GetAllAndLoad();
+
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al eliminar materia: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"111Error al eliminar materia: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
