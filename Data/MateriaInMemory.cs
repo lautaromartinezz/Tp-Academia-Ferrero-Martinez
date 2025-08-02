@@ -15,9 +15,9 @@ namespace Data
 
         static MateriaInMemory() {
             materias = new List<Materia> {
-                new Materia(4, "nose", 5, 1, 1),
-                new Materia(5,"nose2", 2, 2, 2),
-                new Materia(2,"nose3", 123, 4, 3)
+                new Materia(4, "nose", 5, 12, 1),
+                new Materia(5,"nose2", 2, 23, 2),
+                new Materia(2,"nose3", 123, 44, 3)
 
             };
         }
