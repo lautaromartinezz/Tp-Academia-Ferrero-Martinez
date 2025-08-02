@@ -21,30 +21,30 @@ namespace WindowsForms
 
     public partial class UsuarioDetalle : Form
     {
-        private ClienteDTO cliente;
+        private UsuarioDTO usuario;
         private FormMode mode;
 
-        public ClienteDTO Cliente
+        public UsuarioDTO Usuario
         {
-            get { return cliente; }
+            get { return usuario; }
             set
             {
-                cliente = value;
-                this.SetCliente();
+                usuario = value;
+                this.SetUsuario();
             }
         }
 
-        public FormMode Mode 
+        public FormMode Mode
         {
             get
             {
                 return mode;
             }
-            set 
+            set
             {
                 SetFormMode(value);
-            } 
-        } 
+            }
+        }
 
         public UsuarioDetalle()
         {
@@ -55,14 +55,15 @@ namespace WindowsForms
 
         private async void aceptarButton_Click(object sender, EventArgs e)
         {
-            if (this.ValidateCliente())
+            if (this.ValidateUsuario())
             {
                 try
                 {
-                    this.Cliente.Nombre = nombreTextBox.Text;
-                    this.Cliente.Apellido = apellidoTextBox.Text;
-                    this.Cliente.Email = emailTextBox.Text;
-                    this.Cliente.FechaAlta = DateTime.Parse(fechaAltaTextBox.Text);
+                    this.Usuario.Nombre = nombreTextBox.Text;
+                    this.Usuario.NombreUsuario = usuarioTextBox.Text;
+                    this.Usuario.Apellido = apellidoTextBox.Text;
+                    this.Usuario.Email = emailTextBox.Text;
+                    this.Usuario.Habilitado = habilitadoCheckBox.Checked;
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
@@ -70,11 +71,11 @@ namespace WindowsForms
 
                     if (this.Mode == FormMode.Update)
                     {
-                        await ClienteApiClient.UpdateAsync(this.Cliente);
+                        await UsuarioAPIClient.UpdateAsync(this.Usuario);
                     }
                     else
                     {
-                        await ClienteApiClient.AddAsync(this.Cliente);
+                        await UsuarioAPIClient.AddAsync(this.Usuario);
                     }
 
                     this.Close();
@@ -91,13 +92,14 @@ namespace WindowsForms
             this.Close();
         }
 
-        private void SetCliente()
+        private void SetUsuario()
         {
-            this.idTextBox.Text = this.Cliente.Id.ToString();
-            this.nombreTextBox.Text = this.Cliente.Nombre;
-            this.apellidoTextBox.Text = this.Cliente.Apellido;
-            this.fechaAltaTextBox.Text = this.Cliente.FechaAlta.ToString();
-            this.emailTextBox.Text = this.Cliente.Email;
+            this.idTextBox.Text = this.Usuario.Id.ToString();
+            this.nombreTextBox.Text = this.Usuario.Nombre;
+            this.usuarioTextBox.Text = this.Usuario.NombreUsuario;
+            this.apellidoTextBox.Text = this.Usuario.Apellido;
+            this.emailTextBox.Text = this.Usuario.Email;
+            this.habilitadoCheckBox.Checked = this.Usuario.Habilitado;
         }
 
         private void SetFormMode(FormMode value)
@@ -108,24 +110,23 @@ namespace WindowsForms
             {
                 idLabel.Visible = false;
                 idTextBox.Visible = false;
-                fechaAltaLabel.Visible = false;
-                fechaAltaTextBox.Visible = false;
+
             }
 
             if (Mode == FormMode.Update)
             {
                 idLabel.Visible = true;
                 idTextBox.Visible = true;
-                fechaAltaLabel.Visible = true;
-                fechaAltaTextBox.Visible = true;
+
             }
         }
 
-        private bool ValidateCliente()
+        private bool ValidateUsuario()
         {
             bool isValid = true;
 
             errorProvider.SetError(nombreTextBox, string.Empty);
+            errorProvider.SetError(usuarioTextBox, string.Empty);
             errorProvider.SetError(apellidoTextBox, string.Empty);
             errorProvider.SetError(emailTextBox, string.Empty);
 
@@ -135,10 +136,15 @@ namespace WindowsForms
                 errorProvider.SetError(nombreTextBox, "El Nombre es Requerido");
             }
 
+            if (this.usuarioTextBox.Text == string.Empty)
+            {
+                isValid = false;
+                errorProvider.SetError(usuarioTextBox, "El Usuario es Requerido");
+            }
             if (this.apellidoTextBox.Text == string.Empty)
             {
                 isValid = false;
-                errorProvider.SetError(apellidoTextBox, "El Apellido es Requerido");
+                errorProvider.SetError(usuarioTextBox, "El Apellido es Requerido");
             }
 
             if (this.emailTextBox.Text == string.Empty)

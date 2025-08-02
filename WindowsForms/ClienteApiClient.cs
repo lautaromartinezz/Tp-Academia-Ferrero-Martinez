@@ -22,43 +22,43 @@ namespace WindowsForms
         }
 
 
-        public static async Task<ClienteDTO> GetAsync(int id)
+        public static async Task<UsuarioDTO> GetAsync(int id)
         {
-            ClienteDTO cliente = null;
-            HttpResponseMessage response = await client.GetAsync("clientes/"+id);
+            UsuarioDTO usuario = null;
+            HttpResponseMessage response = await client.GetAsync("usuarios/"+id);
             if (response.IsSuccessStatusCode)
             {
-                cliente = await response.Content.ReadAsAsync<ClienteDTO>();
+                usuario = await response.Content.ReadAsAsync<UsuarioDTO>();
             }
-            return cliente;
+            return usuario;
         }
 
-        public static async Task<IEnumerable<ClienteDTO>> GetAllAsync()
+        public static async Task<IEnumerable<UsuarioDTO>> GetAllAsync()
         {
-            IEnumerable<ClienteDTO> clientes = null;
-            HttpResponseMessage response = await client.GetAsync("clientes");
+            IEnumerable<UsuarioDTO> usuarios = null;
+            HttpResponseMessage response = await client.GetAsync("usuarios");
             if (response.IsSuccessStatusCode)
             {
-                clientes = await response.Content.ReadAsAsync<IEnumerable<ClienteDTO>>();
+                usuarios = await response.Content.ReadAsAsync<IEnumerable<UsuarioDTO>>();
             }
-            return clientes;
+            return usuarios;
         }
 
-        public async static Task AddAsync(ClienteDTO cliente)
+        public async static Task AddAsync(UsuarioDTO usuario)
         {
-            HttpResponseMessage response = await client.PostAsJsonAsync("clientes", cliente);
+            HttpResponseMessage response = await client.PostAsJsonAsync("usuarios", usuario);
             response.EnsureSuccessStatusCode();
         }
 
         public static async Task DeleteAsync(int id)
         {
-            HttpResponseMessage response = await client.DeleteAsync("clientes/" + id);
+            HttpResponseMessage response = await client.DeleteAsync("usuarios/" + id);
             response.EnsureSuccessStatusCode();
         }
 
-        public static async Task UpdateAsync(ClienteDTO cliente)
+        public static async Task UpdateAsync(UsuarioDTO usuario)
         {
-            HttpResponseMessage response = await client.PutAsJsonAsync("clientes", cliente);
+            HttpResponseMessage response = await client.PutAsJsonAsync("usuarios", usuario);
             response.EnsureSuccessStatusCode();
         }
     }
