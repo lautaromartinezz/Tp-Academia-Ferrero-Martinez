@@ -19,7 +19,7 @@ namespace WindowsForms
         Update
     }
 
-    public partial class ClienteDetalle : Form
+    public partial class UsuarioDetalle : Form
     {
         private ClienteDTO cliente;
         private FormMode mode;
@@ -46,7 +46,7 @@ namespace WindowsForms
             } 
         } 
 
-        public ClienteDetalle()
+        public UsuarioDetalle()
         {
             InitializeComponent();
 

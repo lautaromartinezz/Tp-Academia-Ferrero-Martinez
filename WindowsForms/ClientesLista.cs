@@ -3,9 +3,9 @@ using API.Clients;
 
 namespace WindowsForms
 {
-    public partial class ClientesLista : Form
+    public partial class UsuarioLista : Form
     {
-        public ClientesLista()
+        public UsuarioLista()
         {            
             InitializeComponent();
         }
@@ -17,7 +17,7 @@ namespace WindowsForms
 
         private void agregarButton_Click(object sender, EventArgs e)
         {
-            ClienteDetalle clienteDetalle = new ClienteDetalle();
+            UsuarioDetalle clienteDetalle = new ClienteDetalle();
 
             ClienteDTO clienteNuevo = new ClienteDTO();
 
@@ -33,7 +33,7 @@ namespace WindowsForms
         {
             try
             {
-                ClienteDetalle clienteDetalle = new ClienteDetalle();
+                UsuarioDetalle clienteDetalle = new ClienteDetalle();
                
                 int id = this.SelectedItem().Id;
 
