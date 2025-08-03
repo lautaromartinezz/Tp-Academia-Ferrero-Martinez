@@ -70,6 +70,8 @@ namespace Domain.Services
                 materiaToUpdate.SetDescripcion(dto.Descripcion);
                 materiaToUpdate.SetHsSemanales(dto.HsSemanales);
                 materiaToUpdate.SetHsTotales(dto.HsTotales);
+                materiaToUpdate.SetIdPlan(dto.IdPlan);
+
 
             }
             return materiaToUpdate;

@@ -36,7 +36,7 @@
             // 
             // usuarioButton
             // 
-            usuarioButton.Location = new Point(203, 176);
+            usuarioButton.Location = new Point(163, 214);
             usuarioButton.Name = "usuarioButton";
             usuarioButton.Size = new Size(114, 40);
             usuarioButton.TabIndex = 0;
@@ -48,7 +48,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 19F);
-            label1.Location = new Point(132, 137);
+            label1.Location = new Point(92, 175);
             label1.Name = "label1";
             label1.Size = new Size(265, 36);
             label1.TabIndex = 1;
@@ -58,7 +58,7 @@
             // 
             materiaLabel.AutoSize = true;
             materiaLabel.Font = new Font("Segoe UI", 19F);
-            materiaLabel.Location = new Point(412, 137);
+            materiaLabel.Location = new Point(421, 175);
             materiaLabel.Name = "materiaLabel";
             materiaLabel.Size = new Size(263, 36);
             materiaLabel.TabIndex = 3;
@@ -66,7 +66,7 @@
             // 
             // materiaButton
             // 
-            materiaButton.Location = new Point(483, 176);
+            materiaButton.Location = new Point(492, 214);
             materiaButton.Name = "materiaButton";
             materiaButton.Size = new Size(114, 40);
             materiaButton.TabIndex = 2;
@@ -84,7 +84,7 @@
             Controls.Add(label1);
             Controls.Add(usuarioButton);
             Name = "Inicio";
-            Text = "Form1";
+            Text = "Academia";
             ResumeLayout(false);
             PerformLayout();
         }
