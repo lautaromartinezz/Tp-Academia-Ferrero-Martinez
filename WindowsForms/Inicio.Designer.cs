@@ -32,6 +32,7 @@
             label1 = new Label();
             materiaLabel = new Label();
             materiaButton = new Button();
+            btnClose = new Button();
             SuspendLayout();
             // 
             // usuarioButton
@@ -74,17 +75,30 @@
             materiaButton.UseVisualStyleBackColor = true;
             materiaButton.Click += materiaButton_Click;
             // 
+            // btnClose
+            // 
+            btnClose.Location = new Point(694, 403);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(94, 35);
+            btnClose.TabIndex = 4;
+            btnClose.Text = "Cerrar";
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
+            // 
             // Inicio
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnClose;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnClose);
             Controls.Add(materiaLabel);
             Controls.Add(materiaButton);
             Controls.Add(label1);
             Controls.Add(usuarioButton);
             Name = "Inicio";
             Text = "Academia";
+            Load += Inicio_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -95,5 +109,6 @@
         private Label label1;
         private Label materiaLabel;
         private Button materiaButton;
+        private Button btnClose;
     }
 }
