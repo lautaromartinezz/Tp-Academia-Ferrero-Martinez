@@ -14,11 +14,11 @@ namespace Data
         {
             Usuarios = new List<Usuario>
             {
-                new Usuario(1, "Juan", "Pérez","apodo", "juan.perez@email.com", true),
-                new Usuario(2, "María", "Gómez","apodo", "maria.gomez@email.com",true ),
-                new Usuario(3, "Carlos", "López","apodo", "carlos.lopez@email.com", true),
-                new Usuario(4, "Ana", "Martínez","apodo", "ana.martinez@email.com", true),
-                new Usuario(5, "Lucía", "Fernández","apodo", "lucia.fernandez@email.com", true)
+                new Usuario(1, "Juan", "apodo","Pérez", "juan.perez@email.com", true),
+                new Usuario(2, "María", "apodo","Gómez", "maria.gomez@email.com",true ),
+                new Usuario(3, "Carlos", "apodo","López", "carlos.lopez@email.com", true),
+                new Usuario(4, "Ana", "apodo","Martínez", "ana.martinez@email.com", true),
+                new Usuario(5, "Lucía", "apodo","Fernández", "lucia.fernandez@email.com", true)
             };
         }
     }

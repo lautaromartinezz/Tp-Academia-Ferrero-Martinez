@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,6 +71,7 @@ namespace Domain.Services
                 materiaToUpdate.SetHsSemanales(dto.HsSemanales);
                 materiaToUpdate.SetHsTotales(dto.HsTotales);
                 materiaToUpdate.SetIdPlan(dto.IdPlan);
+
 
             }
             return materiaToUpdate;

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Academia;
 
 namespace WindowsForms
 {
@@ -14,6 +15,8 @@ namespace WindowsForms
     {
         public Inicio()
         {
+
+
             InitializeComponent();
         }
         private void usuarioButton_Click(object sender, EventArgs e)
@@ -26,6 +29,23 @@ namespace WindowsForms
         {
             MateriaLista materiaLista = new MateriaLista();
             materiaLista.Show();
+        }
+
+        private void Inicio_Load(object sender, EventArgs e)
+        {
+            formLogin appLogin = new formLogin();
+            DialogResult diagRes = appLogin.ShowDialog();
+            if (diagRes != DialogResult.OK)
+            {
+                this.Dispose();
+            }
+
+
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
         }
     }
 }
