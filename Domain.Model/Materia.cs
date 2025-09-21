@@ -16,6 +16,8 @@ namespace Domain.Model
         public int HsTotales { get; private set; }
         public int IdPlan { get; private  set; }
 
+        public Materia() { }
+
         public Materia(int hsSemanales, string desc, int hsTotales, int idPlan, int id) {
             SetDescripcion(desc);
             SetHsSemanales(hsSemanales);

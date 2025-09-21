@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain.Model;
 using Data;
 using DTOs;
+using Microsoft.Identity.Client;
 
 namespace Domain.Services
 {
@@ -13,84 +14,63 @@ namespace Domain.Services
     {
         public IEnumerable<MateriaDTO> getAll()
         {
-            return MateriaInMemory.materias.Select(materia => new MateriaDTO
+            var materiaRepository = new MateriaRepository();
+            var materias = materiaRepository.GetAll();
+
+            return materias.Select(materia => new MateriaDTO()
             {
                 Id = materia.Id,
                 Descripcion = materia.Descripcion,
                 HsTotales = materia.HsTotales,
                 HsSemanales = materia.HsSemanales,
-                IdPlan = materia.IdPlan,
-
+                IdPlan = materia.IdPlan
             }).ToList();
+
         }
 
-        public MateriaDTO getOne(int id)
+        public MateriaDTO? getOne(int id)
         {
-            Materia? materia = MateriaInMemory.materias.Find(m => m.Id == id);
-            if (materia == null)
-                return null;
+            var materiaRepository = new MateriaRepository();
+
+            Materia? materia = materiaRepository.Get(id);
+
+            if (materia == null) return null;
+
             return new MateriaDTO
             {
-                Id=materia.Id,
+                Id = id,
                 Descripcion = materia.Descripcion,
                 HsTotales = materia.HsTotales,
                 HsSemanales = materia.HsSemanales,
-                IdPlan = materia.IdPlan,
+                IdPlan = materia.IdPlan
             };
+
         }
 
         public MateriaDTO add(MateriaDTO dto)
         {
-            var id = GetNextId();
-            Materia materia = new Materia(dto.HsSemanales,dto.Descripcion, dto.HsTotales, dto.IdPlan, id);
-            MateriaInMemory.materias.Add(materia);
+            var materiaRepository = new MateriaRepository();
+
+            Materia materia = new Materia(dto.HsSemanales, dto.Descripcion, dto.HsTotales, dto.IdPlan, 0);
+
+            materiaRepository.Add(materia);
+
+            dto.Id = materia.Id;
+
             return dto;
         }
-        public bool Delete(int id)
+        public bool delete(int id)
         {
-            Materia? materiaToDelete = MateriaInMemory.materias.Find(x => x.Id == id);
-
-            if (materiaToDelete != null)
-            {
-                MateriaInMemory.materias.Remove(materiaToDelete);
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            var materiaRepository = new MateriaRepository();
+            return materiaRepository.Delete(id);
         }
 
-        public Materia update(MateriaDTO dto)
+        public bool update(MateriaDTO dto)
         {
-            Materia? materiaToUpdate = MateriaInMemory.materias.Find(m => m.Id == dto.Id);
-            if (materiaToUpdate != null)
-            {
-                materiaToUpdate.SetDescripcion(dto.Descripcion);
-                materiaToUpdate.SetHsSemanales(dto.HsSemanales);
-                materiaToUpdate.SetHsTotales(dto.HsTotales);
-                materiaToUpdate.SetIdPlan(dto.IdPlan);
+            var materiaRepository = new MateriaRepository();
 
-
-            }
-            return materiaToUpdate;
-
-        }
-        private static int GetNextId()
-        {
-            int nextId;
-
-            if (MateriaInMemory.materias.Count > 0)
-            {
-                nextId = MateriaInMemory.materias.Max(x => x.Id) + 1;
-            }
-            else
-            {
-                nextId = 1;
-            }
-
-            return nextId;
+            Materia materia = new Materia(dto.HsSemanales, dto.Descripcion, dto.HsTotales, dto.IdPlan, dto.Id);
+            return materiaRepository.Update(materia);
         }
     }
 }
