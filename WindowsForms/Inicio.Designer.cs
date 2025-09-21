@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             usuarioButton = new Button();
-            label1 = new Label();
-            materiaLabel = new Label();
             materiaButton = new Button();
             btnClose = new Button();
+            label1 = new Label();
+            button1 = new Button();
             SuspendLayout();
             // 
             // usuarioButton
             // 
-            usuarioButton.Location = new Point(163, 214);
+            usuarioButton.Location = new Point(12, 55);
             usuarioButton.Name = "usuarioButton";
             usuarioButton.Size = new Size(114, 40);
             usuarioButton.TabIndex = 0;
@@ -45,29 +45,9 @@
             usuarioButton.UseVisualStyleBackColor = true;
             usuarioButton.Click += usuarioButton_Click;
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 19F);
-            label1.Location = new Point(92, 175);
-            label1.Name = "label1";
-            label1.Size = new Size(265, 36);
-            label1.TabIndex = 1;
-            label1.Text = "Ver todos los usuarios";
-            // 
-            // materiaLabel
-            // 
-            materiaLabel.AutoSize = true;
-            materiaLabel.Font = new Font("Segoe UI", 19F);
-            materiaLabel.Location = new Point(421, 175);
-            materiaLabel.Name = "materiaLabel";
-            materiaLabel.Size = new Size(263, 36);
-            materiaLabel.TabIndex = 3;
-            materiaLabel.Text = "Ver todas las materias";
-            // 
             // materiaButton
             // 
-            materiaButton.Location = new Point(492, 214);
+            materiaButton.Location = new Point(12, 101);
             materiaButton.Name = "materiaButton";
             materiaButton.Size = new Size(114, 40);
             materiaButton.TabIndex = 2;
@@ -85,16 +65,36 @@
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(12, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(101, 32);
+            label1.TabIndex = 5;
+            label1.Text = "Gestión";
+            // 
+            // button1
+            // 
+            button1.Location = new Point(12, 147);
+            button1.Name = "button1";
+            button1.Size = new Size(114, 38);
+            button1.TabIndex = 6;
+            button1.Text = "Cursos";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // Inicio
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnClose;
             ClientSize = new Size(800, 450);
-            Controls.Add(btnClose);
-            Controls.Add(materiaLabel);
-            Controls.Add(materiaButton);
+            Controls.Add(button1);
             Controls.Add(label1);
+            Controls.Add(btnClose);
+            Controls.Add(materiaButton);
             Controls.Add(usuarioButton);
             Name = "Inicio";
             Text = "Academia";
@@ -106,9 +106,9 @@
         #endregion
 
         private Button usuarioButton;
-        private Label label1;
-        private Label materiaLabel;
         private Button materiaButton;
         private Button btnClose;
+        private Label label1;
+        private Button button1;
     }
 }
