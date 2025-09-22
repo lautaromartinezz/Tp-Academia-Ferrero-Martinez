@@ -64,6 +64,7 @@
             aceptarButton.TabIndex = 60;
             aceptarButton.Text = "Aceptar";
             aceptarButton.UseVisualStyleBackColor = true;
+            aceptarButton.Click += aceptarButton_Click;
             // 
             // errorProvider
             // 
@@ -78,6 +79,7 @@
             cancelarButton.TabIndex = 70;
             cancelarButton.Text = "Cancelar";
             cancelarButton.UseVisualStyleBackColor = true;
+            cancelarButton.Click += cancelarButton_Click;
             // 
             // cupoLabel
             // 

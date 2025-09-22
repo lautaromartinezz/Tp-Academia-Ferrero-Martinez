@@ -26,6 +26,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapMateriaEndpoints();
+app.MapCursoEndpoints();
 
 app.MapGet("/usuarios/{id}", (int id) =>
 {

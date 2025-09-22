@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Model;
 
 namespace DTOs
 {
@@ -14,5 +15,7 @@ namespace DTOs
         public int Cupo { get; set; }
         public int IdMateria { get; set; }
         public int IdComision { get; set; }
+
+        //public MateriaDTO? Materia { get; set; }
     }
 }

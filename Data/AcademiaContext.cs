@@ -13,6 +13,7 @@ namespace Data
     {
         public DbSet<Materia> Materias { get; set; }
         //public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Curso> Cursos { get; set; }
 
         internal AcademiaContext()
         {
@@ -59,6 +60,8 @@ namespace Data
                 entity.Property(e => e.IdPlan)
                     .IsRequired();
 
+                entity.HasMany(m => m.Cursos).WithOne(c => c.Materia).HasForeignKey(c => c.IdMateria);
+
                 entity.HasData(
                     new { Id = 1, Descripcion = "desc1", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
                     new { Id = 2, Descripcion = "desc2", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
@@ -67,6 +70,34 @@ namespace Data
                     new { Id = 5, Descripcion = "deesc4", HsSemanales = 1, HsTotales = 2, IdPlan = 1 }
                 );
             });
+
+            modelBuilder.Entity<Curso>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Cupo)
+                    .IsRequired();
+
+                entity.Property(e => e.AnioCalendario).IsRequired();
+
+                entity.Property(e => e.IdComision).IsRequired();
+
+                entity.HasOne(c => c.Materia)
+                    .WithMany(m => m.Cursos)
+                    .HasForeignKey(c => c.IdMateria)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasData(
+                    new { Id = 1, Cupo = 1, AnioCalendario = DateTime.Now, IdComision = 2, IdMateria = 1 },
+                    new { Id = 2, Cupo = 432, AnioCalendario = new DateTime(2025,10,09), IdComision = 2, IdMateria = 1 },
+                    new { Id = 3, Cupo = 2332, AnioCalendario = new DateTime(2025,09, 09), IdComision = 2, IdMateria = 2 },
+                    new { Id = 4, Cupo = 233, AnioCalendario = new DateTime(2025, 07, 09), IdComision = 2, IdMateria = 2 },
+                    new { Id = 5, Cupo = 1234, AnioCalendario = new DateTime(2025, 10, 10), IdComision = 2, IdMateria = 4 }
+                );
+            });
+
         }
     }
 }

@@ -47,5 +47,10 @@ namespace Domain.Model
             IdMateria = idMateria;
         }
 
+        public void setAnioCalendario(DateTime anioCalendario)
+        {
+            AnioCalendario = anioCalendario;
+        }
+
     }
 }

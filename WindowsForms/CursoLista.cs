@@ -28,7 +28,7 @@ namespace WindowsForms
         {
             CursoDetalle cursoDetalle = new CursoDetalle();
 
-            CursoDTO cursoNuevo = new CursoDTO();
+            CursoDTO cursoNuevo = new CursoDTO() { AnioCalendario = DateTime.Now};
 
             cursoDetalle.Mode = FormMode.Add;
             cursoDetalle.Curso = cursoNuevo;
@@ -72,7 +72,7 @@ namespace WindowsForms
 
                 if (result == DialogResult.Yes)
                 {
-                    await MateriaAPIClient.DeleteAsync(id);
+                    await CursoAPIClient.DeleteAsync(id);
                     this.GetAllAndLoad();
 
                 }
@@ -104,7 +104,7 @@ namespace WindowsForms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar la lista de materias: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar la lista de cursos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.eliminarButton.Enabled = false;
                 this.modificarButton.Enabled = false;
             }
