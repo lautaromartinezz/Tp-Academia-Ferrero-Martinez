@@ -25,7 +25,7 @@ namespace Data
         public bool Delete(int id)
         {
             using var context = CreateContext();
-            var curso = context.Cursos.AsNoTracking().FirstOrDefault(c => c.Id == id); // No Find porque devuelve también la Materia y la trata de eliminar
+            var curso = context.Cursos.Find(id); 
             if (curso != null)
             {
                 context.Cursos.Remove(curso);

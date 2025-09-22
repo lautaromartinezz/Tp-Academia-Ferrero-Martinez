@@ -39,7 +39,8 @@ namespace Data
         {
             using var context = CreateContext();
             return context.Materias
-                .FirstOrDefault(m => m.Id == id);
+                .FirstOrDefault(m => m.Id == id)
+                ;
         }
 
         public IEnumerable<Materia> GetAll()

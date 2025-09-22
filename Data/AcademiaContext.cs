@@ -12,11 +12,12 @@ namespace Data
     internal class AcademiaContext: DbContext
     {
         public DbSet<Materia> Materias { get; set; }
-        //public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Curso> Cursos { get; set; }
 
         internal AcademiaContext()
         {
+            //this.Database.EnsureDeleted(); // SOLO EN DEV 
             this.Database.EnsureCreated();
         }
 
@@ -60,7 +61,7 @@ namespace Data
                 entity.Property(e => e.IdPlan)
                     .IsRequired();
 
-                entity.HasMany(m => m.Cursos).WithOne(c => c.Materia).HasForeignKey(c => c.IdMateria);
+                entity.HasMany(m => m.Cursos).WithOne(c => c.Materia).HasForeignKey(c => c.IdMateria).OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasData(
                     new { Id = 1, Descripcion = "desc1", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
@@ -87,7 +88,7 @@ namespace Data
                 entity.HasOne(c => c.Materia)
                     .WithMany(m => m.Cursos)
                     .HasForeignKey(c => c.IdMateria)
-                    .OnDelete(DeleteBehavior.Restrict);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasData(
                     new { Id = 1, Cupo = 1, AnioCalendario = DateTime.Now, IdComision = 2, IdMateria = 1 },
@@ -95,6 +96,28 @@ namespace Data
                     new { Id = 3, Cupo = 2332, AnioCalendario = new DateTime(2025,09, 09), IdComision = 2, IdMateria = 2 },
                     new { Id = 4, Cupo = 233, AnioCalendario = new DateTime(2025, 07, 09), IdComision = 2, IdMateria = 2 },
                     new { Id = 5, Cupo = 1234, AnioCalendario = new DateTime(2025, 10, 10), IdComision = 2, IdMateria = 4 }
+                );
+            });
+
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Apellido).IsRequired().HasMaxLength(50);
+
+                entity.HasIndex(e => e.Email).IsUnique();
+
+                entity.HasIndex(e => e.NombreUsuario).IsUnique();
+
+                entity.Property(e => e.Habilitado).IsRequired().HasMaxLength(15);
+
+                entity.HasData(
+                    new { Id = 1, Nombre = "Santiago", Apellido = "Ferrero", Email = "santifnob@gmail.com", NombreUsuario = "vamoniubels", Habilitado = true },
+                    new { Id = 2, Nombre = "Lautaro", Apellido = "Martinez", Email = "lautaromartinez@gmail.com", NombreUsuario = "vamoslalepra", Habilitado = true }
                 );
             });
 
