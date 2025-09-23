@@ -34,6 +34,11 @@ namespace WindowsForms
             CursoLista cursoLista = new CursoLista();
             cursoLista.Show();
         }
+        private void bttnCursos_Click(object sender, EventArgs e)
+        {
+            PlanLista planLista = new PlanLista();
+            planLista.Show();
+        }
 
         private void Inicio_Load(object sender, EventArgs e)
         {
@@ -51,7 +56,6 @@ namespace WindowsForms
         {
             this.Dispose();
         }
-
 
     }
 }

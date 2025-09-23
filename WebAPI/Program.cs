@@ -28,5 +28,6 @@ app.UseHttpsRedirection();
 app.MapMateriaEndpoints();
 app.MapCursoEndpoints();
 app.MapUsuarioEndpoints();
+app.MapPlanEndpoints();
 
 app.Run();

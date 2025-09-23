@@ -33,6 +33,7 @@
             btnClose = new Button();
             label1 = new Label();
             button1 = new Button();
+            bttnCursos = new Button();
             SuspendLayout();
             // 
             // usuarioButton
@@ -85,12 +86,23 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // bttnCursos
+            // 
+            bttnCursos.Location = new Point(12, 191);
+            bttnCursos.Name = "bttnCursos";
+            bttnCursos.Size = new Size(114, 38);
+            bttnCursos.TabIndex = 7;
+            bttnCursos.Text = "Planes";
+            bttnCursos.UseVisualStyleBackColor = true;
+            bttnCursos.Click += bttnCursos_Click;
+            // 
             // Inicio
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnClose;
             ClientSize = new Size(800, 450);
+            Controls.Add(bttnCursos);
             Controls.Add(button1);
             Controls.Add(label1);
             Controls.Add(btnClose);
@@ -110,5 +122,6 @@
         private Button btnClose;
         private Label label1;
         private Button button1;
+        private Button bttnCursos;
     }
 }

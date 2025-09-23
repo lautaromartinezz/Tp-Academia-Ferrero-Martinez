@@ -15,6 +15,7 @@ namespace Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Curso> Cursos { get; set; }
 
+        public DbSet<Plan> Planes { get; set; }
         internal AcademiaContext()
         {
             //this.Database.EnsureDeleted(); // SOLO EN DEV 
@@ -121,6 +122,23 @@ namespace Data
                 );
             });
 
+            modelBuilder.Entity<Plan>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Descripcion)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.IdEspecialidad).IsRequired();
+
+                entity.HasData(
+                    new { Id = 1, Descripcion = "ISI 2023", IdEspecialidad = 1},
+                    new { Id = 2, Descripcion = "IQ 2014", IdEspecialidad = 2}
+                );
+            });
         }
     }
 }
