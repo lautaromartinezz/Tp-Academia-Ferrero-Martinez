@@ -46,6 +46,11 @@ namespace WebAPI
 
                     MateriaDTO materiaDto = materiaService.add(dto);
 
+                    if (materiaDto == null)
+                    {
+                        return Results.NotFound("El plan ingresado no existe");
+                    }
+
                     return Results.Created($"/materias/{materiaDto.Id}", materiaDto);
                 }
                 catch (ArgumentException ex)
@@ -56,6 +61,7 @@ namespace WebAPI
             .WithName("AddMateria")
             .Produces<DTOs.MateriaDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
             app.MapPut("/materias", (DTOs.MateriaDTO dto) =>

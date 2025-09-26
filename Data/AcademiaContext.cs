@@ -18,7 +18,7 @@ namespace Data
         public DbSet<Plan> Planes { get; set; }
         internal AcademiaContext()
         {
-            //this.Database.EnsureDeleted(); // SOLO EN DEV 
+            this.Database.EnsureDeleted(); // SOLO EN DEV 
             this.Database.EnsureCreated();
         }
 
@@ -59,8 +59,11 @@ namespace Data
                     .IsRequired()
                     .HasMaxLength(20);
 
-                entity.Property(e => e.IdPlan)
-                    .IsRequired();
+                entity.HasOne(e => e.Plan)
+                    .WithMany(p => p.Materias)
+                    .HasForeignKey(p => p.IdPlan)
+                    .OnDelete(DeleteBehavior.Cascade);
+
 
                 entity.HasMany(m => m.Cursos).WithOne(c => c.Materia).HasForeignKey(c => c.IdMateria).OnDelete(DeleteBehavior.Cascade);
 
@@ -68,8 +71,8 @@ namespace Data
                     new { Id = 1, Descripcion = "desc1", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
                     new { Id = 2, Descripcion = "desc2", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
                     new { Id = 3, Descripcion = "desc3", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
-                    new { Id = 4, Descripcion = "desc4", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
-                    new { Id = 5, Descripcion = "deesc4", HsSemanales = 1, HsTotales = 2, IdPlan = 1 }
+                    new { Id = 4, Descripcion = "desc4", HsSemanales = 1, HsTotales = 2, IdPlan = 2 },
+                    new { Id = 5, Descripcion = "deesc4", HsSemanales = 1, HsTotales = 2, IdPlan = 2 }
                 );
             });
 

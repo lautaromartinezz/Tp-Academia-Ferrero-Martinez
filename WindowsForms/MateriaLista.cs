@@ -1,4 +1,5 @@
 using DTOs;
+using API.Clients;
 
 namespace WindowsForms
 {

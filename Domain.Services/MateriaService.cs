@@ -23,7 +23,8 @@ namespace Domain.Services
                 Descripcion = materia.Descripcion,
                 HsTotales = materia.HsTotales,
                 HsSemanales = materia.HsSemanales,
-                IdPlan = materia.IdPlan
+                IdPlan = materia.IdPlan,
+                DescripcionPlan = materia.Plan.Descripcion
             }).ToList();
 
         }
@@ -42,22 +43,25 @@ namespace Domain.Services
                 Descripcion = materia.Descripcion,
                 HsTotales = materia.HsTotales,
                 HsSemanales = materia.HsSemanales,
-                IdPlan = materia.IdPlan
+                IdPlan = materia.IdPlan,
+                DescripcionPlan = materia.Plan.Descripcion
             };
 
         }
 
         public MateriaDTO add(MateriaDTO dto)
         {
-            var materiaRepository = new MateriaRepository();
-
-            Materia materia = new Materia(dto.HsSemanales, dto.Descripcion, dto.HsTotales, dto.IdPlan, 0);
-
-            materiaRepository.Add(materia);
-
-            dto.Id = materia.Id;
-
-            return dto;
+            var planRepository = new PlanRepository();
+            Plan? plan = planRepository.Get(dto.IdPlan);
+            if (plan == null) return null;
+            else
+            {
+                var materiaRepository = new MateriaRepository();
+                Materia materia = new Materia(dto.HsSemanales, dto.Descripcion, dto.HsTotales, dto.IdPlan, 0);
+                materiaRepository.Add(materia);
+                dto.Id = materia.Id;
+                return dto;
+            }
         }
         public bool delete(int id)
         {
@@ -67,10 +71,16 @@ namespace Domain.Services
 
         public bool update(MateriaDTO dto)
         {
-            var materiaRepository = new MateriaRepository();
+            var planRepository = new PlanRepository();
+            Plan? plan = planRepository.Get(dto.IdPlan);
+            if (plan == null) return false;
+            else { 
+                var materiaRepository = new MateriaRepository();
 
-            Materia materia = new Materia(dto.HsSemanales, dto.Descripcion, dto.HsTotales, dto.IdPlan, dto.Id);
-            return materiaRepository.Update(materia);
+                Materia materia = new Materia(dto.HsSemanales, dto.Descripcion, dto.HsTotales, dto.IdPlan, dto.Id);
+                return materiaRepository.Update(materia);
+    
+            }
         }
     }
 }

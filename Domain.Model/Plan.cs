@@ -10,6 +10,8 @@ namespace Domain.Model
     {
         public string Descripcion { get; private set; }
         public int IdEspecialidad { get; private set; }
+
+        public ICollection<Materia> Materias { get; private set; }
         Plan() { }
         public Plan(int id, string desc, int idEsp)
         {

@@ -33,16 +33,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener el plan con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener el plan con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Error: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener el plan con Id {id}: {ex.Message}", ex);
+                throw new Exception($"{ex.Message}", ex);
             }
         }
 
@@ -59,16 +59,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener lista de planes. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener lista de planes: {ex.Message}", ex);
+                throw new Exception($"Error: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener lista de planes: {ex.Message}", ex);
+                throw new Exception($"{ex.Message}", ex);
             }
         }
 
@@ -81,16 +81,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al crear la plan. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al crear la plan: {ex.Message}", ex);
+                throw new Exception($"Error: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al crear la plan: {ex.Message}", ex);
+                throw new Exception($"{ex.Message}", ex);
             }
         }
 
@@ -103,16 +103,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al eliminar la plan con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error:{errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al eliminar la plan con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Error:{ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al eliminar la plan con Id {id}: {ex.Message}", ex);
+                throw new Exception($"{ex.Message}", ex);
             }
         }
 
@@ -125,16 +125,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar la plan con Id {plan.Id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar la plan con Id {plan.Id}: {ex.Message}", ex);
+                throw new Exception($"Error: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al actualizar la plan con Id {plan.Id}: {ex.Message}", ex);
+                throw new Exception($"{ex.Message}", ex);
             }
         }
     }
