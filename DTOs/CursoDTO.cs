@@ -16,6 +16,8 @@ namespace DTOs
         public int IdMateria { get; set; }
         public int IdComision { get; set; }
 
+        public string DescripcionMateria { get; set; }
+
         //public MateriaDTO? Materia { get; set; }
     }
 }

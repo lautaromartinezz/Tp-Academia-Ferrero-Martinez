@@ -81,16 +81,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al crear la curso. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error. {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al crear la curso: {ex.Message}", ex);
+                throw new Exception($"Error. {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al crear la curso: {ex.Message}", ex);
+                throw new Exception($"{ex.Message}", ex);
             }
         }
 
@@ -103,12 +103,12 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al eliminar la curso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al eliminar la curso con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Error {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
@@ -125,12 +125,12 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar la curso con Id {curso.Id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"{errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar la curso con Id {curso.Id}: {ex.Message}", ex);
+                throw new Exception($"Error. {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
