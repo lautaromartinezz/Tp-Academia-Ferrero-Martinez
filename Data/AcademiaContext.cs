@@ -16,6 +16,7 @@ namespace Data
         public DbSet<Curso> Cursos { get; set; }
 
         public DbSet<Plan> Planes { get; set; }
+        public DbSet<Modulo> Modulos { get; set; }
         internal AcademiaContext()
         {
             this.Database.EnsureDeleted(); // SOLO EN DEV 
@@ -30,7 +31,7 @@ namespace Data
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .Build();
-
+                //"Server=(localdb)\\MSSQLLocalDB;Database=Academia;TrustServerCertificate=True;Trusted_Connection=true;MultipleActiveResultSets=true"
                 string? connectionString = configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseSqlServer(connectionString);
             }
@@ -141,6 +142,18 @@ namespace Data
                     new { Id = 1, Descripcion = "ISI 2023", IdEspecialidad = 1},
                     new { Id = 2, Descripcion = "IQ 2014", IdEspecialidad = 2}
                 );
+            });
+
+            modelBuilder.Entity<Modulo>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Ejecuta).HasMaxLength(50).IsRequired();
+                entity.Property(e => e.Descripcion).HasMaxLength(50).IsRequired();
+                entity.HasData(
+                    new { Id =1 , Descripcion = "asd", Ejecuta = "asd"},
+                    new { Id = 2,Descripcion = "asd2", Ejecuta = "asd2" }
+                    );
             });
         }
     }
