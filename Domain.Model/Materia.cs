@@ -16,6 +16,8 @@ namespace Domain.Model
         public int HsTotales { get; private set; }
         public int IdPlan { get; private  set; }
 
+        public Plan Plan { get;private set; }
+
         public ICollection<Curso> Cursos { get; private set; } 
 
         public Materia() { }

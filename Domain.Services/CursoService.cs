@@ -31,6 +31,7 @@ namespace Domain.Services
                 //},
                 AnioCalendario = curso.AnioCalendario,
                 IdMateria = curso.IdMateria,
+                DescripcionMateria = curso.Materia.Descripcion,
             }).ToList();
 
         }
@@ -57,7 +58,8 @@ namespace Domain.Services
                 //    IdPlan = curso.Materia.IdPlan,
                 //},
                 AnioCalendario = curso.AnioCalendario,
-                IdMateria = curso.IdMateria
+                IdMateria = curso.IdMateria,
+                DescripcionMateria = curso.Materia.Descripcion,
             };
 
         }

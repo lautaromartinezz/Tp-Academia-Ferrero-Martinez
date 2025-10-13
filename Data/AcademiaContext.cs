@@ -15,6 +15,8 @@ namespace Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Curso> Cursos { get; set; }
 
+        public DbSet<Plan> Planes { get; set; }
+        public DbSet<Modulo> Modulos { get; set; }
         internal AcademiaContext()
         {
             //this.Database.EnsureDeleted(); // SOLO EN DEV 
@@ -29,7 +31,7 @@ namespace Data
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .Build();
-
+                //"Server=(localdb)\\MSSQLLocalDB;Database=Academia;TrustServerCertificate=True;Trusted_Connection=true;MultipleActiveResultSets=true"
                 string? connectionString = configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseSqlServer(connectionString);
             }
@@ -58,8 +60,11 @@ namespace Data
                     .IsRequired()
                     .HasMaxLength(20);
 
-                entity.Property(e => e.IdPlan)
-                    .IsRequired();
+                entity.HasOne(e => e.Plan)
+                    .WithMany(p => p.Materias)
+                    .HasForeignKey(p => p.IdPlan)
+                    .OnDelete(DeleteBehavior.Cascade);
+
 
                 entity.HasMany(m => m.Cursos).WithOne(c => c.Materia).HasForeignKey(c => c.IdMateria).OnDelete(DeleteBehavior.Cascade);
 
@@ -67,8 +72,8 @@ namespace Data
                     new { Id = 1, Descripcion = "desc1", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
                     new { Id = 2, Descripcion = "desc2", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
                     new { Id = 3, Descripcion = "desc3", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
-                    new { Id = 4, Descripcion = "desc4", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
-                    new { Id = 5, Descripcion = "deesc4", HsSemanales = 1, HsTotales = 2, IdPlan = 1 }
+                    new { Id = 4, Descripcion = "desc4", HsSemanales = 1, HsTotales = 2, IdPlan = 2 },
+                    new { Id = 5, Descripcion = "deesc4", HsSemanales = 1, HsTotales = 2, IdPlan = 2 }
                 );
             });
 
@@ -121,6 +126,35 @@ namespace Data
                 );
             });
 
+            modelBuilder.Entity<Plan>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Descripcion)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.IdEspecialidad).IsRequired();
+
+                entity.HasData(
+                    new { Id = 1, Descripcion = "ISI 2023", IdEspecialidad = 1},
+                    new { Id = 2, Descripcion = "IQ 2014", IdEspecialidad = 2}
+                );
+            });
+
+            modelBuilder.Entity<Modulo>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Ejecuta).HasMaxLength(50).IsRequired();
+                entity.Property(e => e.Descripcion).HasMaxLength(50).IsRequired();
+                entity.HasData(
+                    new { Id =1 , Descripcion = "asd", Ejecuta = "asd"},
+                    new { Id = 2,Descripcion = "asd2", Ejecuta = "asd2" }
+                    );
+            });
         }
     }
 }
