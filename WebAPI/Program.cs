@@ -29,5 +29,6 @@ app.MapMateriaEndpoints();
 app.MapCursoEndpoints();
 app.MapUsuarioEndpoints();
 app.MapPlanEndpoints();
+app.MapModuloEndpoints();
 
 app.Run();

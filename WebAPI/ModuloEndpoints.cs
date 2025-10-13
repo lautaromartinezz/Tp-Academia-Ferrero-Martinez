@@ -74,7 +74,8 @@ namespace WebAPI
                 }
             }).WithName("updateModulo")
             .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status204NoContent);
 
             app.MapPost("/modulos", (ModuloDTO dto) =>
             {

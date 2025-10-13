@@ -57,5 +57,10 @@ namespace WindowsForms
             this.Dispose();
         }
 
+        private void ModulosButton_Click(object sender, EventArgs e)
+        {
+            ModuloLista m = new ModuloLista();
+            m.Show();
+        }
     }
 }

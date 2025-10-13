@@ -34,7 +34,7 @@ namespace WindowsForms
             try
             {
                 MateriaDetalle materiaDetalle = new MateriaDetalle();
-               
+                Console.WriteLine(SelectedItem().Id);
                 int id = this.SelectedItem().Id;
 
                 MateriaDTO materia = await MateriaAPIClient.GetAsync(id);
