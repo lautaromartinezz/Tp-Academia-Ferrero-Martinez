@@ -1,4 +1,5 @@
-﻿using DTOs;
+﻿using Domain.Model;
+using DTOs;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace API.Clients
 {
-    internal class UsuarioAPIClient
+    public class UsuarioAPIClient
     {
 
         private static HttpClient client = new HttpClient();

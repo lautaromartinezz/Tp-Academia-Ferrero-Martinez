@@ -20,14 +20,14 @@ namespace Domain.Model
         public string Email { get; private set; }
 
 
-        public Usuario(int id, string nombre, string nombreUsuario,string apellido, string email, bool habil)
+        public Usuario(int id, string nombre, string nombreUsuario,string apellido, string email, bool habilitado)
         {
             SetId(id);
             SetNombre(nombre);
             SetNombreUsuario(nombreUsuario);
             SetApellido(apellido);
             SetEmail(email);
-            SetHabilitado(habil);
+            SetHabilitado(habilitado);
         }
 
         public void SetHabilitado(bool habil)

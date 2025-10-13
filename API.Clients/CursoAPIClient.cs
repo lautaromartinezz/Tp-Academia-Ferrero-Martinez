@@ -1,17 +1,17 @@
-﻿using DTOs;
-using System;
-using System.Net;
-using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
+using DTOs;
 
 namespace API.Clients
 {
-    public class MateriaAPIClient
+    public class CursoAPIClient
     {
         private static HttpClient client = new HttpClient();
-        static MateriaAPIClient()
+        static CursoAPIClient()
         {
             client.BaseAddress = new Uri("http://localhost:5183/");
             client.DefaultRequestHeaders.Accept.Clear();
@@ -20,73 +20,73 @@ namespace API.Clients
         }
 
 
-        public static async Task<MateriaDTO> GetAsync(int id)
+        public static async Task<CursoDTO> GetAsync(int id)
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("materias/" + id);
+                HttpResponseMessage response = await client.GetAsync("cursos/" + id);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return await response.Content.ReadAsAsync<MateriaDTO>();
+                    return await response.Content.ReadAsAsync<CursoDTO>();
                 }
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener la materia con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al obtener la curso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener la materia con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al obtener la curso con Id {id}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener la materia con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Timeout al obtener la curso con Id {id}: {ex.Message}", ex);
             }
         }
 
-        public static async Task<IEnumerable<MateriaDTO>> GetAllAsync()
+        public static async Task<IEnumerable<CursoDTO>> GetAllAsync()
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("materias");
+                HttpResponseMessage response = await client.GetAsync("cursos");
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return await response.Content.ReadAsAsync<IEnumerable<MateriaDTO>>();
+                    return await response.Content.ReadAsAsync<IEnumerable<CursoDTO>>();
                 }
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener lista de materias. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al obtener lista de cursos. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener lista de materias: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al obtener lista de cursos: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener lista de materias: {ex.Message}", ex);
+                throw new Exception($"Timeout al obtener lista de cursos: {ex.Message}", ex);
             }
         }
 
-        public async static Task AddAsync(MateriaDTO materia)
+        public async static Task AddAsync(CursoDTO curso)
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("materias", materia);
+                HttpResponseMessage response = await client.PostAsJsonAsync("cursos", curso);
 
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error: {errorContent}");
+                    throw new Exception($"Error. {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error: {ex.Message}", ex);
+                throw new Exception($"Error. {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
@@ -98,43 +98,43 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync("materias/" + id);
+                HttpResponseMessage response = await client.DeleteAsync("cursos/" + id);
 
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error: {errorContent}");
+                    throw new Exception($"Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error: {ex.Message}", ex);
+                throw new Exception($"Error {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"{ex.Message}", ex);
+                throw new Exception($"Timeout al eliminar la curso con Id {id}: {ex.Message}", ex);
             }
         }
 
-        public static async Task UpdateAsync(MateriaDTO materia)
+        public static async Task UpdateAsync(CursoDTO curso)
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync("materias", materia);
+                HttpResponseMessage response = await client.PutAsJsonAsync("cursos", curso);
 
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error: {errorContent}");
+                    throw new Exception($"{errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error: {ex.Message}", ex);
+                throw new Exception($"Error. {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"{ex.Message}", ex);
+                throw new Exception($"Timeout al actualizar la curso con Id {curso.Id}: {ex.Message}", ex);
             }
         }
     }

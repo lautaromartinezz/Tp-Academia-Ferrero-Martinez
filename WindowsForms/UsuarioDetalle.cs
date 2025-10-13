@@ -58,23 +58,20 @@ namespace WindowsForms
             {
                 try
                 {
+                    this.Usuario.Id = int.Parse(idTextBox.Text);
                     this.Usuario.Nombre = nombreTextBox.Text;
                     this.Usuario.NombreUsuario = usuarioTextBox.Text;
                     this.Usuario.Apellido = apellidoTextBox.Text;
                     this.Usuario.Email = emailTextBox.Text;
                     this.Usuario.Habilitado = habilitadoCheckBox.Checked;
 
-                    //El Detalle se esta llevando la responsabilidad de llamar al servicio
-                    //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
-                    //en la Lista o tal vez en un Presenter o Controler
-
                     if (this.Mode == FormMode.Update)
                     {
-                        await UsuarioAPIClient.UpdateAsync(this.Usuario);
+                        await API.Clients.UsuarioAPIClient.UpdateAsync(this.Usuario);
                     }
                     else
                     {
-                        await UsuarioAPIClient.AddAsync(this.Usuario);
+                        await API.Clients.UsuarioAPIClient.AddAsync(this.Usuario);
                     }
 
                     this.Close();

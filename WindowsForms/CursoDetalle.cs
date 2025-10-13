@@ -1,30 +1,29 @@
-﻿using DTOs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using API.Clients;
+using DTOs;
 
 namespace WindowsForms
 {
-    public partial class MateriaDetalle : Form
+    public partial class CursoDetalle : Form
     {
-        private MateriaDTO materia;
+        private CursoDTO curso;
         private FormMode mode;
 
-        public MateriaDTO Materia
+        public CursoDTO Curso
         {
-            get { return materia; }
+            get { return curso; }
             set
             {
-                materia = value;
-                this.SetMateria();
+                curso = value;
+                this.SetCurso();
             }
         }
 
@@ -40,7 +39,7 @@ namespace WindowsForms
             }
         }
 
-        public MateriaDetalle()
+        public CursoDetalle()
         {
             InitializeComponent();
 
@@ -49,14 +48,14 @@ namespace WindowsForms
 
         private async void aceptarButton_Click(object sender, EventArgs e)
         {
-            if (this.ValidateMateria())
+            if (this.ValidateCurso())
             {
                 try
                 {
-                    this.Materia.Descripcion = descripcionTextBox.Text;
-                    this.Materia.HsSemanales = int.Parse(hsSemanalesTextBox.Text);
-                    this.Materia.HsTotales = int.Parse(hsTotalesTextBox.Text);
-                    this.Materia.IdPlan = int.Parse(idPlanTextBox.Text);
+                    this.Curso.AnioCalendario = anioCalendarioTimePicker.Value;
+                    this.Curso.Cupo = int.Parse(cupoTextBox.Text);
+                    this.Curso.IdComision = int.Parse(idComisionTextBox.Text);
+                    this.Curso.IdMateria = int.Parse(idMateriaTextBox.Text);
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
@@ -64,11 +63,11 @@ namespace WindowsForms
 
                     if (this.Mode == FormMode.Update)
                     {
-                        await MateriaAPIClient.UpdateAsync(this.Materia);
+                        await CursoAPIClient.UpdateAsync(this.Curso);
                     }
                     else
                     {
-                        await MateriaAPIClient.AddAsync(this.Materia);
+                        await CursoAPIClient.AddAsync(this.Curso);
                     }
 
                     this.Close();
@@ -85,13 +84,13 @@ namespace WindowsForms
             this.Close();
         }
 
-        private void SetMateria()
+        private void SetCurso()
         {
-            this.idTextBox.Text = this.Materia.Id.ToString();
-            this.descripcionTextBox.Text = this.Materia.Descripcion;
-            this.hsSemanalesTextBox.Text = this.Materia.HsSemanales.ToString();
-            this.hsTotalesTextBox.Text = this.Materia.HsTotales.ToString();
-            this.idPlanTextBox.Text = this.Materia.IdPlan.ToString();
+            this.idTextBox.Text = this.Curso.Id.ToString();
+            this.cupoTextBox.Text = this.Curso.Cupo.ToString();
+            this.idComisionTextBox.Text = this.Curso.IdComision.ToString();
+            this.idMateriaTextBox.Text = this.Curso.IdMateria.ToString();
+            this.anioCalendarioTimePicker.Value = this.Curso.AnioCalendario;
         }
 
         private void SetFormMode(FormMode value)
@@ -113,37 +112,31 @@ namespace WindowsForms
             }
         }
 
-        private bool ValidateMateria()
+        private bool ValidateCurso()
         {
             bool isValid = true;
 
-            errorProvider.SetError(descripcionTextBox, string.Empty);
-            errorProvider.SetError(hsSemanalesTextBox, string.Empty);
-            errorProvider.SetError(hsTotalesTextBox, string.Empty);
-            errorProvider.SetError(idPlanTextBox, string.Empty);
+            errorProvider.SetError(cupoTextBox, string.Empty);
+            errorProvider.SetError(idComisionTextBox, string.Empty);
+            errorProvider.SetError(idMateriaTextBox, string.Empty);
 
 
 
-            if (this.descripcionTextBox.Text == string.Empty)
+            if (this.cupoTextBox.Text == string.Empty)
             {
                 isValid = false;
-                errorProvider.SetError(descripcionTextBox, "La descripcion es Requerido");
+                errorProvider.SetError(cupoTextBox, "La descripcion es Requerido");
             }
 
-            if (this.hsSemanalesTextBox.Text == string.Empty)
+            if (this.idComisionTextBox.Text == string.Empty)
             {
                 isValid = false;
-                errorProvider.SetError(hsSemanalesTextBox, "Las horas semanales es Requerido");
+                errorProvider.SetError(idComisionTextBox, "Las horas semanales es Requerido");
             }
-            if (this.hsTotalesTextBox.Text == string.Empty)
+            if (this.idMateriaTextBox.Text == string.Empty)
             {
                 isValid = false;
-                errorProvider.SetError(hsSemanalesTextBox, "Las horas totales es Requerido");
-            }
-            if (this.idPlanTextBox.Text == string.Empty)
-            {
-                isValid = false;
-                errorProvider.SetError(idPlanTextBox, "El IDPlan totales es Requerido");
+                errorProvider.SetError(idMateriaTextBox, "Las horas totales es Requerido");
             }
 
             return isValid;

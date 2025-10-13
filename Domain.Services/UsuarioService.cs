@@ -11,112 +11,71 @@ namespace Domain.Services
 {
     public class UsuarioService
     {
-        public UsuarioDTO Add(UsuarioDTO dto)
+        public IEnumerable<UsuarioDTO> getAll()
         {
-            // Validar que el email no esté duplicado
-            if (UsuarioInMemory.Usuarios.Any(c => c.Email.Equals(dto.Email, StringComparison.OrdinalIgnoreCase)))
+            var usuarioRepository = new UsuarioRepository();
+            var usuarios = usuarioRepository.GetAll();
+
+            return usuarios.Select(usuario => new UsuarioDTO()
             {
-                throw new ArgumentException($"Ya existe un Usuario con el Email '{dto.Email}'.");
-            }
+                Id = usuario.Id,
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                NombreUsuario = usuario.NombreUsuario,
+                Email = usuario.Email,
+                Habilitado = usuario.Habilitado,
+            }).ToList();
 
-            var id = GetNextId();
-
-            Usuario usuario = new Usuario(id, dto.Nombre, dto.NombreUsuario, dto.Apellido, dto.Email, dto.Habilitado);
-
-            UsuarioInMemory.Usuarios.Add(usuario);
-
-            dto.Id = usuario.Id;
-
-            return dto;
         }
 
-        public bool Delete(int id)
+        public UsuarioDTO? getOne(int id)
         {
-            Usuario? usuarioToDelete = UsuarioInMemory.Usuarios.Find(x => x.Id == id);
+            var usuarioRepository = new UsuarioRepository();
 
-            if (usuarioToDelete != null)
-            {
-                UsuarioInMemory.Usuarios.Remove(usuarioToDelete);
+            Usuario? usuario = usuarioRepository.Get(id);
 
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public UsuarioDTO GetOne(int id)
-        {
-            Usuario? usuario = UsuarioInMemory.Usuarios.Find(x => x.Id == id);
-
-            if (usuario == null)
-                return null;
+            if (usuario == null) return null;
 
             return new UsuarioDTO
             {
                 Id = usuario.Id,
                 Nombre = usuario.Nombre,
-                NombreUsuario = usuario.NombreUsuario,
                 Apellido = usuario.Apellido,
+                NombreUsuario = usuario.NombreUsuario,
                 Email = usuario.Email,
                 Habilitado = usuario.Habilitado,
             };
+
         }
 
-        public IEnumerable<UsuarioDTO> GetAll()
+        public UsuarioDTO? add(UsuarioDTO dto)
         {
-            return UsuarioInMemory.Usuarios.Select(usuario => new UsuarioDTO
-            {
-                Id = usuario.Id,
-                Nombre = usuario.Nombre,
-                NombreUsuario = usuario.NombreUsuario,
-                Apellido = usuario.Apellido,
-                Email = usuario.Email,
-                Habilitado = usuario.Habilitado,
-            }).ToList();
+            var usuarioRepository = new UsuarioRepository();
+
+            Usuario usuario = new Usuario(dto.Id, dto.Nombre, dto.NombreUsuario, dto.Apellido, dto.Email, dto.Habilitado);
+
+            usuarioRepository.Add(usuario);
+  
+            dto.Id = usuario.Id;
+
+            return dto;
+            
+
+        }
+        public bool delete(int id)
+        {
+            var usuarioRepository = new UsuarioRepository();
+            return usuarioRepository.Delete(id);
         }
 
-        public bool Update(UsuarioDTO dto)
+        public bool update(UsuarioDTO dto)
         {
-            Usuario? usuarioToUpdate = UsuarioInMemory.Usuarios.Find(x => x.Id == dto.Id);
+            var usuarioRepository = new UsuarioRepository();
 
-            if (usuarioToUpdate != null)
-            {
-                // Validar que el email no esté duplicado (excluyendo el Usuario actual)
-                if (UsuarioInMemory.Usuarios.Any(c => c.Id != dto.Id && c.Email.Equals(dto.Email, StringComparison.OrdinalIgnoreCase)))
-                {
-                    throw new ArgumentException($"Ya existe otro Usuario con el Email '{dto.Email}'.");
-                }
+            Usuario usuario = new Usuario(dto.Id, dto.Nombre, dto.NombreUsuario, dto.Apellido, dto.Email, dto.Habilitado);
 
-                usuarioToUpdate.SetNombre(dto.Nombre);
-                usuarioToUpdate.SetNombreUsuario(dto.NombreUsuario);
-                usuarioToUpdate.SetApellido(dto.Apellido);
-                usuarioToUpdate.SetEmail(dto.Email);
-                usuarioToUpdate.SetHabilitado(dto.Habilitado);
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private static int GetNextId()
-        {
-            int nextId;
-
-            if (UsuarioInMemory.Usuarios.Count > 0)
-            {
-                nextId = UsuarioInMemory.Usuarios.Max(x => x.Id) + 1;
-            }
-            else
-            {
-                nextId = 1;
-            }
-
-            return nextId;
+            return usuarioRepository.Update(usuario);
+            
         }
     }
 }

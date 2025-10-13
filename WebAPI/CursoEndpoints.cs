@@ -3,15 +3,15 @@ using DTOs;
 
 namespace WebAPI
 {
-    public static class MateriaEndpoints
+    public static class CursoEndpoints
     {
-        public static void MapMateriaEndpoints(this WebApplication app)
+        public static void MapCursoEndpoints(this WebApplication app)
         {
-            app.MapGet("/materias/{id}", (int id) =>
+            app.MapGet("/cursos/{id}", (int id) =>
             {
-                MateriaService materiaService = new MateriaService();
+                CursoService cursoService = new CursoService();
 
-                MateriaDTO? dto = materiaService.getOne(id);
+                CursoDTO? dto = cursoService.getOne(id);
 
                 if (dto == null)
                 {
@@ -19,62 +19,62 @@ namespace WebAPI
                 }
                 return Results.Ok(dto);
             })
-            .WithName("GetMateria")
-            .Produces<DTOs.MateriaDTO>(StatusCodes.Status200OK)
+            .WithName("GetCurso")
+            .Produces<DTOs.CursoDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
-            app.MapGet("/materias", () =>
+            app.MapGet("/cursos", () =>
             {
-                MateriaService materiaService = new MateriaService();
+                CursoService cursoService = new CursoService();
 
 
-                var dtos = materiaService.getAll();
+                var dtos = cursoService.getAll();
 
                 return Results.Ok(dtos);
 
             })
-            .WithName("GetAllMaterias")
-            .Produces<List<DTOs.MateriaDTO>>(StatusCodes.Status200OK)
+            .WithName("GetAllCursos")
+            .Produces<List<DTOs.CursoDTO>>(StatusCodes.Status200OK)
             .WithOpenApi();
 
-            app.MapPost("/materias", (MateriaDTO dto) =>
+            app.MapPost("/cursos", (CursoDTO dto) =>
             {
                 try
                 {
-                    MateriaService materiaService = new MateriaService();
+                    CursoService cursoService = new CursoService();
 
-                    MateriaDTO materiaDto = materiaService.add(dto);
+                    CursoDTO? cursoDto = cursoService.add(dto);
 
-                    if (materiaDto == null)
+                    if(cursoDto == null)
                     {
-                        return Results.NotFound("El plan ingresado no existe");
+                        return Results.NotFound("La materia ingresada no existe");
                     }
 
-                    return Results.Created($"/materias/{materiaDto.Id}", materiaDto);
+                    return Results.Created($"/cursos/{cursoDto.Id}", cursoDto);
                 }
                 catch (ArgumentException ex)
                 {
                     return Results.BadRequest(new { error = ex.Message });
                 }
             })
-            .WithName("AddMateria")
-            .Produces<DTOs.MateriaDTO>(StatusCodes.Status201Created)
+            .WithName("AddCurso")
+            .Produces<DTOs.CursoDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
-            app.MapPut("/materias", (DTOs.MateriaDTO dto) =>
+            app.MapPut("/cursos", (DTOs.CursoDTO dto) =>
             {
                 try
                 {
-                    MateriaService materiaService = new MateriaService();
+                    CursoService cursoService = new CursoService();
 
-                    var found = materiaService.update(dto);
+                    var found = cursoService.update(dto);
 
                     if (!found)
                     {
-                        return Results.NotFound();
+                        return Results.NotFound("Error al actualizar el curso. Revise el id de la Materia o Comision");
                     }
 
                     return Results.NoContent();
@@ -84,16 +84,16 @@ namespace WebAPI
                     return Results.BadRequest(new { error = ex.Message });
                 }
             })
-            .WithName("UpdateMateria")
+            .WithName("UpdateCurso")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
             .WithOpenApi();
 
-            app.MapDelete("/materias/{id}", (int id) =>
+            app.MapDelete("/cursos/{id}", (int id) =>
             {
-                MateriaService materiaService = new MateriaService();
+                CursoService cursoService = new CursoService();
 
-                var deleted = materiaService.delete(id);
+                var deleted = cursoService.delete(id);
 
                 if (!deleted)
                 {
@@ -103,7 +103,7 @@ namespace WebAPI
                 return Results.NoContent();
 
             })
-            .WithName("DeleteMateria")
+            .WithName("DeleteCurso")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();

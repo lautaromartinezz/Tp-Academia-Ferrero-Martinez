@@ -15,8 +15,6 @@ namespace WindowsForms
     {
         public Inicio()
         {
-
-
             InitializeComponent();
         }
         private void usuarioButton_Click(object sender, EventArgs e)
@@ -29,6 +27,17 @@ namespace WindowsForms
         {
             MateriaLista materiaLista = new MateriaLista();
             materiaLista.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            CursoLista cursoLista = new CursoLista();
+            cursoLista.Show();
+        }
+        private void bttnCursos_Click(object sender, EventArgs e)
+        {
+            PlanLista planLista = new PlanLista();
+            planLista.Show();
         }
 
         private void Inicio_Load(object sender, EventArgs e)
@@ -46,6 +55,12 @@ namespace WindowsForms
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Dispose();
+        }
+
+        private void ModulosButton_Click(object sender, EventArgs e)
+        {
+            ModuloLista m = new ModuloLista();
+            m.Show();
         }
     }
 }
