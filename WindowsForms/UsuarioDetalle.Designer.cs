@@ -44,6 +44,8 @@
             apellidoTextBox = new TextBox();
             habilitadoLabel = new Label();
             habilitadoCheckBox = new CheckBox();
+            claveLabel = new Label();
+            claveTextBox = new TextBox();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -67,7 +69,7 @@
             // 
             // aceptarButton
             // 
-            aceptarButton.Location = new Point(239, 199);
+            aceptarButton.Location = new Point(261, 233);
             aceptarButton.Margin = new Padding(2, 1, 2, 1);
             aceptarButton.Name = "aceptarButton";
             aceptarButton.Size = new Size(81, 22);
@@ -82,7 +84,7 @@
             // 
             // cancelarButton
             // 
-            cancelarButton.Location = new Point(331, 199);
+            cancelarButton.Location = new Point(346, 233);
             cancelarButton.Margin = new Padding(2, 1, 2, 1);
             cancelarButton.Name = "cancelarButton";
             cancelarButton.Size = new Size(81, 22);
@@ -183,11 +185,30 @@
             habilitadoCheckBox.TabIndex = 50;
             habilitadoCheckBox.UseVisualStyleBackColor = true;
             // 
+            // claveLabel
+            // 
+            claveLabel.AutoSize = true;
+            claveLabel.Location = new Point(25, 205);
+            claveLabel.Name = "claveLabel";
+            claveLabel.Size = new Size(36, 15);
+            claveLabel.TabIndex = 71;
+            claveLabel.Text = "Clave";
+            // 
+            // claveTextBox
+            // 
+            claveTextBox.Location = new Point(131, 202);
+            claveTextBox.Margin = new Padding(2, 1, 2, 1);
+            claveTextBox.Name = "claveTextBox";
+            claveTextBox.Size = new Size(110, 23);
+            claveTextBox.TabIndex = 72;
+            // 
             // UsuarioDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(431, 236);
+            ClientSize = new Size(438, 265);
+            Controls.Add(claveTextBox);
+            Controls.Add(claveLabel);
             Controls.Add(habilitadoCheckBox);
             Controls.Add(habilitadoLabel);
             Controls.Add(apellidoLabel);
@@ -227,5 +248,7 @@
         private TextBox apellidoTextBox;
         private CheckBox habilitadoCheckBox;
         private Label habilitadoLabel;
+        private TextBox claveTextBox;
+        private Label claveLabel;
     }
 }

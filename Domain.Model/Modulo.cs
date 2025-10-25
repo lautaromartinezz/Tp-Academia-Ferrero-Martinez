@@ -22,6 +22,7 @@ namespace Domain.Model
 
         public string Descripcion { get; private set; }
         public string Ejecuta { get; private set; }
+        public ICollection<Usuario> Usuarios { get; set; }
 
         public void setDescripcion(string desc) { 
             if(desc.Length > 50)

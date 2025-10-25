@@ -19,8 +19,11 @@ namespace Domain.Model
 
         public string Email { get; private set; }
 
+        public string Clave { get; set; }
 
-        public Usuario(int id, string nombre, string nombreUsuario,string apellido, string email, bool habilitado)
+        public ICollection<Modulo> Modulos { get; set; }
+
+        public Usuario(int id, string nombre, string nombreUsuario,string apellido, string email, bool habilitado, string clave)
         {
             SetId(id);
             SetNombre(nombre);
@@ -28,6 +31,7 @@ namespace Domain.Model
             SetApellido(apellido);
             SetEmail(email);
             SetHabilitado(habilitado);
+            Clave = clave;
         }
 
         public void SetHabilitado(bool habil)

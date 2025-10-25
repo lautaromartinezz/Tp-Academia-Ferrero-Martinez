@@ -81,6 +81,7 @@ namespace Data
                 usuarioToUpdate.SetEmail(usuario.Email);
                 usuarioToUpdate.SetNombreUsuario(usuario.NombreUsuario);
                 usuarioToUpdate.SetHabilitado(usuario.Habilitado); 
+                usuarioToUpdate.Clave = usuario.Clave;
 
                 try
                 {

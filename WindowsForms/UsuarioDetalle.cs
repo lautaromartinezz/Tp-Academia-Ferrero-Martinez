@@ -64,6 +64,7 @@ namespace WindowsForms
                     this.Usuario.Apellido = apellidoTextBox.Text;
                     this.Usuario.Email = emailTextBox.Text;
                     this.Usuario.Habilitado = habilitadoCheckBox.Checked;
+                    this.Usuario.Clave = claveTextBox.Text;
 
                     if (this.Mode == FormMode.Update)
                     {
@@ -96,6 +97,7 @@ namespace WindowsForms
             this.apellidoTextBox.Text = this.Usuario.Apellido;
             this.emailTextBox.Text = this.Usuario.Email;
             this.habilitadoCheckBox.Checked = this.Usuario.Habilitado;
+            this.claveTextBox.Text = this.Usuario.Clave;
         }
 
         private void SetFormMode(FormMode value)
@@ -125,6 +127,7 @@ namespace WindowsForms
             errorProvider.SetError(usuarioTextBox, string.Empty);
             errorProvider.SetError(apellidoTextBox, string.Empty);
             errorProvider.SetError(emailTextBox, string.Empty);
+            errorProvider.SetError(claveTextBox, string.Empty);
 
             if (this.nombreTextBox.Text == string.Empty)
             {
@@ -147,6 +150,11 @@ namespace WindowsForms
             {
                 isValid = false;
                 errorProvider.SetError(emailTextBox, "El Email es Requerido");
+            }
+            if (this.claveTextBox.Text == string.Empty)
+            {
+                isValid = false;
+                errorProvider.SetError(claveTextBox, "La contrasena es requerida");
             }
             else if (!EsEmailValido(this.emailTextBox.Text))
             {

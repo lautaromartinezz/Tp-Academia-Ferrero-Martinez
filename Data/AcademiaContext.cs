@@ -20,7 +20,7 @@ namespace Data
         public DbSet<Especialidad> Especialidades { get; set; }
         internal AcademiaContext()
         {
-            //this.Database.EnsureDeleted(); // SOLO EN DEV 
+            this.Database.EnsureDeleted(); // SOLO EN DEV 
             this.Database.EnsureCreated();
         }
 
@@ -115,6 +115,8 @@ namespace Data
 
                 entity.Property(e => e.Apellido).IsRequired().HasMaxLength(50);
 
+                entity.Property(e => e.Clave).IsRequired().HasMaxLength(64);
+
                 entity.HasIndex(e => e.Email).IsUnique();
 
                 entity.HasIndex(e => e.NombreUsuario).IsUnique();
@@ -122,9 +124,12 @@ namespace Data
                 entity.Property(e => e.Habilitado).IsRequired().HasMaxLength(15);
 
                 entity.HasData(
-                    new { Id = 1, Nombre = "Santiago", Apellido = "Ferrero", Email = "santifnob@gmail.com", NombreUsuario = "vamoniubels", Habilitado = true },
-                    new { Id = 2, Nombre = "Lautaro", Apellido = "Martinez", Email = "lautaromartinez@gmail.com", NombreUsuario = "vamoslalepra", Habilitado = true }
+                    new { Id = 1, Nombre = "Santiago", Apellido = "Ferrero", Email = "santifnob@gmail.com", NombreUsuario = "vamoniubels", Habilitado = true, Clave = "asd" },
+                    new { Id = 2, Nombre = "Lautaro", Apellido = "Martinez", Email = "lautaromartinez@gmail.com", NombreUsuario = "vamoslalepra", Habilitado = true, Clave = "asd" }
                 );
+
+                entity.HasMany(u => u.Modulos).WithMany(m => m.Usuarios);
+
             });
 
             modelBuilder.Entity<Plan>(entity =>

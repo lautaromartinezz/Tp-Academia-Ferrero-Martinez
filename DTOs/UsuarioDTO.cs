@@ -18,6 +18,7 @@ namespace DTOs
         public string Email { get; set; }
 
         public bool Habilitado { get; set; }
+        public string Clave { get; set; }
 
     }
 }
