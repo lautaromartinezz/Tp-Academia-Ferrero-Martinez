@@ -1,0 +1,189 @@
+﻿@using DTOs
+@using API.Clients
+@using System.Text.RegularExpressions
+@inject IJSRuntime JSRuntime
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @if (mode == FormMode.Add)
+                        {
+                            <text>Agregar</text>
+                        }
+                        else
+                        {
+                            <text>Editar</text>
+                        }
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentPlan" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+
+                        @if (mode == FormMode.Update)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Id</label>
+                                <input type="text" class="form-control" value="@currentPlan.Id" readonly />
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Descripcion  *</label>
+                            <InputText @bind-Value="currentPlan.Descripcion" class="form-control" />
+                            @if (validationErrors.ContainsKey("Descripcion"))
+                            {
+                                <div class="text-danger small">@validationErrors["Descripcion"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Especialidad *</label>
+                            <InputNumber @bind-Value="currentPlan.IdEspecialidad" class="form-control" />
+                            @if (validationErrors.ContainsKey("Especialidad"))
+                            {
+                                <div class="text-danger small">@validationErrors["Especialidad"]</div>
+                            }
+                        </div>
+
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="Close">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" disabled="@saving">
+                                @if (saving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(mode == FormMode.Add ? "Agregar" : "Actualizar")
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnUsuarioChanged { get; set; }
+
+    private bool showModal = false;
+    private FormMode mode = FormMode.Add;
+    private PlanDTO currentPlan = new PlanDTO();
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+    private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+
+    public enum FormMode
+    {
+        Add,
+        Update
+    }
+
+    public async Task ShowAddModal()
+    {
+        mode = FormMode.Add;
+        currentPlan = new PlanDTO();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+
+    }
+
+    public async Task ShowEditModal(PlanDTO plan)
+    {
+        mode = FormMode.Update;
+        currentPlan = new PlanDTO
+        {
+            Id = plan.Id,
+            Descripcion = plan.Descripcion,
+            IdEspecialidad = plan.IdEspecialidad
+        };
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!ValidatePlan())
+            return;
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (mode == FormMode.Add)
+            {
+                await PlanAPIClient.AddAsync(currentPlan);
+            }
+            else
+            {
+                await PlanAPIClient.UpdateAsync(currentPlan);
+            }
+
+            await OnUsuarioChanged.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private bool ValidatePlan()
+    {
+        ClearValidationErrors();
+        bool isValid = true;
+
+        if (string.IsNullOrWhiteSpace(currentPlan.Descripcion))
+        {
+            validationErrors["Descripcion"] = "La descripcion es requerida";
+            isValid = false;
+        }
+
+        if (currentPlan.IdEspecialidad <= 0)
+        {
+            validationErrors["Especialidad"] = "Debe seleccionar una especialidad";
+            isValid = false;
+        }
+
+
+        StateHasChanged();
+        return isValid;
+    }
+
+    private void ClearValidationErrors()
+    {
+        validationErrors.Clear();
+        errorMessage = string.Empty;
+    }
+
+    private void Close()
+    {
+        showModal = false;
+        ClearValidationErrors();
+        StateHasChanged();
+    }
+
+}

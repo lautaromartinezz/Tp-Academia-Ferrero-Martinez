@@ -1,0 +1,241 @@
+﻿@using DTOs
+@using API.Clients
+@using System.Text.RegularExpressions
+@inject IJSRuntime JSRuntime
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @if (mode == FormMode.Add)
+                        {
+                            <text>Agregar</text>
+                        }
+                        else
+                        {
+                            <text>Editar</text>
+                        }
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentCurso" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+
+                        @if (mode == FormMode.Update)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Id</label>
+                                <input type="text" class="form-control" value="@currentCurso.Id" readonly />
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Año  *</label>
+                            <InputDate @bind-Value="currentCurso.AnioCalendario" class="form-control" />
+                            @if (validationErrors.ContainsKey("Año"))
+                            {
+                                <div class="text-danger small">@validationErrors["Año"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Cupo *</label>
+                            <InputNumber @bind-Value="currentCurso.Cupo" class="form-control" />
+                            @if (validationErrors.ContainsKey("Cupo"))
+                            {
+                                <div class="text-danger small">@validationErrors["Cupo"]</div>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Comision *</label>
+                            <InputNumber @bind-Value="currentCurso.IdComision" class="form-control" />
+                            @if (validationErrors.ContainsKey("Comision"))
+                            {
+                                <div class="text-danger small">@validationErrors["Comision"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Materia *</label>
+                            <InputSelect @bind-Value="currentCurso.IdMateria" class="form-select">
+                                <option value="0">Seleccionar Materia</option>
+                                @if (materias != null)
+                                {
+                                    @foreach (var materia in materias)
+                                    {
+                                        <option value="@materia.Id">@materia.Descripcion</option>
+                                    }
+                                }
+                            </InputSelect>
+                            @if (validationErrors.ContainsKey("Materia"))
+                            {
+                                <div class="text-danger small">@validationErrors["Materia"]</div>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="Close">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" disabled="@saving">
+                                @if (saving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(mode == FormMode.Add ? "Agregar" : "Actualizar")
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnUsuarioChanged { get; set; }
+
+    private bool showModal = false;
+    private FormMode mode = FormMode.Add;
+    private CursoDTO currentCurso = new CursoDTO();
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+    private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+    private List<MateriaDTO>? materias;
+    
+
+    public enum FormMode
+    {
+        Add,
+        Update
+    }
+
+    public async Task ShowAddModal()
+    {
+        mode = FormMode.Add;
+        currentCurso = new CursoDTO();
+        await LoadMaterias();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+
+    }
+
+    public async Task ShowEditModal(CursoDTO materia)
+    {
+        mode = FormMode.Update;
+        currentCurso = new CursoDTO
+        {
+            Id = materia.Id,
+            AnioCalendario = materia.AnioCalendario,
+            Cupo = materia.Cupo,
+            IdMateria = materia.IdMateria,
+            IdComision= materia.IdComision,
+            DescripcionMateria = materia.DescripcionMateria
+        };
+        await LoadMaterias();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!ValidateCurso())
+            return;
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (mode == FormMode.Add)
+            {
+                await CursoAPIClient.AddAsync(currentCurso);
+            }
+            else
+            {
+                await CursoAPIClient.UpdateAsync(currentCurso);
+            }
+
+            await OnUsuarioChanged.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private bool ValidateCurso()
+    {
+        ClearValidationErrors();
+        bool isValid = true;
+        if (currentCurso.AnioCalendario == DateTime.MinValue)
+        {
+            validationErrors["Año"] = "Debe asignar un año";
+            isValid = false;
+        }
+        if (currentCurso.Cupo <= 0)
+        {
+            validationErrors["Cupo"] = "Debe asignar el cupo semanales";
+            isValid = false;
+        }
+        if (currentCurso.IdMateria <= 0)
+        {
+            validationErrors["Materia"] = "Debe seleccionar la materia";
+            isValid = false;
+        }
+
+        if (currentCurso.IdComision <= 0)
+        {
+            validationErrors["Comision"] = "Debe seleccionar la comision";
+            isValid = false;
+        }
+
+        StateHasChanged();
+        return isValid;
+    }
+
+    private void ClearValidationErrors()
+    {
+        validationErrors.Clear();
+        errorMessage = string.Empty;
+    }
+
+    private void Close()
+    {
+        showModal = false;
+        ClearValidationErrors();
+        StateHasChanged();
+    }
+
+    private async Task LoadMaterias()
+    {
+        try
+        {
+            materias = (await MateriaAPIClient.GetAllAsync())?.ToList();
+
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar materias: {ex.Message}";
+        }
+    }
+}
