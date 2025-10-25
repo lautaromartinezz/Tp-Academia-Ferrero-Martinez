@@ -19,9 +19,11 @@ namespace Data
         public DbSet<Modulo> Modulos { get; set; }
         public DbSet<Especialidad> Especialidades { get; set; }
         public DbSet<Comision> Comisiones { get; set; }
+        public DbSet<Persona> Personas { get; set; }
         internal AcademiaContext()
         {
-         //   this.Database.EnsureDeleted(); // SOLO EN DEV 
+            //this.Database.EnsureDeleted(); // SOLO EN DEV 
+
             this.Database.EnsureCreated();
         }
 
@@ -188,6 +190,54 @@ namespace Data
                     new { Id = 1, Descripcion = "Com1", AnioEspecialidad = 2025, IdPlan = 1 },
                     new { Id = 2, Descripcion = "Com2", AnioEspecialidad = 2024, IdPlan = 2 }
                     );
+            });
+
+            modelBuilder.Entity<Persona>(entity =>
+            {
+                entity.HasKey(p => p.Id);
+
+                entity.Property(p => p.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(p => p.Nombre)
+                    .HasMaxLength(50)
+                    .IsRequired();
+
+                entity.Property(p => p.Apellido)
+                    .HasMaxLength(50)
+                    .IsRequired();
+
+                entity.Property(p => p.Direccion)
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                entity.Property(p => p.Email)
+                    .HasMaxLength(50)
+                    .IsRequired();
+
+                entity.Property(p => p.Telefono)
+                    .HasMaxLength(20)
+                    .IsRequired();
+
+                entity.Property(p => p.Legajo)
+                    .IsRequired();
+
+                entity.Property(p => p.TipoPersona)
+                    .HasMaxLength(20)
+                    .IsRequired();
+
+                entity.Property(p => p.FechaNac)
+                    .IsRequired();
+
+                entity.HasOne(p => p.Plan)
+                    .WithMany(plan => plan.Personas)
+                    .HasForeignKey(p => p.IdPlan)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasData(
+                    new { Id = 1, Nombre = "Juan", Apellido = "Pérez", Direccion = "Calle 123", Email = "juan@mail.com", Telefono = "111-222", Legajo = 1001, TipoPersona = "Alumno", FechaNac = new DateTime(2000, 1, 10), IdPlan = 1 },
+                    new { Id = 2, Nombre = "Ana", Apellido = "García", Direccion = "Av. 456", Email = "ana@mail.com", Telefono = "333-444", Legajo = 1002, TipoPersona = "Docente", FechaNac = new DateTime(1990, 5, 15), IdPlan = 2 }
+                );
             });
         }
 
