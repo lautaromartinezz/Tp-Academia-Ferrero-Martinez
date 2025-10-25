@@ -18,6 +18,8 @@ namespace DTOs
 
         public string DescripcionMateria { get; set; }
 
+        public string DescripcionComision { get; set; }
+
         //public MateriaDTO? Materia { get; set; }
     }
 }

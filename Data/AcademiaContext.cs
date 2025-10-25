@@ -92,7 +92,7 @@ namespace Data
 
                 entity.Property(e => e.AnioCalendario).IsRequired();
 
-                entity.Property(e => e.IdComision).IsRequired();
+                entity.HasOne(e=>e.Comision).WithMany(e=>e.Cursos).HasForeignKey(e=>e.IdComision);
 
                 entity.HasOne(c => c.Materia)
                     .WithMany(m => m.Cursos)
@@ -150,7 +150,7 @@ namespace Data
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.IdEspecialidad).IsRequired();
+                entity.HasOne(p=>p.Especialidad).WithMany(e=>e.Planes).HasForeignKey(p => p.IdEspecialidad);
 
                 entity.HasData(
                     new { Id = 1, Descripcion = "ISI 2023", IdEspecialidad = 1},
@@ -175,6 +175,7 @@ namespace Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.DescEspecialidad).HasMaxLength(50).IsRequired();
+                entity.HasMany(e => e.Planes).WithOne(e => e.Especialidad).HasForeignKey(e => e.IdEspecialidad);
                 entity.HasData(
                     new { Id = 1, DescEspecialidad = "Informatica" },
                     new { Id = 2, DescEspecialidad = "Quimica" }

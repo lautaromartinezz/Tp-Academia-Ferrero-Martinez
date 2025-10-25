@@ -20,7 +20,8 @@ namespace Domain.Services
             {
                 Id = plan.Id,
                 Descripcion = plan.Descripcion,
-                IdEspecialidad = plan.IdEspecialidad
+                IdEspecialidad = plan.IdEspecialidad,
+                DescripcionEspecialidad = plan.Especialidad.DescEspecialidad,
             }).ToList();
 
         }
@@ -37,22 +38,25 @@ namespace Domain.Services
             {
                 Id = id,
                 Descripcion = plan.Descripcion,
-                IdEspecialidad = plan.IdEspecialidad
+                IdEspecialidad = plan.IdEspecialidad,
+                DescripcionEspecialidad = plan.Especialidad.DescEspecialidad,
             };
 
         }
 
         public PlanDTO add(PlanDTO dto)
         {
-            var planRepository = new PlanRepository();
-
-            Plan plan = new Plan(dto.Id,dto.Descripcion, dto.IdEspecialidad);
-
-            planRepository.Add(plan);
-
-            dto.Id = plan.Id;
-
-            return dto;
+            var especialidadRepository = new EspecialidadRepository();
+            Especialidad? esp = especialidadRepository.Get(dto.IdEspecialidad);
+            if (esp == null) return null;
+            else
+            {
+                var planRepository = new PlanRepository();
+                Plan plan = new Plan(dto.Id,dto.Descripcion, dto.IdEspecialidad);
+                planRepository.Add(plan);
+                dto.Id = plan.Id;
+                return dto;
+            }
         }
         public bool delete(int id)
         {
@@ -62,10 +66,15 @@ namespace Domain.Services
 
         public bool update(PlanDTO dto)
         {
-            var planRepository = new PlanRepository();
-
-            Plan plan = new Plan(dto.Id, dto.Descripcion, dto.IdEspecialidad);
-            return planRepository.Update(plan);
+            var especialidadRepository = new EspecialidadRepository();
+            Especialidad? esp = especialidadRepository.Get(dto.IdEspecialidad);
+            if (esp == null) return false;
+            else
+            {
+                var planRepository = new PlanRepository();
+                Plan plan = new Plan(dto.Id, dto.Descripcion, dto.IdEspecialidad);
+                return planRepository.Update(plan);
+            }
         }
     }
 }

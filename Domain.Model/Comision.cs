@@ -11,7 +11,9 @@ namespace Domain.Model
         public string Descripcion { get; private set; }
         public int AnioEspecialidad { get; private set; }
         public int IdPlan { get; private set; }
+        public int IdCurso { get; private set; }
         public Plan Plan { get; private set; }
+        public ICollection<Curso> Cursos { get; private set; }
 
         public Comision() { }
         public Comision(string desc, int anio, int idPlan) {
@@ -25,7 +27,7 @@ namespace Domain.Model
             Id = id;
             Descripcion = desc;
             setAnioEspecialidad(anio);
-            IdPlan = idPlan;
+            setIdPlan(idPlan);
         }
 
         public void setAnioEspecialidad(int anio)

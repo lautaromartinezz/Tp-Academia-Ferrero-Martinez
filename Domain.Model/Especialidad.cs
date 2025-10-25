@@ -9,6 +9,7 @@ namespace Domain.Model
     public class Especialidad: BussinessEntity
     {
         public string DescEspecialidad { get; set; }
+        public ICollection<Plan> Planes { get; set; }
 
         public Especialidad(int id, string desc)
         {

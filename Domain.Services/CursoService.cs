@@ -32,6 +32,7 @@ namespace Domain.Services
                 AnioCalendario = curso.AnioCalendario,
                 IdMateria = curso.IdMateria,
                 DescripcionMateria = curso.Materia.Descripcion,
+                DescripcionComision = curso.Comision.Descripcion
             }).ToList();
 
         }
@@ -60,6 +61,8 @@ namespace Domain.Services
                 AnioCalendario = curso.AnioCalendario,
                 IdMateria = curso.IdMateria,
                 DescripcionMateria = curso.Materia.Descripcion,
+                DescripcionComision = curso.Comision.Descripcion
+
             };
 
         }
@@ -70,7 +73,10 @@ namespace Domain.Services
 
             Materia? materia = materiaRepository.Get(dto.IdMateria);
 
-            if (materia == null) return null;
+            var comisionRepository = new ComisionRepository();
+            Comision? comision = comisionRepository.Get(dto.IdComision);
+
+            if (materia == null || comision == null) return null;
 
             else
             {
@@ -97,7 +103,10 @@ namespace Domain.Services
 
             Materia? materia = materiaRepository.Get(dto.IdMateria);
 
-            if (materia == null) return false;
+            var comisionRepository = new ComisionRepository();
+            Comision? comision = comisionRepository.Get(dto.IdComision);
+
+            if (materia == null || comision == null) return false;
 
             else
             {

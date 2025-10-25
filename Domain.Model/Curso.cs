@@ -27,6 +27,8 @@ namespace Domain.Model
 
         public Materia Materia { get; private set; }    
 
+        public Comision Comision { get; private set; }
+
         public void SetCupo(int cupo)
         {
             if (int.IsNegative(cupo))

@@ -40,6 +40,7 @@ namespace Data
             using var context = CreateContext();
             return context.Cursos
                 .Include(c => c.Materia)
+                .Include(c => c.Comision)
                 .FirstOrDefault(c => c.Id == id);
         }
 
@@ -48,6 +49,7 @@ namespace Data
             using var context = CreateContext();
             return context.Cursos
                 .Include(c => c.Materia)
+                .Include(c => c.Comision)
                 .ToList();
         }
 

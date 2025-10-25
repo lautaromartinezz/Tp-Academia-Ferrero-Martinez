@@ -38,13 +38,13 @@ namespace Data
         public Plan? Get(int id)
         {
             using var context = CreateContext();
-            return context.Planes.FirstOrDefault(c => c.Id == id);
+            return context.Planes.Include(e=>e.Especialidad).FirstOrDefault(c => c.Id == id);
         }
 
         public IEnumerable<Plan> GetAll()
         {
             using var context = CreateContext();
-            return context.Planes.ToList();
+            return context.Planes.Include(e=>e.Especialidad).ToList();
         }
 
         public bool Update(Plan plan)

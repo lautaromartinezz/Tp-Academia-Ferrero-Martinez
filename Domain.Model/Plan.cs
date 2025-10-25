@@ -14,6 +14,7 @@ namespace Domain.Model
         public ICollection<Materia> Materias { get; private set; }
         public ICollection<Comision> Comisiones { get; private set; }
         public ICollection<Persona> Personas { get; private set; }
+        public Especialidad Especialidad { get; private set; }
         Plan() { }
         public Plan(int id, string desc, int idEsp)
         {
