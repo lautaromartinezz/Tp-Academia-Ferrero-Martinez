@@ -68,7 +68,7 @@ namespace WebAPI
 
                     return Results.BadRequest("Error al actualizar la especialidad");
                 }
-            }).WithName("updateModulo")
+            }).WithName("updateEspecialidad")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status204NoContent);

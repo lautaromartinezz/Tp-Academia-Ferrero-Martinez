@@ -17,6 +17,7 @@ namespace Data
 
         public DbSet<Plan> Planes { get; set; }
         public DbSet<Modulo> Modulos { get; set; }
+        public DbSet<Especialidad> Especialidades { get; set; }
         internal AcademiaContext()
         {
             //this.Database.EnsureDeleted(); // SOLO EN DEV 
@@ -153,6 +154,17 @@ namespace Data
                 entity.HasData(
                     new { Id =1 , Descripcion = "asd", Ejecuta = "asd"},
                     new { Id = 2,Descripcion = "asd2", Ejecuta = "asd2" }
+                    );
+            });
+
+            modelBuilder.Entity<Especialidad>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.DescEspecialidad).HasMaxLength(50).IsRequired();
+                entity.HasData(
+                    new { Id = 1, DescEspecialidad = "Informatica" },
+                    new { Id = 2, DescEspecialidad = "Quimica" }
                     );
             });
         }

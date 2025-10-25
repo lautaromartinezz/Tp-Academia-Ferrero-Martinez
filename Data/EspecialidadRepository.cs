@@ -19,7 +19,6 @@ namespace Data
             _connectionString = new AcademiaContext().Database.GetConnectionString();
         }
 
-        // GET ALL
         public IEnumerable<Especialidad> GetAll()
         {
             const string sql = "SELECT Id, DescEspecialidad FROM Especialidades";
@@ -42,7 +41,6 @@ namespace Data
             return list;
         }
 
-        // GET ONE
         public Especialidad? Get(int id)
         {
             const string sql = "SELECT Id, DescEspecialidad FROM Especialidades WHERE Id = @Id";
@@ -65,7 +63,6 @@ namespace Data
             return null;
         }
 
-        // ADD
         public void Add(Especialidad especialidad)
         {
             const string sql = @"
@@ -84,7 +81,6 @@ namespace Data
             especialidad.Id = insertedId; // Asignamos el ID generado
         }
 
-        // UPDATE
         public bool Update(Especialidad especialidad)
         {
             const string sql = @"
@@ -104,7 +100,6 @@ namespace Data
             return true;
         }
 
-        // DELETE
         public bool Delete(int id)
         {
             const string sql = "DELETE FROM Especialidades WHERE Id = @Id";
