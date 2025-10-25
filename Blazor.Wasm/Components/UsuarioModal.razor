@@ -1,0 +1,232 @@
+﻿@using DTOs
+@using API.Clients
+@using System.Text.RegularExpressions
+@inject IJSRuntime JSRuntime
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @if (mode == FormMode.Add)
+                        {
+                            <text>Agregar</text>
+                        }
+                        else
+                        {
+                            <text>Editar</text>
+                        }
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentUsuario" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+
+                        @if (mode == FormMode.Update)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Id</label>
+                                <input type="text" class="form-control" value="@currentUsuario.Id" readonly />
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Nombre *</label>
+                            <InputText @bind-Value="currentUsuario.Nombre" class="form-control" />
+                            @if (validationErrors.ContainsKey("Nombre"))
+                            {
+                                <div class="text-danger small">@validationErrors["Nombre"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Apellido *</label>
+                            <InputText @bind-Value="currentUsuario.Apellido" class="form-control" />
+                            @if (validationErrors.ContainsKey("Apellido"))
+                            {
+                                <div class="text-danger small">@validationErrors["Apellido"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email *</label>
+                            <InputText @bind-Value="currentUsuario.Email" class="form-control" />
+                            @if (validationErrors.ContainsKey("Email"))
+                            {
+                                <div class="text-danger small">@validationErrors["Email"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Nombre Usuario *</label>
+                            <InputText @bind-Value="currentUsuario.NombreUsuario" class="form-control" />
+                            @if (validationErrors.ContainsKey("NombreUsuario"))
+                            {
+                                <div class="text-danger small">@validationErrors["NombreUsuario"]</div>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="Close">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" disabled="@saving">
+                                @if (saving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(mode == FormMode.Add ? "Agregar" : "Actualizar")
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnUsuarioChanged { get; set; }
+
+    private bool showModal = false;
+    private FormMode mode = FormMode.Add;
+    private UsuarioDTO currentUsuario = new UsuarioDTO();
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+    private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+
+    public enum FormMode
+    {
+        Add,
+        Update
+    }
+
+    public async Task ShowAddModal()
+    {
+        mode = FormMode.Add;
+        currentUsuario = new UsuarioDTO();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+        await Task.CompletedTask; // evita el error y mantiene la firma asincrónica
+    }
+
+    public async Task ShowEditModal(UsuarioDTO usuario)
+    {
+        mode = FormMode.Update;
+        currentUsuario = new UsuarioDTO
+        {
+            Id = usuario.Id,
+            Nombre = usuario.Nombre,
+            NombreUsuario = usuario.NombreUsuario,
+            Apellido = usuario.Apellido,
+            Email = usuario.Email,
+            Habilitado = usuario.Habilitado
+        };
+
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!ValidateCliente())
+            return;
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (mode == FormMode.Add)
+            {
+                await UsuarioAPIClient.AddAsync(currentUsuario);
+            }
+            else
+            {
+                await UsuarioAPIClient.UpdateAsync(currentUsuario);
+            }
+
+            await OnUsuarioChanged.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private bool ValidateCliente()
+    {
+        ClearValidationErrors();
+        bool isValid = true;
+
+        if (string.IsNullOrWhiteSpace(currentUsuario.Nombre))
+        {
+            validationErrors["Nombre"] = "El Nombre es requerido";
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentUsuario.Apellido))
+        {
+            validationErrors["Apellido"] = "El Apellido es requerido";
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentUsuario.Email))
+        {
+            validationErrors["Email"] = "El Email es requerido";
+            isValid = false;
+        }
+        else if (!IsValidEmail(currentUsuario.Email))
+        {
+            validationErrors["Email"] = "El formato del Email no es válido";
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentUsuario.NombreUsuario))
+        {
+            validationErrors["NombreUsuario"] = "El Nombre de usuario es requerido";
+            isValid = false;
+        }
+
+        StateHasChanged();
+        return isValid;
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return false;
+        return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+    }
+
+    private void ClearValidationErrors()
+    {
+        validationErrors.Clear();
+        errorMessage = string.Empty;
+    }
+
+    private void Close()
+    {
+        showModal = false;
+        ClearValidationErrors();
+        StateHasChanged();
+    }
+}

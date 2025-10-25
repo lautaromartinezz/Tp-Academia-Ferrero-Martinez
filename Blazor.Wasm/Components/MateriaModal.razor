@@ -1,0 +1,243 @@
+﻿@using DTOs
+@using API.Clients
+@using System.Text.RegularExpressions
+@inject IJSRuntime JSRuntime
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @if (mode == FormMode.Add)
+                        {
+                            <text>Agregar</text>
+                        }
+                        else
+                        {
+                            <text>Editar</text>
+                        }
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentMateria" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+
+                        @if (mode == FormMode.Update)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Id</label>
+                                <input type="text" class="form-control" value="@currentMateria.Id" readonly />
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Descripcion  *</label>
+                            <InputText @bind-Value="currentMateria.Descripcion" class="form-control" />
+                            @if (validationErrors.ContainsKey("Descripcion"))
+                            {
+                                <div class="text-danger small">@validationErrors["Descripcion"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Horas Semanales *</label>
+                            <InputNumber @bind-Value="currentMateria.HsSemanales" class="form-control" />
+                            @if (validationErrors.ContainsKey("HsSemanales"))
+                            {
+                                <div class="text-danger small">@validationErrors["HsSemanales"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Horas Totales *</label>
+                            <InputNumber @bind-Value="currentMateria.HsTotales" class="form-control" />
+                            @if (validationErrors.ContainsKey("HsTotales"))
+                            {
+                                <div class="text-danger small">@validationErrors["HsTotales"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">País *</label>
+                            <InputSelect @bind-Value="currentMateria.IdPlan" class="form-select">
+                                <option value="0">Seleccionar País</option>
+                                @if (planes != null)
+                                {
+                                    @foreach (var plan in planes)
+                                    {
+                                        <option value="@plan.Id">@plan.Descripcion</option>
+                                    }
+                                }
+                            </InputSelect>
+                            @if (validationErrors.ContainsKey("Plan"))
+                            {
+                                <div class="text-danger small">@validationErrors["Plan"]</div>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="Close">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" disabled="@saving">
+                                @if (saving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(mode == FormMode.Add ? "Agregar" : "Actualizar")
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnUsuarioChanged { get; set; }
+
+    private bool showModal = false;
+    private FormMode mode = FormMode.Add;
+    private MateriaDTO currentMateria = new MateriaDTO();
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+    private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+    private List<PlanDTO>? planes;
+
+    public enum FormMode
+    {
+        Add,
+        Update
+    }
+
+    public async Task ShowAddModal()
+    {
+        mode = FormMode.Add;
+        currentMateria = new MateriaDTO();
+        await LoadPlanes();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+        
+    }
+
+    public async Task ShowEditModal(MateriaDTO materia)
+    {
+        mode = FormMode.Update;
+        currentMateria = new MateriaDTO
+        {
+            Id = materia.Id,
+            Descripcion = materia.Descripcion,
+            HsSemanales=materia.HsSemanales,
+            HsTotales=materia.HsTotales,
+            IdPlan=materia.IdPlan,
+            DescripcionPlan=materia.DescripcionPlan
+        };
+        await LoadPlanes();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!ValidateMateria())
+            return;
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (mode == FormMode.Add)
+            {
+                await MateriaAPIClient.AddAsync(currentMateria);
+            }
+            else
+            {
+                await MateriaAPIClient.UpdateAsync(currentMateria);
+            }
+
+            await OnUsuarioChanged.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private bool ValidateMateria()
+    {
+        ClearValidationErrors();
+        bool isValid = true;
+
+        if (string.IsNullOrWhiteSpace(currentMateria.Descripcion))
+        {
+            validationErrors["Descripcion"] = "La descripcion es requerida";
+            isValid = false;
+        }
+
+        if (currentMateria.HsSemanales<=0)
+        {
+            validationErrors["HsSemanales"] = "Debe asignar las horas semanales";
+            isValid = false;
+        }
+        if (currentMateria.HsTotales <= 0)
+        {
+            validationErrors["HsTotales"] = "Debe asignar las horas totales";
+            isValid = false;
+        }
+
+        if (currentMateria.IdPlan <= 0)
+        {
+            validationErrors["Plan"] = "Debe seleccionar un plan";
+            isValid = false;
+        }
+
+        StateHasChanged();
+        return isValid;
+    }
+
+    private void ClearValidationErrors()
+    {
+        validationErrors.Clear();
+        errorMessage = string.Empty;
+    }
+
+    private void Close()
+    {
+        showModal = false;
+        ClearValidationErrors();
+        StateHasChanged();
+    }
+
+    private async Task LoadPlanes()
+    {
+        try
+        {
+            planes = (await PlanAPIClient.GetAllAsync())?.ToList();
+
+        }
+        catch(Exception ex)
+        {
+            errorMessage = $"Error al cargar planes: {ex.Message}";
+        }
+    }
+}
