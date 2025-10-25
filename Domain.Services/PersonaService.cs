@@ -57,15 +57,15 @@ namespace Domain.Services
 
         public PersonaDTO add(PersonaDTO dto)
         {
-            var planRepository = new PlanRepository();
-            Plan? plan = planRepository.Get(dto.IdPlan);
-            if (plan == null) return null;
+            //var planRepository = new PlanRepository();
+            //Plan? plan = planRepository.Get(dto.IdPlan);
+            //if (plan == null) return null;
 
             var personaRepository = new PersonaRepository();
 
             Persona persona = new Persona(
                 dto.Nombre, dto.Apellido, dto.Direccion, dto.Email, dto.Telefono,
-                dto.FechaNac, dto.Legajo, dto.TipoPersona, dto.IdPlan, 0);
+                dto.FechaNac, dto.Legajo, dto.TipoPersona, 1, 0);
 
             personaRepository.Add(persona);
             dto.Id = persona.Id;

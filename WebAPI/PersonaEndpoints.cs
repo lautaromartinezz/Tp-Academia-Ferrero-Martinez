@@ -24,7 +24,7 @@ namespace WebAPI
             {
                 var service = new PersonaService();
                 var result = service.add(dto);
-                return result is not null ? Results.Created($"/api/persona/{result.Id}", result) : Results.BadRequest("Plan no encontrado");
+                return result is not null ? Results.Created($"personas/{result.Id}", result) : Results.BadRequest("Plan no encontrado");
             });
 
             app.MapPut("/personas/{id}", (int id, PersonaDTO dto) =>

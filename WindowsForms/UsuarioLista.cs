@@ -23,6 +23,7 @@ namespace WindowsForms
 
             usuarioDetalle.Mode = FormMode.Add;
             usuarioDetalle.Usuario = usuarioNuevo;
+            usuarioDetalle.Persona = new PersonaDTO{ FechaNac = DateTime.Today, Direccion = String.Empty, TipoPersona = String.Empty };
 
             usuarioDetalle.ShowDialog();
 
@@ -38,9 +39,11 @@ namespace WindowsForms
                 int id = this.SelectedItem().Id;
 
                 UsuarioDTO usuario = await API.Clients.UsuarioAPIClient.GetAsync(id);
+                PersonaDTO persona = await API.Clients.PersonaAPIClient.GetAsync(this.SelectedItem().IdPersona);
 
                 usuarioDetalle.Mode = FormMode.Update;
                 usuarioDetalle.Usuario = usuario;
+                usuarioDetalle.Persona = persona;
 
                 usuarioDetalle.ShowDialog();
 

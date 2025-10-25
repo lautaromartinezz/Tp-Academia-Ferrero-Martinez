@@ -24,7 +24,8 @@ namespace Domain.Services
                 NombreUsuario = usuario.NombreUsuario,
                 Email = usuario.Email,
                 Habilitado = usuario.Habilitado,
-                Clave = usuario.Clave
+                Clave = usuario.Clave,
+                IdPersona = usuario.Persona.Id
             }).ToList();
 
         }
@@ -45,7 +46,8 @@ namespace Domain.Services
                 NombreUsuario = usuario.NombreUsuario,
                 Email = usuario.Email,
                 Habilitado = usuario.Habilitado,
-                Clave = usuario.Clave
+                Clave = usuario.Clave,
+                IdPersona = usuario.Persona.Id
             };
 
         }
@@ -54,7 +56,7 @@ namespace Domain.Services
         {
             var usuarioRepository = new UsuarioRepository();
 
-            Usuario usuario = new Usuario(dto.Id, dto.Nombre, dto.NombreUsuario, dto.Apellido, dto.Email, dto.Habilitado, dto.Clave);
+            Usuario usuario = new Usuario(dto.Id, dto.Nombre, dto.NombreUsuario, dto.Apellido, dto.Email, dto.Habilitado, dto.Clave, dto.IdPersona);
 
             usuarioRepository.Add(usuario);
   
@@ -74,7 +76,7 @@ namespace Domain.Services
         {
             var usuarioRepository = new UsuarioRepository();
 
-            Usuario usuario = new Usuario(dto.Id, dto.Nombre, dto.NombreUsuario, dto.Apellido, dto.Email, dto.Habilitado,dto.Clave);
+            Usuario usuario = new Usuario(dto.Id, dto.Nombre, dto.NombreUsuario, dto.Apellido, dto.Email, dto.Habilitado,dto.Clave, dto.IdPersona);
 
             return usuarioRepository.Update(usuario);
             

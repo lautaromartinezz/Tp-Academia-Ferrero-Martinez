@@ -17,7 +17,7 @@ namespace Domain.Model
         public int Legajo { get; private set; }
         public string TipoPersona { get; private set; }
         public int IdPlan { get; private set; }
-
+        public IEnumerable<Usuario> Usuarios {  get; private set; }
         public Plan Plan { get; private set; }
 
         public Persona() { }

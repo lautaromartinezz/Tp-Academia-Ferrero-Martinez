@@ -126,9 +126,14 @@ namespace Data
 
                 entity.Property(e => e.Habilitado).IsRequired().HasMaxLength(15);
 
+                entity.HasOne((u)=> u.Persona)
+                    .WithMany((p) => p.Usuarios)
+                    .HasForeignKey(e => e.IdPersona)
+                    .OnDelete(DeleteBehavior.Cascade).IsRequired();
+
                 entity.HasData(
-                    new { Id = 1, Nombre = "Santiago", Apellido = "Ferrero", Email = "santifnob@gmail.com", NombreUsuario = "vamoniubels", Habilitado = true, Clave = "asd" },
-                    new { Id = 2, Nombre = "Lautaro", Apellido = "Martinez", Email = "lautaromartinez@gmail.com", NombreUsuario = "vamoslalepra", Habilitado = true, Clave = "asd" }
+                    new { Id = 1, Nombre = "Santiago", Apellido = "Ferrero", Email = "santifnob@gmail.com", NombreUsuario = "vamoniubels", Habilitado = true, Clave = "asd" , IdPersona = 1},
+                    new { Id = 2, Nombre = "Lautaro", Apellido = "Martinez", Email = "lautaromartinez@gmail.com", NombreUsuario = "vamoslalepra", Habilitado = true, Clave = "asd", IdPersona = 2 }
                 );
 
                 entity.HasMany(u => u.Modulos).WithMany(m => m.Usuarios);

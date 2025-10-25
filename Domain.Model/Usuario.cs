@@ -21,9 +21,13 @@ namespace Domain.Model
 
         public string Clave { get; set; }
 
+        public int IdPersona { get; private set; }
+        public Persona Persona { get; private set; }
         public ICollection<Modulo> Modulos { get; set; }
+        
+        public Usuario() { }
 
-        public Usuario(int id, string nombre, string nombreUsuario,string apellido, string email, bool habilitado, string clave)
+        public Usuario(int id, string nombre, string nombreUsuario,string apellido, string email, bool habilitado, string clave, int idPersona)
         {
             SetId(id);
             SetNombre(nombre);
@@ -32,13 +36,23 @@ namespace Domain.Model
             SetEmail(email);
             SetHabilitado(habilitado);
             Clave = clave;
+            SetIdPersona(idPersona);
         }
 
         public void SetHabilitado(bool habil)
         {
            Habilitado = habil;
         }
-
+        public void SetIdPersona(int id)
+        {
+            if (int.IsNegative(id))
+                throw new ArgumentException("El Id de persona debe ser mayor que 0.", nameof(id));
+            IdPersona = id;
+        }
+        public void setPersona(Persona u)
+        {
+               Persona = u;
+        }
         public void SetId(int id)
         {
             if (int.IsNegative(id))

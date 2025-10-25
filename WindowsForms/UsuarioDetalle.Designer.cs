@@ -46,6 +46,16 @@
             habilitadoCheckBox = new CheckBox();
             claveLabel = new Label();
             claveTextBox = new TextBox();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            DireccionTextBox = new TextBox();
+            TelefonoTextBox = new TextBox();
+            dateTimePicker1 = new DateTimePicker();
+            legajottextBox = new TextBox();
+            tipoPersonaTextBox = new TextBox();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -69,7 +79,7 @@
             // 
             // aceptarButton
             // 
-            aceptarButton.Location = new Point(261, 233);
+            aceptarButton.Location = new Point(256, 377);
             aceptarButton.Margin = new Padding(2, 1, 2, 1);
             aceptarButton.Name = "aceptarButton";
             aceptarButton.Size = new Size(81, 22);
@@ -84,7 +94,7 @@
             // 
             // cancelarButton
             // 
-            cancelarButton.Location = new Point(346, 233);
+            cancelarButton.Location = new Point(341, 377);
             cancelarButton.Margin = new Padding(2, 1, 2, 1);
             cancelarButton.Name = "cancelarButton";
             cancelarButton.Size = new Size(81, 22);
@@ -202,11 +212,105 @@
             claveTextBox.Size = new Size(110, 23);
             claveTextBox.TabIndex = 72;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(25, 238);
+            label1.Name = "label1";
+            label1.Size = new Size(57, 15);
+            label1.TabIndex = 73;
+            label1.Text = "Direccion";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(24, 264);
+            label2.Name = "label2";
+            label2.Size = new Size(52, 15);
+            label2.TabIndex = 74;
+            label2.Text = "Telefono";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(24, 296);
+            label3.Name = "label3";
+            label3.Size = new Size(103, 15);
+            label3.TabIndex = 75;
+            label3.Text = "Fecha Nacimiento";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(25, 323);
+            label4.Name = "label4";
+            label4.Size = new Size(42, 15);
+            label4.TabIndex = 76;
+            label4.Text = "Legajo";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(24, 351);
+            label5.Name = "label5";
+            label5.Size = new Size(75, 15);
+            label5.TabIndex = 77;
+            label5.Text = "Tipo Persona";
+            // 
+            // DireccionTextBox
+            // 
+            DireccionTextBox.Location = new Point(131, 235);
+            DireccionTextBox.Margin = new Padding(2, 1, 2, 1);
+            DireccionTextBox.Name = "DireccionTextBox";
+            DireccionTextBox.Size = new Size(110, 23);
+            DireccionTextBox.TabIndex = 78;
+            // 
+            // TelefonoTextBox
+            // 
+            TelefonoTextBox.Location = new Point(131, 264);
+            TelefonoTextBox.Margin = new Padding(2, 1, 2, 1);
+            TelefonoTextBox.Name = "TelefonoTextBox";
+            TelefonoTextBox.Size = new Size(110, 23);
+            TelefonoTextBox.TabIndex = 79;
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Location = new Point(131, 293);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(200, 23);
+            dateTimePicker1.TabIndex = 80;
+            // 
+            // legajottextBox
+            // 
+            legajottextBox.Location = new Point(131, 320);
+            legajottextBox.Margin = new Padding(2, 1, 2, 1);
+            legajottextBox.Name = "legajottextBox";
+            legajottextBox.Size = new Size(110, 23);
+            legajottextBox.TabIndex = 81;
+            // 
+            // tipoPersonaTextBox
+            // 
+            tipoPersonaTextBox.Location = new Point(131, 348);
+            tipoPersonaTextBox.Margin = new Padding(2, 1, 2, 1);
+            tipoPersonaTextBox.Name = "tipoPersonaTextBox";
+            tipoPersonaTextBox.Size = new Size(110, 23);
+            tipoPersonaTextBox.TabIndex = 82;
+            // 
             // UsuarioDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(438, 265);
+            ClientSize = new Size(426, 409);
+            Controls.Add(tipoPersonaTextBox);
+            Controls.Add(legajottextBox);
+            Controls.Add(dateTimePicker1);
+            Controls.Add(TelefonoTextBox);
+            Controls.Add(DireccionTextBox);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(claveTextBox);
             Controls.Add(claveLabel);
             Controls.Add(habilitadoCheckBox);
@@ -250,5 +354,15 @@
         private Label habilitadoLabel;
         private TextBox claveTextBox;
         private Label claveLabel;
+        private TextBox TelefonoTextBox;
+        private TextBox DireccionTextBox;
+        private Label label5;
+        private Label label4;
+        private Label label3;
+        private Label label2;
+        private Label label1;
+        private TextBox tipoPersonaTextBox;
+        private TextBox legajottextBox;
+        private DateTimePicker dateTimePicker1;
     }
 }

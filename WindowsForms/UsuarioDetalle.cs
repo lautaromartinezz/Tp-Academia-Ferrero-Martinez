@@ -21,6 +21,7 @@ namespace WindowsForms
     public partial class UsuarioDetalle : Form
     {
         private UsuarioDTO usuario;
+        private PersonaDTO persona;
         private FormMode mode;
 
         public UsuarioDTO Usuario
@@ -30,6 +31,15 @@ namespace WindowsForms
             {
                 usuario = value;
                 this.SetUsuario();
+            }
+        }
+        public PersonaDTO Persona
+        {
+            get { return persona; }
+            set
+            {
+                persona = value;
+                this.SetPersona();
             }
         }
 
@@ -54,7 +64,7 @@ namespace WindowsForms
 
         private async void aceptarButton_Click(object sender, EventArgs e)
         {
-            if (this.ValidateUsuario())
+            if (this.ValidateUsuarioYPersona())
             {
                 try
                 {
@@ -65,6 +75,15 @@ namespace WindowsForms
                     this.Usuario.Email = emailTextBox.Text;
                     this.Usuario.Habilitado = habilitadoCheckBox.Checked;
                     this.Usuario.Clave = claveTextBox.Text;
+                    //if(idTextBox.Text != null)this.Persona.Id = int.Parse(idPersona.Text);
+                    this.Persona.Direccion = DireccionTextBox.Text;
+                    this.Persona.FechaNac = dateTimePicker1.Value;
+                    this.Persona.Legajo = int.Parse(legajottextBox.Text);
+                    this.Persona.TipoPersona = tipoPersonaTextBox.Text;
+                    this.Persona.Telefono = TelefonoTextBox.Text;
+                    this.Persona.Nombre = nombreTextBox.Text;
+                    this.Persona.Apellido = apellidoTextBox.Text;
+                    this.Persona.Email = emailTextBox.Text;
 
                     if (this.Mode == FormMode.Update)
                     {
@@ -72,7 +91,7 @@ namespace WindowsForms
                     }
                     else
                     {
-                        await API.Clients.UsuarioAPIClient.AddAsync(this.Usuario);
+                        await API.Clients.UsuarioAPIClient.AddAsync(this.Usuario, this.Persona);
                     }
 
                     this.Close();
@@ -100,6 +119,14 @@ namespace WindowsForms
             this.claveTextBox.Text = this.Usuario.Clave;
         }
 
+        private void SetPersona()
+        {
+            this.DireccionTextBox.Text = this.Persona.Direccion;
+            this.dateTimePicker1.Value = this.Persona.FechaNac;
+            this.legajottextBox.Text = this.Persona.Legajo.ToString();
+            this.tipoPersonaTextBox.Text = this.Persona.TipoPersona.ToString();
+            this.TelefonoTextBox.Text = this.Persona.Telefono;
+        }
         private void SetFormMode(FormMode value)
         {
             mode = value;
@@ -119,7 +146,7 @@ namespace WindowsForms
             }
         }
 
-        private bool ValidateUsuario()
+        private bool ValidateUsuarioYPersona()
         {
             bool isValid = true;
 
@@ -128,7 +155,33 @@ namespace WindowsForms
             errorProvider.SetError(apellidoTextBox, string.Empty);
             errorProvider.SetError(emailTextBox, string.Empty);
             errorProvider.SetError(claveTextBox, string.Empty);
+            errorProvider.SetError(DireccionTextBox, string.Empty);
+            errorProvider.SetError(TelefonoTextBox, string.Empty);
+            errorProvider.SetError(tipoPersonaTextBox, string.Empty);   
+            errorProvider.SetError(legajottextBox, string.Empty);
+            errorProvider.SetError(dateTimePicker1, string.Empty);
 
+            if(this.DireccionTextBox.Text == string.Empty)
+            {
+                isValid = false;
+                errorProvider.SetError(DireccionTextBox, "La Direccion es Requerida");  
+            }
+            if(this.TelefonoTextBox.Text == string.Empty)
+            {
+                isValid = false;
+                errorProvider.SetError(TelefonoTextBox, "El Telefono es Requerido");    
+            }
+            if(this.tipoPersonaTextBox.Text == string.Empty)
+            {
+                isValid = false;
+                errorProvider.SetError(tipoPersonaTextBox, "El Tipo de Persona es Requerido");
+            }
+            if (this.legajottextBox.Text == string.Empty)
+            {
+                isValid = false;
+                errorProvider.SetError(legajottextBox, "El Legajo es Requerido");
+            }
+            
             if (this.nombreTextBox.Text == string.Empty)
             {
                 isValid = false;

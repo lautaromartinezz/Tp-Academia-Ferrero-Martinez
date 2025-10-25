@@ -60,14 +60,15 @@ namespace Data
         public Usuario? Get(int id)
         {
             using var context = CreateContext();
-            return context.Usuarios
-                .FirstOrDefault(c => c.Id == id);
+            return context.Usuarios.Include(c => c.Persona)
+                .FirstOrDefault(c => c.Id == id)
+                ;
         }
 
         public IEnumerable<Usuario> GetAll()
         {
             using var context = CreateContext();
-            return context.Usuarios.ToList();
+            return context.Usuarios.Include(c => c.Persona).ToList();
         }
 
         public bool Update(Usuario usuario)

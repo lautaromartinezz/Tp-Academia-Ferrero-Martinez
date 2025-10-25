@@ -75,10 +75,18 @@ namespace API.Clients
             }
         }
 
-        public async static Task AddAsync(UsuarioDTO usuario)
+        public async static Task AddAsync(UsuarioDTO usuario, PersonaDTO persona)
         {
             try
             {
+                HttpResponseMessage responsePersona = await client.PostAsJsonAsync("personas", persona);
+                if (!responsePersona.IsSuccessStatusCode)
+                {
+                    string errorContent = await responsePersona.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al crear persona. Status: {responsePersona.StatusCode}, Detalle: {errorContent}");
+                }
+                PersonaDTO personaDTO = await responsePersona.Content.ReadAsAsync<PersonaDTO>();
+                usuario.IdPersona = personaDTO.Id;
                 HttpResponseMessage response = await client.PostAsJsonAsync("usuarios", usuario);
 
                 if (!response.IsSuccessStatusCode)
