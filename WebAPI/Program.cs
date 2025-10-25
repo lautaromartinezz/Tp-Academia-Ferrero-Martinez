@@ -30,5 +30,6 @@ app.MapCursoEndpoints();
 app.MapUsuarioEndpoints();
 app.MapPlanEndpoints();
 app.MapModuloEndpoints();
+//app.MapEspecialidadEndpoints();
 
 app.Run();
