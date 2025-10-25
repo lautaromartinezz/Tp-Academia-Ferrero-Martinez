@@ -18,9 +18,10 @@ namespace Data
         public DbSet<Plan> Planes { get; set; }
         public DbSet<Modulo> Modulos { get; set; }
         public DbSet<Especialidad> Especialidades { get; set; }
+        public DbSet<Comision> Comisiones { get; set; }
         internal AcademiaContext()
         {
-            this.Database.EnsureDeleted(); // SOLO EN DEV 
+         //   this.Database.EnsureDeleted(); // SOLO EN DEV 
             this.Database.EnsureCreated();
         }
 
@@ -172,6 +173,23 @@ namespace Data
                     new { Id = 2, DescEspecialidad = "Quimica" }
                     );
             });
+
+            modelBuilder.Entity<Comision>(entity =>
+            {
+                entity.HasKey(entity => entity.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Descripcion).HasMaxLength(50).IsRequired();
+                entity.Property(e => e.AnioEspecialidad).IsRequired();
+                entity.HasOne(c => c.Plan)
+                    .WithMany(p => p.Comisiones)
+                    .HasForeignKey(c => c.IdPlan)
+                    .OnDelete(DeleteBehavior.Cascade);
+                entity.HasData(
+                    new { Id = 1, Descripcion = "Com1", AnioEspecialidad = 2025, IdPlan = 1 },
+                    new { Id = 2, Descripcion = "Com2", AnioEspecialidad = 2024, IdPlan = 2 }
+                    );
+            });
         }
+
     }
 }

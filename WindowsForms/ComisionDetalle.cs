@@ -12,18 +12,24 @@ using DTOs;
 
 namespace WindowsForms
 {
-    public partial class CursoDetalle : Form
+    public partial class ComisionDetalle : Form
     {
-        private CursoDTO curso;
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private ComisionDTO comision;
         private FormMode mode;
 
-        public CursoDTO Curso
+        public ComisionDTO Comision
         {
-            get { return curso; }
+            get { return comision; }
             set
             {
-                curso = value;
-                this.SetCurso();
+                comision = value;
+                this.SetComision();
             }
         }
 
@@ -39,7 +45,7 @@ namespace WindowsForms
             }
         }
 
-        public CursoDetalle()
+        public ComisionDetalle()
         {
             InitializeComponent();
 
@@ -48,14 +54,13 @@ namespace WindowsForms
 
         private async void aceptarButton_Click(object sender, EventArgs e)
         {
-            if (this.ValidateCurso())
+            if (this.ValidateComision())
             {
                 try
                 {
-                    this.Curso.AnioCalendario = this.anioCalendarioTimePicker.Value;
-                    this.Curso.Cupo = int.Parse(cupoTextBox.Text);
-                    this.Curso.IdComision = int.Parse(idComisionTextBox.Text);
-                    this.Curso.IdMateria = int.Parse(idMateriaTextBox.Text);
+                    this.Comision.AnioEspecialidad = int.Parse(anioEspTextBox.Text);
+                    this.Comision.Descripcion = (descTextBox.Text);
+                    this.Comision.IdPlan = int.Parse(idPlanTextBox.Text);
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
@@ -63,11 +68,11 @@ namespace WindowsForms
 
                     if (this.Mode == FormMode.Update)
                     {
-                        await CursoAPIClient.UpdateAsync(this.Curso);
+                        await ComisionAPIClient.UpdateAsync(this.Comision);
                     }
                     else
                     {
-                        await CursoAPIClient.AddAsync(this.Curso);
+                        await ComisionAPIClient.AddAsync(this.Comision);
                     }
 
                     this.Close();
@@ -84,13 +89,12 @@ namespace WindowsForms
             this.Close();
         }
 
-        private void SetCurso()
+        private void SetComision()
         {
-            this.idTextBox.Text = this.Curso.Id.ToString();
-            this.cupoTextBox.Text = this.Curso.Cupo.ToString();
-            this.idComisionTextBox.Text = this.Curso.IdComision.ToString();
-            this.idMateriaTextBox.Text = this.Curso.IdMateria.ToString();
-            this.anioCalendarioTimePicker.Value = this.Curso.AnioCalendario;
+            this.idTextBox.Text = this.Comision.Id.ToString();
+            this.anioEspTextBox.Text = this.Comision.AnioEspecialidad.ToString();
+            this.idPlanTextBox.Text = this.Comision.IdPlan.ToString();
+            this.descTextBox.Text = this.Comision.Descripcion;
         }
 
         private void SetFormMode(FormMode value)
@@ -112,31 +116,31 @@ namespace WindowsForms
             }
         }
 
-        private bool ValidateCurso()
+        private bool ValidateComision()
         {
             bool isValid = true;
 
-            errorProvider.SetError(cupoTextBox, string.Empty);
-            errorProvider.SetError(idComisionTextBox, string.Empty);
-            errorProvider.SetError(idMateriaTextBox, string.Empty);
+            errorProvider.SetError(anioEspTextBox, string.Empty);
+            errorProvider.SetError(idPlanTextBox, string.Empty);
+            errorProvider.SetError(descTextBox, string.Empty);
 
 
 
-            if (this.cupoTextBox.Text == string.Empty)
+            if (this.anioEspTextBox.Text == string.Empty)
             {
                 isValid = false;
-                errorProvider.SetError(cupoTextBox, "La descripcion es Requerido");
+                errorProvider.SetError(anioEspTextBox, "El año es Requerido");
             }
 
-            if (this.idComisionTextBox.Text == string.Empty)
+            if (this.idPlanTextBox.Text == string.Empty)
             {
                 isValid = false;
-                errorProvider.SetError(idComisionTextBox, "Las horas semanales es Requerido");
+                errorProvider.SetError(idPlanTextBox, "El plan es Requerido");
             }
-            if (this.idMateriaTextBox.Text == string.Empty)
+            if (this.descTextBox.Text == string.Empty)
             {
                 isValid = false;
-                errorProvider.SetError(idMateriaTextBox, "Las horas totales es Requerido");
+                errorProvider.SetError(descTextBox, "La descripcion es Requerido");
             }
 
             return isValid;

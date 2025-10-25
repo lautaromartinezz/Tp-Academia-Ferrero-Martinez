@@ -68,5 +68,11 @@ namespace WindowsForms
             EspecialidadLista esp = new EspecialidadLista();
             esp.Show();
         }
+
+        private void comButton_Click(object sender, EventArgs e)
+        {
+            ComisionLista com = new ComisionLista();
+            com.Show();
+        }
     }
 }

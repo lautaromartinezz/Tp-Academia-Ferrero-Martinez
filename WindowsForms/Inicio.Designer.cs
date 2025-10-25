@@ -36,6 +36,7 @@
             bttnCursos = new Button();
             ModulosButton = new Button();
             especialidadButton = new Button();
+            comButton = new Button();
             SuspendLayout();
             // 
             // usuarioButton
@@ -60,7 +61,7 @@
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(265, 281);
+            btnClose.Location = new Point(276, 332);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(94, 35);
             btnClose.TabIndex = 4;
@@ -118,12 +119,23 @@
             especialidadButton.UseVisualStyleBackColor = true;
             especialidadButton.Click += especialidadButton_Click;
             // 
+            // comButton
+            // 
+            comButton.Location = new Point(12, 315);
+            comButton.Name = "comButton";
+            comButton.Size = new Size(114, 34);
+            comButton.TabIndex = 10;
+            comButton.Text = "Comisiones";
+            comButton.UseVisualStyleBackColor = true;
+            comButton.Click += comButton_Click;
+            // 
             // Inicio
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnClose;
-            ClientSize = new Size(383, 330);
+            ClientSize = new Size(382, 379);
+            Controls.Add(comButton);
             Controls.Add(especialidadButton);
             Controls.Add(ModulosButton);
             Controls.Add(bttnCursos);
@@ -149,5 +161,6 @@
         private Button bttnCursos;
         private Button ModulosButton;
         private Button especialidadButton;
+        private Button comButton;
     }
 }
