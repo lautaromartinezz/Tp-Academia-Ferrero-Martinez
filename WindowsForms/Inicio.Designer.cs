@@ -35,6 +35,7 @@
             button1 = new Button();
             bttnCursos = new Button();
             ModulosButton = new Button();
+            especialidadButton = new Button();
             SuspendLayout();
             // 
             // usuarioButton
@@ -59,7 +60,7 @@
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(694, 403);
+            btnClose.Location = new Point(265, 281);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(94, 35);
             btnClose.TabIndex = 4;
@@ -107,12 +108,23 @@
             ModulosButton.UseVisualStyleBackColor = true;
             ModulosButton.Click += ModulosButton_Click;
             // 
+            // especialidadButton
+            // 
+            especialidadButton.Location = new Point(12, 275);
+            especialidadButton.Name = "especialidadButton";
+            especialidadButton.Size = new Size(114, 34);
+            especialidadButton.TabIndex = 9;
+            especialidadButton.Text = "Especialidades";
+            especialidadButton.UseVisualStyleBackColor = true;
+            especialidadButton.Click += especialidadButton_Click;
+            // 
             // Inicio
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnClose;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(383, 330);
+            Controls.Add(especialidadButton);
             Controls.Add(ModulosButton);
             Controls.Add(bttnCursos);
             Controls.Add(button1);
@@ -136,5 +148,6 @@
         private Button button1;
         private Button bttnCursos;
         private Button ModulosButton;
+        private Button especialidadButton;
     }
 }

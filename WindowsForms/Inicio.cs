@@ -62,5 +62,11 @@ namespace WindowsForms
             ModuloLista m = new ModuloLista();
             m.Show();
         }
+
+        private void especialidadButton_Click(object sender, EventArgs e)
+        {
+            EspecialidadLista esp = new EspecialidadLista();
+            esp.Show();
+        }
     }
 }
