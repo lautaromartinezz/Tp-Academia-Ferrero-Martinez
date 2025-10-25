@@ -11,7 +11,6 @@ namespace Domain.Model
         public string Descripcion { get; private set; }
         public int AnioEspecialidad { get; private set; }
         public int IdPlan { get; private set; }
-        public int IdCurso { get; private set; }
         public Plan Plan { get; private set; }
         public ICollection<Curso> Cursos { get; private set; }
 
