@@ -20,6 +20,8 @@ namespace Domain.Model
         public IEnumerable<Usuario> Usuarios {  get; private set; }
         public Plan Plan { get; private set; }
 
+        public IEnumerable<Dictado> Dictados { get; private set; }
+        public IEnumerable<Inscripcion> Inscripciones { get; set; }
         public Persona() { }
 
         public Persona(

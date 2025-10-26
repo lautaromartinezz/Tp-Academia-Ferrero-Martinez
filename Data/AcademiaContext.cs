@@ -20,6 +20,8 @@ namespace Data
         public DbSet<Especialidad> Especialidades { get; set; }
         public DbSet<Comision> Comisiones { get; set; }
         public DbSet<Persona> Personas { get; set; }
+        public DbSet<Inscripcion> Inscripciones { get; set; }
+        public DbSet<Dictado> Dictados { get; set; }
         internal AcademiaContext()
         {
             //this.Database.EnsureDeleted(); // SOLO EN DEV 
@@ -92,9 +94,9 @@ namespace Data
 
                 entity.Property(e => e.AnioCalendario).IsRequired();
 
-                entity.HasOne(e=>e.Comision)
-                    .WithMany(e=>e.Cursos)
-                    .HasForeignKey(e=>e.IdComision)
+                entity.HasOne(e => e.Comision)
+                    .WithMany(e => e.Cursos)
+                    .HasForeignKey(e => e.IdComision)
                     .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(c => c.Materia)
@@ -104,8 +106,8 @@ namespace Data
 
                 entity.HasData(
                     new { Id = 1, Cupo = 1, AnioCalendario = DateTime.Now, IdComision = 2, IdMateria = 1 },
-                    new { Id = 2, Cupo = 432, AnioCalendario = new DateTime(2025,10,09), IdComision = 2, IdMateria = 1 },
-                    new { Id = 3, Cupo = 2332, AnioCalendario = new DateTime(2025,09, 09), IdComision = 1, IdMateria = 2 },
+                    new { Id = 2, Cupo = 432, AnioCalendario = new DateTime(2025, 10, 09), IdComision = 2, IdMateria = 1 },
+                    new { Id = 3, Cupo = 2332, AnioCalendario = new DateTime(2025, 09, 09), IdComision = 1, IdMateria = 2 },
                     new { Id = 4, Cupo = 233, AnioCalendario = new DateTime(2025, 07, 09), IdComision = 1, IdMateria = 2 },
                     new { Id = 5, Cupo = 1234, AnioCalendario = new DateTime(2025, 10, 10), IdComision = 2, IdMateria = 4 }
                 );
@@ -129,13 +131,13 @@ namespace Data
 
                 entity.Property(e => e.Habilitado).IsRequired().HasMaxLength(15);
 
-                entity.HasOne((u)=> u.Persona)
+                entity.HasOne((u) => u.Persona)
                     .WithMany((p) => p.Usuarios)
                     .HasForeignKey(e => e.IdPersona)
                     .OnDelete(DeleteBehavior.Cascade).IsRequired();
 
                 entity.HasData(
-                    new { Id = 1, Nombre = "Santiago", Apellido = "Ferrero", Email = "santifnob@gmail.com", NombreUsuario = "vamoniubels", Habilitado = true, Clave = "asd" , IdPersona = 1},
+                    new { Id = 1, Nombre = "Santiago", Apellido = "Ferrero", Email = "santifnob@gmail.com", NombreUsuario = "vamoniubels", Habilitado = true, Clave = "asd", IdPersona = 1 },
                     new { Id = 2, Nombre = "Lautaro", Apellido = "Martinez", Email = "lautaromartinez@gmail.com", NombreUsuario = "vamoslalepra", Habilitado = true, Clave = "asd", IdPersona = 2 }
                 );
 
@@ -153,11 +155,11 @@ namespace Data
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.HasOne(p=>p.Especialidad).WithMany(e=>e.Planes).HasForeignKey(p => p.IdEspecialidad);
+                entity.HasOne(p => p.Especialidad).WithMany(e => e.Planes).HasForeignKey(p => p.IdEspecialidad);
 
                 entity.HasData(
-                    new { Id = 1, Descripcion = "ISI 2023", IdEspecialidad = 1},
-                    new { Id = 2, Descripcion = "IQ 2014", IdEspecialidad = 2}
+                    new { Id = 1, Descripcion = "ISI 2023", IdEspecialidad = 1 },
+                    new { Id = 2, Descripcion = "IQ 2014", IdEspecialidad = 2 }
                 );
             });
 
@@ -168,8 +170,8 @@ namespace Data
                 entity.Property(e => e.Ejecuta).HasMaxLength(50).IsRequired();
                 entity.Property(e => e.Descripcion).HasMaxLength(50).IsRequired();
                 entity.HasData(
-                    new { Id =1 , Descripcion = "asd", Ejecuta = "asd"},
-                    new { Id = 2,Descripcion = "asd2", Ejecuta = "asd2" }
+                    new { Id = 1, Descripcion = "asd", Ejecuta = "asd" },
+                    new { Id = 2, Descripcion = "asd2", Ejecuta = "asd2" }
                     );
             });
 
@@ -247,6 +249,43 @@ namespace Data
                     new { Id = 1, Nombre = "Juan", Apellido = "Pérez", Direccion = "Calle 123", Email = "juan@mail.com", Telefono = "111-222", Legajo = 1001, TipoPersona = "Alumno", FechaNac = new DateTime(2000, 1, 10), IdPlan = 1 },
                     new { Id = 2, Nombre = "Ana", Apellido = "García", Direccion = "Av. 456", Email = "ana@mail.com", Telefono = "333-444", Legajo = 1002, TipoPersona = "Docente", FechaNac = new DateTime(1990, 5, 15), IdPlan = 2 }
                 );
+            });
+
+            modelBuilder.Entity<Inscripcion>(entity =>
+            {
+                entity.HasKey(i => i.Id);
+                entity.Property(p => p.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(i => i.Nota)
+                    .IsRequired();
+
+                entity.Property(i=> i.Situacion)
+                    .HasMaxLength(50)
+                    .IsRequired();
+
+                entity.HasOne(i=>i.Alumno).WithMany(a=>a.Inscripciones).HasForeignKey(i=>i.IdAlumno);
+                entity.HasOne(i => i.Curso).WithMany(c => c.Inscripciones).HasForeignKey(i => i.IdCurso);
+
+                entity.HasData(
+                    new { Id = 1, IdAlumno = 1, IdCurso = 1, Nota = 9, Situacion = "Regular" },
+                    new { Id = 2, IdAlumno = 2, IdCurso = 2, Nota = 7, Situacion = "Aprobado" }
+                    );
+
+
+            });
+
+            modelBuilder.Entity<Dictado>(entity =>
+            {
+                entity.HasKey(d => d.Id);
+                entity.Property(d => d.Id).ValueGeneratedOnAdd();
+                entity.Property(d=>d.Cargo).HasMaxLength(50).IsRequired();
+                entity.HasOne(d=>d.Profesor).WithMany(p=>p.Dictados).HasForeignKey(d=>d.IdProfesor);
+                entity.HasOne(d=>d.Curso).WithMany(c=>c.Dictados).HasForeignKey(d=>d.IdCurso);
+                entity.HasData(
+                    new { Id = 1, Cargo = "Docente", IdProfesor = 1, IdCurso = 1 },
+                    new { Id = 2, Cargo = "Jefe Catedra", IdProfesor = 2, IdCurso = 2 }
+                    );
             });
         }
 

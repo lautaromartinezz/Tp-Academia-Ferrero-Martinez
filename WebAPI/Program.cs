@@ -46,5 +46,7 @@ app.MapModuloEndpoints();
 app.MapEspecialidadEndpoints();
 app.MapComisionEndpoints();
 app.MapPersonaEndpoints();
+app.MapInscripcionEndpoints();
+app.MapDictadoEndpoints();
 
 app.Run();

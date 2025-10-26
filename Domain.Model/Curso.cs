@@ -29,6 +29,10 @@ namespace Domain.Model
 
         public Comision Comision { get; private set; }
 
+        public IEnumerable<Inscripcion> Inscripciones { get; set; }
+        public IEnumerable<Dictado> Dictados { get; private set; }
+
+
         public void SetCupo(int cupo)
         {
             if (int.IsNegative(cupo))

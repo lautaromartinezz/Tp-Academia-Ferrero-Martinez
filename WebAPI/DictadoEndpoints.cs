@@ -3,15 +3,15 @@ using DTOs;
 
 namespace WebAPI
 {
-    public static class MateriaEndpoints
+    public static class DictadoEndpoints
     {
-        public static void MapMateriaEndpoints(this WebApplication app)
+        public static void MapDictadoEndpoints(this WebApplication app)
         {
-            app.MapGet("/materias/{id}", (int id) =>
+            app.MapGet("/dictados/{id}", (int id) =>
             {
-                MateriaService materiaService = new MateriaService();
+                DictadoService dictadoService = new DictadoService();
 
-                MateriaDTO? dto = materiaService.getOne(id);
+                DictadoDTO? dto = dictadoService.getOne(id);
 
                 if (dto == null)
                 {
@@ -19,58 +19,58 @@ namespace WebAPI
                 }
                 return Results.Ok(dto);
             })
-            .WithName("GetMateria")
-            .Produces<DTOs.MateriaDTO>(StatusCodes.Status200OK)
+            .WithName("GetDictado")
+            .Produces<DTOs.DictadoDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
-            app.MapGet("/materias", () =>
+            app.MapGet("/dictados", () =>
             {
-                MateriaService materiaService = new MateriaService();
+                DictadoService dictadoService = new DictadoService();
 
 
-                var dtos = materiaService.getAll();
+                var dtos = dictadoService.getAll();
 
                 return Results.Ok(dtos);
 
             })
-            .WithName("GetAllMaterias")
-            .Produces<List<DTOs.MateriaDTO>>(StatusCodes.Status200OK)
+            .WithName("GetAllDictadoes")
+            .Produces<List<DTOs.DictadoDTO>>(StatusCodes.Status200OK)
             .WithOpenApi();
 
-            app.MapPost("/materias", (MateriaDTO dto) =>
+            app.MapPost("/dictados", (DictadoDTO dto) =>
             {
                 try
                 {
-                    MateriaService materiaService = new MateriaService();
+                    DictadoService dictadoService = new DictadoService();
 
-                    MateriaDTO materiaDto = materiaService.add(dto);
+                    DictadoDTO dictadoDTO = dictadoService.add(dto);
 
-                    if (materiaDto == null)
+                    if (dictadoDTO == null)
                     {
-                        return Results.NotFound("La materia ingresada no existe");
+                        return Results.NotFound("El dictado no existe");
                     }
 
-                    return Results.Created($"/materias/{materiaDto.Id}", materiaDto);
+                    return Results.Created($"/dictados/{dictadoDTO.Id}", dictadoDTO);
                 }
                 catch (ArgumentException ex)
                 {
                     return Results.BadRequest(new { error = ex.Message });
                 }
             })
-            .WithName("AddMateria")
-            .Produces<DTOs.MateriaDTO>(StatusCodes.Status201Created)
+            .WithName("AddDictado")
+            .Produces<DTOs.DictadoDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
-            app.MapPut("/materias", (DTOs.MateriaDTO dto) =>
+            app.MapPut("/dictados", (DTOs.DictadoDTO dto) =>
             {
                 try
                 {
-                    MateriaService materiaService = new MateriaService();
+                    DictadoService dictadoService = new DictadoService();
 
-                    var found = materiaService.update(dto);
+                    var found = dictadoService.update(dto);
 
                     if (!found)
                     {
@@ -84,16 +84,16 @@ namespace WebAPI
                     return Results.BadRequest(new { error = ex.Message });
                 }
             })
-            .WithName("UpdateMateria")
+            .WithName("UpdateDictado")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
             .WithOpenApi();
 
-            app.MapDelete("/materias/{id}", (int id) =>
+            app.MapDelete("/dictados/{id}", (int id) =>
             {
-                MateriaService materiaService = new MateriaService();
+                DictadoService dictadoService = new DictadoService();
 
-                var deleted = materiaService.delete(id);
+                var deleted = dictadoService.delete(id);
 
                 if (!deleted)
                 {
@@ -103,7 +103,7 @@ namespace WebAPI
                 return Results.NoContent();
 
             })
-            .WithName("DeleteMateria")
+            .WithName("DeleteDictado")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
