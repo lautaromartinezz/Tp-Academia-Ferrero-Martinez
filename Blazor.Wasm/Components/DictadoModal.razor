@@ -1,0 +1,255 @@
+﻿@using DTOs
+@using API.Clients
+@using System.Text.RegularExpressions
+@inject IJSRuntime JSRuntime
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @if (mode == FormMode.Add)
+                        {
+                            <text>Agregar</text>
+                        }
+                        else
+                        {
+                            <text>Editar</text>
+                        }
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentDictado" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+
+                        @if (mode == FormMode.Update)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Id</label>
+                                <input type="text" class="form-control" value="@currentDictado.Id" readonly />
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Profesor *</label>
+                            <InputSelect @bind-Value="currentDictado.IdProfesor" class="form-control">
+                                <option value="0">Seleccionar Profesor</option>
+                                @if (profesores != null)
+                                {
+                                    foreach (var profesor in profesores)
+                                    {
+                                        <option value="@profesor.Id">@profesor.Legajo</option>
+                                    }
+                                }
+                            </InputSelect>
+                            @if (validationErrors.ContainsKey("Profesor"))
+                            {
+                                <div class="text-danger small">@validationErrors["Profesor"]</div>
+
+                            }
+
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Curso *</label>
+                            <InputSelect @bind-Value="currentDictado.IdCurso" class="form-control">
+                                <option value="0">Seleccionar Curso</option>
+                                @if (cursos != null)
+                                {
+                                    foreach (var curso in cursos)
+                                    {
+                                        <option value="@curso.Id">@curso.AnioCalendario</option>
+                                    }
+                                }
+                            </InputSelect>
+                            @if (validationErrors.ContainsKey("Curso"))
+                            {
+                                <div class="text-danger small">@validationErrors["Curso"]</div>
+
+                            }
+
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Situacion *</label>
+                            <InputText @bind-Value="currentDictado.Cargo" class="form-control" />
+                            @if (validationErrors.ContainsKey("Cargo"))
+                            {
+                                <div class="text-danger small">@validationErrors["Cargo"]</div>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="Close">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" disabled="@saving">
+                                @if (saving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(mode == FormMode.Add ? "Agregar" : "Actualizar")
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnUsuarioChanged { get; set; }
+
+    private bool showModal = false;
+    private FormMode mode = FormMode.Add;
+    private DictadoDTO currentDictado = new DictadoDTO();
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+    private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+    private List<CursoDTO>? cursos;
+    private List<PersonaDTO>? profesores;
+
+
+    public enum FormMode
+    {
+        Add,
+        Update
+    }
+
+    public async Task ShowAddModal()
+    {
+        mode = FormMode.Add;
+        currentDictado = new DictadoDTO();
+        await LoadProfesores();
+        await LoadCursos();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+
+    }
+
+    public async Task ShowEditModal(DictadoDTO dictado)
+    {
+        mode = FormMode.Update;
+        currentDictado = new DictadoDTO
+        {
+            Id = dictado.Id,
+            Cargo = dictado.Cargo,
+            IdProfesor = dictado.IdProfesor,
+            IdCurso = dictado.IdCurso,
+            ProfesorLegajo = dictado.ProfesorLegajo,
+            CursoAnio = dictado.CursoAnio
+        };
+        await LoadProfesores();
+        await LoadCursos();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!ValidateInscripcion())
+            return;
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (mode == FormMode.Add)
+            {
+                await DictadoAPIClient.AddAsync(currentDictado);
+            }
+            else
+            {
+                await DictadoAPIClient.UpdateAsync(currentDictado);
+            }
+
+            await OnUsuarioChanged.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private bool ValidateInscripcion()
+    {
+        ClearValidationErrors();
+        bool isValid = true;
+
+        if (string.IsNullOrWhiteSpace(currentDictado.Cargo))
+        {
+            validationErrors["Cargo"] = "La situacion es requerida";
+            isValid = false;
+        }
+
+        if (currentDictado.IdCurso <= 0)
+        {
+            validationErrors["Curso"] = "Debe seleccionar un Curso";
+        }
+        if (currentDictado.IdProfesor <= 0)
+        {
+            validationErrors["Profesor"] = "Debe seleccionar un Profesor";
+        }
+
+
+        StateHasChanged();
+        return isValid;
+    }
+
+    private void ClearValidationErrors()
+    {
+        validationErrors.Clear();
+        errorMessage = string.Empty;
+    }
+
+    private void Close()
+    {
+        showModal = false;
+        ClearValidationErrors();
+        StateHasChanged();
+    }
+
+    private async Task LoadProfesores()
+    {
+        try
+        {
+            profesores = (await PersonaAPIClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar profesores: {ex.Message}";
+
+        }
+    }
+    private async Task LoadCursos()
+    {
+        try
+        {
+            cursos = (await CursoAPIClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar cursos: {ex.Message}";
+
+        }
+    }
+
+}

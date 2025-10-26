@@ -24,7 +24,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("dictado/" + id);
+                HttpResponseMessage response = await client.GetAsync("dictados/" + id);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -50,7 +50,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("dictado");
+                HttpResponseMessage response = await client.GetAsync("dictados");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -59,16 +59,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener lista de dictadoes. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al obtener lista de dictados. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener lista de dictadoes: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al obtener lista de dictados: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener lista de dictadoes: {ex.Message}", ex);
+                throw new Exception($"Timeout al obtener lista de dictados: {ex.Message}", ex);
             }
         }
 
@@ -76,7 +76,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("dictado", dictado);
+                HttpResponseMessage response = await client.PostAsJsonAsync("dictados", dictado);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -98,7 +98,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync("dictado/" + id);
+                HttpResponseMessage response = await client.DeleteAsync("dictados/" + id);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -120,7 +120,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync("dictado", dictado);
+                HttpResponseMessage response = await client.PutAsJsonAsync("dictados", dictado);
 
                 if (!response.IsSuccessStatusCode)
                 {
