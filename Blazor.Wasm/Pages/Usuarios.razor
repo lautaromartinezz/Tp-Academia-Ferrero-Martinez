@@ -54,6 +54,7 @@
                                 <th>Apellido</th>
                                 <th>Nombre Usuario</th>
                                 <th>Email</th>
+                                <th>Habilitado</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -68,6 +69,7 @@
                                         <td>@usuario.Apellido</td>
                                         <td>@usuario.NombreUsuario</td>
                                         <td>@usuario.Email</td>
+                                        <td>@(usuario.Habilitado?"Si":"No")</td>
                                         <td>
                                             <button class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(usuario)">
                                                 <i class="fas fa-edit"></i> Editar

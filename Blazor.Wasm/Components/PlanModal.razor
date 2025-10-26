@@ -44,11 +44,22 @@
 
                         <div class="mb-3">
                             <label class="form-label">Especialidad *</label>
-                            <InputNumber @bind-Value="currentPlan.IdEspecialidad" class="form-control" />
+                            <InputSelect @bind-Value="currentPlan.IdEspecialidad" class="form-control" >
+                                <option value="0">Seleccionar Especialidad</option>
+                                @if (especialidades != null)
+                            {
+                                foreach (var especialidad in especialidades)
+                                {
+                                    <option value="@especialidad.Id">@especialidad.DescEspecialidad</option>
+                                }
+                            }
+                            </InputSelect>
                             @if (validationErrors.ContainsKey("Especialidad"))
                             {
                                 <div class="text-danger small">@validationErrors["Especialidad"]</div>
+
                             }
+                            
                         </div>
 
 
@@ -85,6 +96,7 @@
     private bool saving = false;
     private string errorMessage = string.Empty;
     private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+    private List<EspecialidadDTO>? especialidades;
 
     public enum FormMode
     {
@@ -96,6 +108,7 @@
     {
         mode = FormMode.Add;
         currentPlan = new PlanDTO();
+        await LoadEspecialidades();
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
@@ -112,6 +125,7 @@
             Descripcion = plan.Descripcion,
             IdEspecialidad = plan.IdEspecialidad
         };
+        await LoadEspecialidades();
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
@@ -184,6 +198,19 @@
         showModal = false;
         ClearValidationErrors();
         StateHasChanged();
+    }
+
+    private async Task LoadEspecialidades()
+    {
+        try
+        {
+            especialidades = (await EspecialidadAPIClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar países: {ex.Message}";
+
+        }
     }
 
 }

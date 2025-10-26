@@ -22,7 +22,7 @@ namespace Data
         public DbSet<Persona> Personas { get; set; }
         internal AcademiaContext()
         {
-            this.Database.EnsureDeleted(); // SOLO EN DEV 
+            //this.Database.EnsureDeleted(); // SOLO EN DEV 
 
             this.Database.EnsureCreated();
         }

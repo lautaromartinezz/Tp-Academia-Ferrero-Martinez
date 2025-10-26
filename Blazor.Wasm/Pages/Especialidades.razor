@@ -1,4 +1,4 @@
-﻿@page "/cursos"
+﻿@page "/especialidades"
 @using DTOs
 @using API.Clients
 @using Blazor.Wasm.Components
@@ -11,7 +11,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <h3>Cursos</h3>
+            <h3>Especialidades</h3>
 
             @if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -50,29 +50,23 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>Id</th>
-                                <th>Año</th>
-                                <th>Cupo</th>
-                                <th>Materia</th>
-                                <th>Comision</th>
+                                <th>Descripcion</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (cursos != null && cursos.Any())
+                            @if (especialidades != null && especialidades.Any())
                             {
-                                @foreach (var curso in cursos)
+                                @foreach (var especialidad in especialidades)
                                 {
                                     <tr>
-                                        <td>@curso.Id</td>
-                                        <td>@curso.AnioCalendario</td>
-                                        <td>@curso.Cupo</td>
-                                        <td>@curso.DescripcionMateria</td>
-                                        <td>@curso.DescripcionComision</td>
+                                        <td>@especialidad.Id</td>
+                                        <td>@especialidad.DescEspecialidad</td>
                                         <td>
-                                            <button class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(curso)">
+                                            <button class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(especialidad)">
                                                 <i class="fas fa-edit"></i> Editar
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDelete(curso)">
+                                            <button class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDelete(especialidad)">
                                                 <i class="fas fa-trash"></i> Eliminar
                                             </button>
                                         </td>
@@ -86,19 +80,20 @@
         </div>
     </div>
 </div>
-<CursoModal @ref="cursoModal" OnUsuarioChanged="LoadCursos" />
+<EspecialidadModal @ref="especialidadModal" OnUsuarioChanged="LoadEspecialidades" />
 
 @code {
-    private List<CursoDTO>? cursos;
+    private List<EspecialidadDTO>? especialidades;
     private bool loading = true;
     private string errorMessage = string.Empty;
     private string successMessage = string.Empty;
-    private CursoModal? cursoModal;
+    private EspecialidadModal? especialidadModal;
+
 
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadCursos();
+        await LoadEspecialidades();
     }
     /*
      *
@@ -115,7 +110,7 @@
             }
 
 
-            await LoadCursos();
+            await LoadEspecialidades();
             StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -123,17 +118,17 @@
      */
 
 
-    private async Task LoadCursos()
+    private async Task LoadEspecialidades()
     {
         try
         {
             loading = true;
-            cursos = (await CursoAPIClient.GetAllAsync())?.ToList();
+            especialidades = (await EspecialidadAPIClient.GetAllAsync())?.ToList();
             successMessage = string.Empty; // Clear success message when reloading
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error al cargar cursos: {ex.Message}";
+            errorMessage = $"Error al cargar especialidades: {ex.Message}";
         }
         finally
         {
@@ -143,36 +138,36 @@
 
     private async Task OpenAddModal()
     {
-        await cursoModal.ShowAddModal();
+        await especialidadModal.ShowAddModal();
     }
 
-    private async Task OpenEditModal(CursoDTO curso)
+    private async Task OpenEditModal(EspecialidadDTO especialidad)
     {
-        await cursoModal.ShowEditModal(curso);
+        await especialidadModal.ShowEditModal(especialidad);
     }
 
-    private async Task ConfirmDelete(CursoDTO curso)
+    private async Task ConfirmDelete(EspecialidadDTO especialidad)
     {
         var confirm = await JSRuntime.InvokeAsync<bool>("confirm",
-            $"¿Está seguro que desea eliminar el curso {curso.Id} {curso.AnioCalendario} {curso.DescripcionMateria}?");
+            $"¿Está seguro que desea eliminar el especialidad {especialidad.Id} {especialidad.DescEspecialidad}?");
 
         if (confirm)
         {
-            await DeleteCurso(curso.Id);
+            await DeleteEspecialidad(especialidad.Id);
         }
     }
 
-    private async Task DeleteCurso(int id)
+    private async Task DeleteEspecialidad(int id)
     {
         try
         {
-            await CursoAPIClient.DeleteAsync(id);
-            successMessage = "Curso eliminado exitosamente.";
-            await LoadCursos();
+            await EspecialidadAPIClient.DeleteAsync(id);
+            successMessage = "Especialidad eliminado exitosamente.";
+            await LoadEspecialidades();
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error al eliminar curso: {ex.Message}";
+            errorMessage = $"Error al eliminar especialidad: {ex.Message}";
         }
     }
 

@@ -52,10 +52,19 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Comision *</label>
-                            <InputNumber @bind-Value="currentCurso.IdComision" class="form-control" />
-                            @if (validationErrors.ContainsKey("Comision"))
+                            <InputSelect @bind-Value="currentCurso.IdComision" class="form-select">
+                                <option value="0">Seleccionar Comision</option>
+                                @if (comisiones != null)
+                                {
+                                    @foreach (var comision in comisiones)
+                                    {
+                                        <option value="@comision.Id">@comision.Descripcion</option>
+                                    }
+                                }
+                            </InputSelect>
+                            @if (validationErrors.ContainsKey("Materia"))
                             {
-                                <div class="text-danger small">@validationErrors["Comision"]</div>
+                                <div class="text-danger small">@validationErrors["Materia"]</div>
                             }
                         </div>
 
@@ -111,7 +120,9 @@
     private string errorMessage = string.Empty;
     private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
     private List<MateriaDTO>? materias;
-    
+    private List<ComisionDTO>? comisiones;
+
+
 
     public enum FormMode
     {
@@ -124,6 +135,7 @@
         mode = FormMode.Add;
         currentCurso = new CursoDTO();
         await LoadMaterias();
+        await LoadComisiones();
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
@@ -144,6 +156,7 @@
             DescripcionMateria = materia.DescripcionMateria
         };
         await LoadMaterias();
+        await LoadComisiones();
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
@@ -236,6 +249,19 @@
         catch (Exception ex)
         {
             errorMessage = $"Error al cargar materias: {ex.Message}";
+        }
+    }
+    private async Task LoadComisiones()
+    {
+        try
+        {
+            comisiones = (await ComisionAPIClient.GetAllAsync())?.ToList();
+            Console.WriteLine($"Comisiones cargadas: {comisiones?.Count}");
+
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar comisiones: {ex.Message}";
         }
     }
 }

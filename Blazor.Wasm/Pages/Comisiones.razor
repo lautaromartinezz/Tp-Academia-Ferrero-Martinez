@@ -1,4 +1,4 @@
-﻿@page "/cursos"
+﻿@page "/comisiones"
 @using DTOs
 @using API.Clients
 @using Blazor.Wasm.Components
@@ -11,7 +11,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <h3>Cursos</h3>
+            <h3>Comisions</h3>
 
             @if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -50,29 +50,27 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>Id</th>
+                                <th>Descripcion</th>
                                 <th>Año</th>
-                                <th>Cupo</th>
-                                <th>Materia</th>
-                                <th>Comision</th>
+                                <th>Plan</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (cursos != null && cursos.Any())
+                            @if (comisiones != null && comisiones.Any())
                             {
-                                @foreach (var curso in cursos)
+                                @foreach (var comision in comisiones)
                                 {
                                     <tr>
-                                        <td>@curso.Id</td>
-                                        <td>@curso.AnioCalendario</td>
-                                        <td>@curso.Cupo</td>
-                                        <td>@curso.DescripcionMateria</td>
-                                        <td>@curso.DescripcionComision</td>
+                                        <td>@comision.Id</td>
+                                        <td>@comision.Descripcion</td>
+                                        <td>@comision.AnioEspecialidad</td>
+                                        <td>@comision.DescripcionPlan</td>
                                         <td>
-                                            <button class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(curso)">
+                                            <button class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(comision)">
                                                 <i class="fas fa-edit"></i> Editar
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDelete(curso)">
+                                            <button class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDelete(comision)">
                                                 <i class="fas fa-trash"></i> Eliminar
                                             </button>
                                         </td>
@@ -86,19 +84,19 @@
         </div>
     </div>
 </div>
-<CursoModal @ref="cursoModal" OnUsuarioChanged="LoadCursos" />
+<ComisionModal @ref="comisionModal" OnUsuarioChanged="LoadComisiones" />
 
 @code {
-    private List<CursoDTO>? cursos;
+    private List<ComisionDTO>? comisiones;
     private bool loading = true;
     private string errorMessage = string.Empty;
     private string successMessage = string.Empty;
-    private CursoModal? cursoModal;
+    private ComisionModal? comisionModal;
 
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadCursos();
+        await LoadComisiones();
     }
     /*
      *
@@ -115,7 +113,7 @@
             }
 
 
-            await LoadCursos();
+            await LoadComisiones();
             StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -123,17 +121,17 @@
      */
 
 
-    private async Task LoadCursos()
+    private async Task LoadComisiones()
     {
         try
         {
             loading = true;
-            cursos = (await CursoAPIClient.GetAllAsync())?.ToList();
+            comisiones = (await ComisionAPIClient.GetAllAsync())?.ToList();
             successMessage = string.Empty; // Clear success message when reloading
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error al cargar cursos: {ex.Message}";
+            errorMessage = $"Error al cargar comisiones: {ex.Message}";
         }
         finally
         {
@@ -143,36 +141,36 @@
 
     private async Task OpenAddModal()
     {
-        await cursoModal.ShowAddModal();
+        await comisionModal.ShowAddModal();
     }
 
-    private async Task OpenEditModal(CursoDTO curso)
+    private async Task OpenEditModal(ComisionDTO comision)
     {
-        await cursoModal.ShowEditModal(curso);
+        await comisionModal.ShowEditModal(comision);
     }
 
-    private async Task ConfirmDelete(CursoDTO curso)
+    private async Task ConfirmDelete(ComisionDTO comision)
     {
         var confirm = await JSRuntime.InvokeAsync<bool>("confirm",
-            $"¿Está seguro que desea eliminar el curso {curso.Id} {curso.AnioCalendario} {curso.DescripcionMateria}?");
+            $"¿Está seguro que desea eliminar el comision {comision.Id} {comision.Descripcion} {comision.AnioEspecialidad} {comision.DescripcionPlan}?");
 
         if (confirm)
         {
-            await DeleteCurso(curso.Id);
+            await DeleteComision(comision.Id);
         }
     }
 
-    private async Task DeleteCurso(int id)
+    private async Task DeleteComision(int id)
     {
         try
         {
-            await CursoAPIClient.DeleteAsync(id);
-            successMessage = "Curso eliminado exitosamente.";
-            await LoadCursos();
+            await ComisionAPIClient.DeleteAsync(id);
+            successMessage = "Comision eliminado exitosamente.";
+            await LoadComisiones();
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error al eliminar curso: {ex.Message}";
+            errorMessage = $"Error al eliminar comision: {ex.Message}";
         }
     }
 

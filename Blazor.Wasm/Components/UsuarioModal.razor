@@ -22,20 +22,20 @@
                     <button type="button" class="btn-close" @onclick="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <EditForm Model="currentUsuario" OnValidSubmit="HandleValidSubmit">
+                    <EditForm Model="formData" OnValidSubmit="HandleValidSubmit">
                         <DataAnnotationsValidator />
 
                         @if (mode == FormMode.Update)
                         {
                             <div class="mb-3">
                                 <label class="form-label">Id</label>
-                                <input type="text" class="form-control" value="@currentUsuario.Id" readonly />
+                                <input type="text" class="form-control" value="@formData.Usuario.Id" readonly />
                             </div>
                         }
 
                         <div class="mb-3">
                             <label class="form-label">Nombre *</label>
-                            <InputText @bind-Value="currentUsuario.Nombre" class="form-control" />
+                            <InputText @bind-Value="formData.Usuario.Nombre" class="form-control" />
                             @if (validationErrors.ContainsKey("Nombre"))
                             {
                                 <div class="text-danger small">@validationErrors["Nombre"]</div>
@@ -44,7 +44,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Apellido *</label>
-                            <InputText @bind-Value="currentUsuario.Apellido" class="form-control" />
+                            <InputText @bind-Value="formData.Usuario.Apellido" class="form-control" />
                             @if (validationErrors.ContainsKey("Apellido"))
                             {
                                 <div class="text-danger small">@validationErrors["Apellido"]</div>
@@ -53,7 +53,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Email *</label>
-                            <InputText @bind-Value="currentUsuario.Email" class="form-control" />
+                            <InputText @bind-Value="formData.Usuario.Email" class="form-control" />
                             @if (validationErrors.ContainsKey("Email"))
                             {
                                 <div class="text-danger small">@validationErrors["Email"]</div>
@@ -62,11 +62,81 @@
 
                         <div class="mb-3">
                             <label class="form-label">Nombre Usuario *</label>
-                            <InputText @bind-Value="currentUsuario.NombreUsuario" class="form-control" />
+                            <InputText @bind-Value="formData.Usuario.NombreUsuario" class="form-control" />
                             @if (validationErrors.ContainsKey("NombreUsuario"))
                             {
                                 <div class="text-danger small">@validationErrors["NombreUsuario"]</div>
                             }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Clave *</label>
+                            <InputText @bind-Value="formData.Usuario.Clave" class="form-control" />
+                            @if (validationErrors.ContainsKey("Clave"))
+                            {
+                                <div class="text-danger small">@validationErrors["Clave"]</div>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Direccion *</label>
+                            <InputText @bind-Value="formData.Persona.Direccion" class="form-control" />
+                            @if (validationErrors.ContainsKey("Direccion"))
+                            {
+                                <div class="text-danger small">@validationErrors["Direccion"]</div>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Telefono *</label>
+                            <InputText @bind-Value="formData.Persona.Telefono" class="form-control" />
+                            @if (validationErrors.ContainsKey("Telefono"))
+                            {
+                                <div class="text-danger small">@validationErrors["Telefono"]</div>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Fecha Nacimiento *</label>
+                            <InputDate @bind-Value="formData.Persona.FechaNac" class="form-control" />
+                            @if (validationErrors.ContainsKey("FechaNac"))
+                            {
+                                <div class="text-danger small">@validationErrors["FechaNac"]</div>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Legajo *</label>
+                            <InputNumber @bind-Value="formData.Persona.Legajo" class="form-control" />
+                            @if (validationErrors.ContainsKey("Legajo"))
+                            {
+                                <div class="text-danger small">@validationErrors["Legajo"]</div>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tipo Persona *</label>
+                            <InputText @bind-Value="formData.Persona.TipoPersona" class="form-control" />
+                            @if (validationErrors.ContainsKey("TipoPersona"))
+                            {
+                                <div class="text-danger small">@validationErrors["TipoPersona"]</div>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Plan *</label>
+                            <InputSelect @bind-Value="formData.Persona.IdPlan" class="form-select">
+                                <option value="0">Seleccionar Plan</option>
+                                @if (planes != null)
+                                {
+                                    @foreach (var plan in planes)
+                                    {
+                                        <option value="@plan.Id">@plan.Descripcion</option>
+                                    }
+                                }
+                            </InputSelect>
+                            @if (validationErrors.ContainsKey("Plan"))
+                            {
+                                <div class="text-danger small">@validationErrors["Plan"]</div>
+                            }
+                        </div>
+                        <div class="mb-3 form-check">
+                            <InputCheckbox @bind-Value="formData.Usuario.Habilitado" class="form-check-input" id="chkHabilitado" />
+                            <label class="form-check-label" for="chkHabilitado">Habilitado</label>
                         </div>
 
                         @if (!string.IsNullOrEmpty(errorMessage))
@@ -98,10 +168,19 @@
 
     private bool showModal = false;
     private FormMode mode = FormMode.Add;
-    private UsuarioDTO currentUsuario = new UsuarioDTO();
+    private UsuarioPersonaViewModel formData = new UsuarioPersonaViewModel();
     private bool saving = false;
     private string errorMessage = string.Empty;
     private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+    private List<PlanDTO>? planes;
+    private PersonaDTO persona;
+
+
+    public class UsuarioPersonaViewModel
+    {
+        public UsuarioDTO Usuario { get; set; } = new();
+        public PersonaDTO Persona { get; set; } = new();
+    }
 
     public enum FormMode
     {
@@ -112,32 +191,45 @@
     public async Task ShowAddModal()
     {
         mode = FormMode.Add;
-        currentUsuario = new UsuarioDTO();
+        formData.Usuario = new UsuarioDTO();
+        formData.Persona = new PersonaDTO();
+        await LoadPlanes();
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
 
-        await Task.CompletedTask; // evita el error y mantiene la firma asincrónica
     }
 
     public async Task ShowEditModal(UsuarioDTO usuario)
     {
         mode = FormMode.Update;
-        currentUsuario = new UsuarioDTO
+        await LoadPersona(usuario.IdPersona);
+        formData.Usuario = new UsuarioDTO
         {
             Id = usuario.Id,
             Nombre = usuario.Nombre,
             NombreUsuario = usuario.NombreUsuario,
             Apellido = usuario.Apellido,
             Email = usuario.Email,
-            Habilitado = usuario.Habilitado
+            Habilitado = usuario.Habilitado,
+            Clave=usuario.Clave
+            
         };
+        formData.Persona = new PersonaDTO
+        {
+            Direccion=persona.Direccion,
+            Telefono=persona.Telefono,
+            FechaNac=persona.FechaNac,
+            Legajo=persona.Legajo,
+            TipoPersona=persona.TipoPersona,
+            IdPlan=persona.IdPlan
 
+        };
+        await LoadPlanes();
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
 
-        await Task.CompletedTask;
     }
 
     private async Task HandleValidSubmit()
@@ -149,14 +241,18 @@
         {
             saving = true;
             errorMessage = string.Empty;
+            formData.Persona.Nombre = formData.Usuario.Nombre;
+            formData.Persona.Apellido = formData.Usuario.Apellido;
+            formData.Persona.Email = formData.Usuario.Email;
+
 
             if (mode == FormMode.Add)
             {
-                await UsuarioAPIClient.AddAsync(currentUsuario);
+                await UsuarioAPIClient.AddAsync(formData.Usuario,formData.Persona);
             }
             else
             {
-                await UsuarioAPIClient.UpdateAsync(currentUsuario);
+                await UsuarioAPIClient.UpdateAsync(formData.Usuario);
             }
 
             await OnUsuarioChanged.InvokeAsync();
@@ -177,34 +273,66 @@
         ClearValidationErrors();
         bool isValid = true;
 
-        if (string.IsNullOrWhiteSpace(currentUsuario.Nombre))
+        if (string.IsNullOrWhiteSpace(formData.Usuario.Nombre))
         {
             validationErrors["Nombre"] = "El Nombre es requerido";
             isValid = false;
         }
 
-        if (string.IsNullOrWhiteSpace(currentUsuario.Apellido))
+        if (string.IsNullOrWhiteSpace(formData.Usuario.Apellido))
         {
             validationErrors["Apellido"] = "El Apellido es requerido";
             isValid = false;
         }
 
-        if (string.IsNullOrWhiteSpace(currentUsuario.Email))
+        if (string.IsNullOrWhiteSpace(formData.Usuario.Email))
         {
             validationErrors["Email"] = "El Email es requerido";
             isValid = false;
         }
-        else if (!IsValidEmail(currentUsuario.Email))
+        else if (!IsValidEmail(formData.Usuario.Email))
         {
             validationErrors["Email"] = "El formato del Email no es válido";
             isValid = false;
         }
 
-        if (string.IsNullOrWhiteSpace(currentUsuario.NombreUsuario))
+        if (string.IsNullOrWhiteSpace(formData.Usuario.NombreUsuario))
         {
             validationErrors["NombreUsuario"] = "El Nombre de usuario es requerido";
             isValid = false;
         }
+
+        if (string.IsNullOrWhiteSpace(formData.Usuario.Clave))
+        {
+            validationErrors["Clave"] = "La Clave es requerida";
+            isValid = false;
+        }
+        if (string.IsNullOrWhiteSpace(formData.Persona.Telefono))
+        {
+            validationErrors["Telefono"] = "El telefono es requerido";
+            isValid = false;
+        }
+        if (DateTime.MinValue==formData.Persona.FechaNac)
+        {
+            validationErrors["FechaNac"] = "Fecha de Nacimiento no valida";
+            isValid = false;
+        }
+        if (formData.Persona.Legajo<=0)
+        {
+            validationErrors["Legajo"] = "El legajo es requerido";
+            isValid = false;
+        }
+        if (string.IsNullOrWhiteSpace(formData.Persona.TipoPersona))
+        {
+            validationErrors["TipoPersona"] = "El tipo de persona es requerido";
+            isValid = false;
+        }
+        if (formData.Persona.IdPlan <= 0)
+        {
+            validationErrors["Plan"] = "Seleccione un plan";
+            isValid = false;
+        }
+
 
         StateHasChanged();
         return isValid;
@@ -228,5 +356,32 @@
         showModal = false;
         ClearValidationErrors();
         StateHasChanged();
+    }
+
+    public async Task LoadPlanes()
+    {
+        try
+        {
+           planes = (await PlanAPIClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            
+            errorMessage = $"Error al cargar planes: {ex.Message}";
+
+        }
+    }
+    private async Task LoadPersona(int id)
+    {
+        try
+        {
+            persona = (await PersonaAPIClient.GetAsync(id));
+        }
+        catch (Exception ex)
+        {
+
+            errorMessage = $"Error al cargar planes: {ex.Message}";
+
+        }
     }
 }

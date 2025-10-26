@@ -22,61 +22,27 @@
                     <button type="button" class="btn-close" @onclick="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <EditForm Model="currentMateria" OnValidSubmit="HandleValidSubmit">
+                    <EditForm Model="currentEspecialidad" OnValidSubmit="HandleValidSubmit">
                         <DataAnnotationsValidator />
 
                         @if (mode == FormMode.Update)
                         {
                             <div class="mb-3">
                                 <label class="form-label">Id</label>
-                                <input type="text" class="form-control" value="@currentMateria.Id" readonly />
+                                <input type="text" class="form-control" value="@currentEspecialidad.Id" readonly />
                             </div>
                         }
 
                         <div class="mb-3">
                             <label class="form-label">Descripcion  *</label>
-                            <InputText @bind-Value="currentMateria.Descripcion" class="form-control" />
+                            <InputText @bind-Value="currentEspecialidad.DescEspecialidad" class="form-control" />
                             @if (validationErrors.ContainsKey("Descripcion"))
                             {
                                 <div class="text-danger small">@validationErrors["Descripcion"]</div>
                             }
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Horas Semanales *</label>
-                            <InputNumber @bind-Value="currentMateria.HsSemanales" class="form-control" />
-                            @if (validationErrors.ContainsKey("HsSemanales"))
-                            {
-                                <div class="text-danger small">@validationErrors["HsSemanales"]</div>
-                            }
-                        </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Horas Totales *</label>
-                            <InputNumber @bind-Value="currentMateria.HsTotales" class="form-control" />
-                            @if (validationErrors.ContainsKey("HsTotales"))
-                            {
-                                <div class="text-danger small">@validationErrors["HsTotales"]</div>
-                            }
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Plan *</label>
-                            <InputSelect @bind-Value="currentMateria.IdPlan" class="form-select">
-                                <option value="0">Seleccionar Plan</option>
-                                @if (planes != null)
-                                {
-                                    @foreach (var plan in planes)
-                                    {
-                                        <option value="@plan.Id">@plan.Descripcion</option>
-                                    }
-                                }
-                            </InputSelect>
-                            @if (validationErrors.ContainsKey("Plan"))
-                            {
-                                <div class="text-danger small">@validationErrors["Plan"]</div>
-                            }
-                        </div>
 
                         @if (!string.IsNullOrEmpty(errorMessage))
                         {
@@ -107,11 +73,10 @@
 
     private bool showModal = false;
     private FormMode mode = FormMode.Add;
-    private MateriaDTO currentMateria = new MateriaDTO();
+    private EspecialidadDTO currentEspecialidad = new EspecialidadDTO();
     private bool saving = false;
     private string errorMessage = string.Empty;
     private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
-    private List<PlanDTO>? planes;
 
     public enum FormMode
     {
@@ -122,28 +87,22 @@
     public async Task ShowAddModal()
     {
         mode = FormMode.Add;
-        currentMateria = new MateriaDTO();
-        await LoadPlanes();
+        currentEspecialidad = new EspecialidadDTO();
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
 
-        
+
     }
 
-    public async Task ShowEditModal(MateriaDTO materia)
+    public async Task ShowEditModal(EspecialidadDTO especialidad)
     {
         mode = FormMode.Update;
-        currentMateria = new MateriaDTO
+        currentEspecialidad = new EspecialidadDTO
         {
-            Id = materia.Id,
-            Descripcion = materia.Descripcion,
-            HsSemanales=materia.HsSemanales,
-            HsTotales=materia.HsTotales,
-            IdPlan=materia.IdPlan,
-            DescripcionPlan=materia.DescripcionPlan
+            Id = especialidad.Id,
+            DescEspecialidad = especialidad.DescEspecialidad,
         };
-        await LoadPlanes();
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
@@ -153,7 +112,7 @@
 
     private async Task HandleValidSubmit()
     {
-        if (!ValidateMateria())
+        if (!ValidateEspecialidad())
             return;
 
         try
@@ -163,11 +122,11 @@
 
             if (mode == FormMode.Add)
             {
-                await MateriaAPIClient.AddAsync(currentMateria);
+                await EspecialidadAPIClient.AddAsync(currentEspecialidad);
             }
             else
             {
-                await MateriaAPIClient.UpdateAsync(currentMateria);
+                await EspecialidadAPIClient.UpdateAsync(currentEspecialidad);
             }
 
             await OnUsuarioChanged.InvokeAsync();
@@ -183,33 +142,17 @@
         }
     }
 
-    private bool ValidateMateria()
+    private bool ValidateEspecialidad()
     {
         ClearValidationErrors();
         bool isValid = true;
 
-        if (string.IsNullOrWhiteSpace(currentMateria.Descripcion))
+        if (string.IsNullOrWhiteSpace(currentEspecialidad.DescEspecialidad))
         {
             validationErrors["Descripcion"] = "La descripcion es requerida";
             isValid = false;
         }
 
-        if (currentMateria.HsSemanales<=0)
-        {
-            validationErrors["HsSemanales"] = "Debe asignar las horas semanales";
-            isValid = false;
-        }
-        if (currentMateria.HsTotales <= 0)
-        {
-            validationErrors["HsTotales"] = "Debe asignar las horas totales";
-            isValid = false;
-        }
-
-        if (currentMateria.IdPlan <= 0)
-        {
-            validationErrors["Plan"] = "Debe seleccionar un plan";
-            isValid = false;
-        }
 
         StateHasChanged();
         return isValid;
@@ -228,16 +171,4 @@
         StateHasChanged();
     }
 
-    private async Task LoadPlanes()
-    {
-        try
-        {
-            planes = (await PlanAPIClient.GetAllAsync())?.ToList();
-
-        }
-        catch(Exception ex)
-        {
-            errorMessage = $"Error al cargar planes: {ex.Message}";
-        }
-    }
 }
