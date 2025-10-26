@@ -24,7 +24,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("inscripcion/" + id);
+                HttpResponseMessage response = await client.GetAsync("inscripciones/" + id);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -50,7 +50,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("inscripcion");
+                HttpResponseMessage response = await client.GetAsync("inscripciones");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -76,7 +76,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("inscripcion", inscripcion);
+                HttpResponseMessage response = await client.PostAsJsonAsync("inscripciones", inscripcion);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -98,7 +98,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync("inscripcion/" + id);
+                HttpResponseMessage response = await client.DeleteAsync("inscripciones/" + id);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -120,7 +120,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync("inscripcion", inscripcion);
+                HttpResponseMessage response = await client.PutAsJsonAsync("inscripciones", inscripcion);
 
                 if (!response.IsSuccessStatusCode)
                 {

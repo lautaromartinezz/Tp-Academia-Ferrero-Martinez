@@ -45,5 +45,30 @@ namespace API.Clients
                 throw new Exception($"{ex.Message}", ex);
             }
         }
+        public static async Task<IEnumerable<PersonaDTO>> GetAllAsync()
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync("personas");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<IEnumerable<PersonaDTO>>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener lista de personas. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al obtener lista de personas: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al obtener lista de personas: {ex.Message}", ex);
+            }
+        }
     }
 }

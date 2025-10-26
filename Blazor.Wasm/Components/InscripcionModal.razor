@@ -1,0 +1,270 @@
+﻿@using DTOs
+@using API.Clients
+@using System.Text.RegularExpressions
+@inject IJSRuntime JSRuntime
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @if (mode == FormMode.Add)
+                        {
+                            <text>Agregar</text>
+                        }
+                        else
+                        {
+                            <text>Editar</text>
+                        }
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentInscripcion" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+
+                        @if (mode == FormMode.Update)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Id</label>
+                                <input type="text" class="form-control" value="@currentInscripcion.Id" readonly />
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Alumno *</label>
+                            <InputSelect @bind-Value="currentInscripcion.IdAlumno" class="form-control">
+                                <option value="0">Seleccionar Alumno</option>
+                                @if (alumnos != null)
+                                {
+                                    foreach (var alumno in alumnos)
+                                    {
+                                        <option value="@alumno.Id">@alumno.Legajo</option>
+                                    }
+                                }
+                            </InputSelect>
+                            @if (validationErrors.ContainsKey("Alumno"))
+                            {
+                                <div class="text-danger small">@validationErrors["Alumno"]</div>
+
+                            }
+
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Curso *</label>
+                            <InputSelect @bind-Value="currentInscripcion.IdCurso" class="form-control">
+                                <option value="0">Seleccionar Curso</option>
+                                @if (cursos != null)
+                                {
+                                    foreach (var curso in cursos)
+                                    {
+                                        <option value="@curso.Id">@curso.AnioCalendario</option>
+                                    }
+                                }
+                            </InputSelect>
+                            @if (validationErrors.ContainsKey("Curso"))
+                            {
+                                <div class="text-danger small">@validationErrors["Curso"]</div>
+
+                            }
+
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Situacion *</label>
+                            <InputText @bind-Value="currentInscripcion.Situacion" class="form-control" />
+                            @if (validationErrors.ContainsKey("Situacion"))
+                            {
+                                <div class="text-danger small">@validationErrors["Situacion"]</div>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nota *</label>
+                            <InputNumber @bind-Value="currentInscripcion.Nota" class="form-control" />
+                            @if (validationErrors.ContainsKey("Nota"))
+                            {
+                                <div class="text-danger small">@validationErrors["Nota"]</div>
+                            }
+                        </div>
+
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="Close">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" disabled="@saving">
+                                @if (saving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(mode == FormMode.Add ? "Agregar" : "Actualizar")
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnUsuarioChanged { get; set; }
+
+    private bool showModal = false;
+    private FormMode mode = FormMode.Add;
+    private InscripcionDTO currentInscripcion = new InscripcionDTO();
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+    private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+    private List<CursoDTO>? cursos;
+    private List<PersonaDTO>? alumnos;
+
+
+    public enum FormMode
+    {
+        Add,
+        Update
+    }
+
+    public async Task ShowAddModal()
+    {
+        mode = FormMode.Add;
+        currentInscripcion = new InscripcionDTO();
+        await LoadAlumnos();
+        await LoadCursos();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+
+    }
+
+    public async Task ShowEditModal(InscripcionDTO inscripcion)
+    {
+        mode = FormMode.Update;
+        currentInscripcion = new InscripcionDTO
+        {
+            Id = inscripcion.Id,
+            Nota=inscripcion.Nota,
+            Situacion=inscripcion.Situacion,
+            IdAlumno=inscripcion.IdAlumno,
+            IdCurso=inscripcion.IdCurso,
+            AlumnoLegajo=inscripcion.AlumnoLegajo,
+            CursoAnio=inscripcion.CursoAnio
+        };
+        await LoadAlumnos();
+        await LoadCursos();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!ValidateInscripcion())
+            return;
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (mode == FormMode.Add)
+            {
+                await InscripcionAPIClient.AddAsync(currentInscripcion);
+            }
+            else
+            {
+                await InscripcionAPIClient.UpdateAsync(currentInscripcion);
+            }
+
+            await OnUsuarioChanged.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private bool ValidateInscripcion()
+    {
+        ClearValidationErrors();
+        bool isValid = true;
+
+        if (string.IsNullOrWhiteSpace(currentInscripcion.Situacion))
+        {
+            validationErrors["Situacion"] = "La situacion es requerida";
+            isValid = false;
+        }
+
+        if (currentInscripcion.Nota <= 0)
+        {
+            validationErrors["Nota"] = "La nota debe ser mayor a 0";
+            isValid = false;
+        }
+        if (currentInscripcion.IdCurso <= 0)
+        {
+            validationErrors["Curso"] = "Debe seleccionar un Curso";
+        }
+        if (currentInscripcion.IdAlumno <= 0)
+        {
+            validationErrors["Alumno"] = "Debe seleccionar un Alumno";
+        }
+
+
+        StateHasChanged();
+        return isValid;
+    }
+
+    private void ClearValidationErrors()
+    {
+        validationErrors.Clear();
+        errorMessage = string.Empty;
+    }
+
+    private void Close()
+    {
+        showModal = false;
+        ClearValidationErrors();
+        StateHasChanged();
+    }
+
+    private async Task LoadAlumnos()
+    {
+        try
+        {
+            alumnos = (await PersonaAPIClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar alumnos: {ex.Message}";
+
+        }
+    }
+    private async Task LoadCursos()
+    {
+        try
+        {
+            cursos = (await CursoAPIClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar cursos: {ex.Message}";
+
+        }
+    }
+
+}
