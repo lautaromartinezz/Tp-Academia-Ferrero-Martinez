@@ -31,7 +31,34 @@ namespace WebAPI
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status500InternalServerError)
             .WithOpenApi()
-            .AllowAnonymous(); 
+            .AllowAnonymous();
+
+            app.MapPost("/auth/getrole", async (LoginRequest request, IConfiguration configuration) =>
+            {
+                try
+                {
+                    var authService = new AuthService(configuration);
+                    
+                    string? role = authService.GetRoleFromToken(request.Token);
+
+                    if (role == null)
+                    {
+                        return Results.Unauthorized();
+                    }
+                    LoginResponse response = new LoginResponse() { Role = role};
+                    return Results.Ok(response);
+                }
+                catch (Exception ex)
+                {
+                    return Results.Problem($"Error durante el login: {ex.Message}");
+                }
+            })
+            .WithName("GetRole")
+            .Produces<LoginResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .WithOpenApi()
+            .AllowAnonymous();
         }
     }
 }

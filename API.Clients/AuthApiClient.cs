@@ -31,5 +31,25 @@ namespace API.Clients
             // Si no es successful, devolver null (credenciales incorrectas)
             return null;
         }
+
+        public async Task<string?> GetRoleFromTokenAsync(string token)
+        {
+            using var httpClient = await CreateHttpClientAsync();
+            var request = new LoginRequest { Token = token };
+            var json = JsonSerializer.Serialize(request);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync("/auth/getrole", content);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var loginResponse = JsonSerializer.Deserialize<LoginResponse>(responseContent, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                return loginResponse?.Role;
+            }
+            // Si no es successful, devolver null (token inválido)
+            return null;
+        }
     }
 }
