@@ -24,7 +24,7 @@ namespace Domain.Services
                 NombreUsuario = usuario.NombreUsuario,
                 Email = usuario.Email,
                 Habilitado = usuario.Habilitado,
-                Clave = usuario.Clave,
+                Clave = "",
                 IdPersona = usuario.Persona.Id
             }).ToList();
 
@@ -46,7 +46,7 @@ namespace Domain.Services
                 NombreUsuario = usuario.NombreUsuario,
                 Email = usuario.Email,
                 Habilitado = usuario.Habilitado,
-                Clave = usuario.Clave,
+                Clave = "",
                 IdPersona = usuario.Persona.Id
             };
 

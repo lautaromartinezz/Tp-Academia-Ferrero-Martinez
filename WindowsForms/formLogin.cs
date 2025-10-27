@@ -45,6 +45,7 @@ namespace Academia
                 {
                     loginButton.Enabled = true;
                     loginButton.Text = "Iniciar Sesión";
+                    
                 }
             }
         }

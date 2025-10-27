@@ -1,6 +1,7 @@
 using API.Clients;
 using API.Auth.WindowsForms;
 using Academia;
+using System.Web;
 namespace WindowsForms
 {
     internal static class Program
@@ -25,26 +26,53 @@ namespace WindowsForms
         {
             // Registrar AuthService en singleton
             var authService = new WindowsFormsAuthService();
+            var authApiClient = new AuthApiClient();
             AuthServiceProvider.Register(authService);
 
             // Loop principal de autenticación
             while (true)
             {
-
+                string? userRol = null;
                 if (!await authService.IsAuthenticatedAsync())
                 {
                     var loginForm = new formLogin();
+                    
+                    
                     if (loginForm.ShowDialog() != DialogResult.OK)
                     {
                         // Usuario canceló login, cerrar aplicación
+                        return;
+                    }
+                    string? token = await authService.GetTokenAsync();
+                    if(token == null)
+                    {
+                        return;
+                    }
+                    userRol = await authApiClient.GetRoleFromTokenAsync(token);
+
+                    if (userRol == null)
+                    {
                         return;
                     }
                 }
 
                 try
                 {
-                    Application.Run(new Inicio());
-                    break; // La aplicación se cerró normalmente
+                    if(userRol == "Admin")
+                    {
+                        Application.Run(new Inicio());
+                    } else if (userRol == "Profesor")
+                    {
+                        // CU de Profesor
+
+                        Application.Run(new DictadoLista());
+                    } else if (userRol == "Alumno")
+                    {
+                        // CU de Alumno
+
+                        Application.Run(new InscripcionLista());
+                    }
+                        break; // La aplicación se cerró normalmente
                 }
                 catch (UnauthorizedAccessException ex)
                 {

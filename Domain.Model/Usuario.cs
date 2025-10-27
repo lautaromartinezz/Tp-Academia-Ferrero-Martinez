@@ -42,11 +42,8 @@ namespace Domain.Model
 
         public void SetClave(string password)
         {
-            if (string.IsNullOrWhiteSpace(password))
+            if (!string.IsNullOrWhiteSpace(password) && password.Length < 6)
                 throw new ArgumentException("La contraseña no puede ser nula o vacía.", nameof(password));
-
-            if (password.Length < 6)
-                throw new ArgumentException("La contraseña debe tener al menos 6 caracteres.", nameof(password));
 
             Salt = GenerateSalt();
             Clave = HashPassword(password, Salt); // ESTA REALMENTE SERIA LA CLAVE HASHEADA (LA QUE SE ESTA GUARDANDO EN EL BACK)
