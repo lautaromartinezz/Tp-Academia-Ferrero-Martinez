@@ -84,7 +84,7 @@ namespace Data
                 usuarioToUpdate.SetHabilitado(usuario.Habilitado);
                 if (!string.IsNullOrWhiteSpace(usuario.Clave))
                 {
-                    usuario.SetClave(usuario.Clave); 
+                    usuarioToUpdate.SetClaveSinHash(usuario.Clave); // Ya viene hasheada de antes 
                 }
 
                 try

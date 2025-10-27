@@ -48,6 +48,11 @@ namespace Domain.Model
             Salt = GenerateSalt();
             Clave = HashPassword(password, Salt); // ESTA REALMENTE SERIA LA CLAVE HASHEADA (LA QUE SE ESTA GUARDANDO EN EL BACK)
         }
+
+        public void SetClaveSinHash(string password)
+        {
+            Clave = password;
+        }
         public void SetHabilitado(bool habil)
         {
            Habilitado = habil;
