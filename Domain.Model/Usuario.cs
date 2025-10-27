@@ -36,7 +36,7 @@ namespace Domain.Model
             SetApellido(apellido);
             SetEmail(email);
             SetHabilitado(habilitado);
-            Clave = clave;
+            SetClave(clave);
             SetIdPersona(idPersona);
         }
 

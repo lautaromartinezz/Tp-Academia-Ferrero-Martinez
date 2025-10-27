@@ -1,7 +1,35 @@
 ﻿@page "/"
+@using API.Clients
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+@if (isLoading)
+{
+    <p>Verificando autenticación...</p>
+}
+else if (isAuthenticated)
+{
+    <p>Usuario: @username</p>
+}
 
-Welcome to your new app.
+@code {
+    private bool isAuthenticated = false;
+    private bool isLoading = true;
+    private string username = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        username = isAuthenticated ? await AuthService.GetUsernameAsync() ?? "" : "";
+
+        if (!isAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        isLoading = false;
+    }
+}

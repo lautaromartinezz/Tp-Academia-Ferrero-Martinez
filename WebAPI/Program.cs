@@ -48,5 +48,6 @@ app.MapComisionEndpoints();
 app.MapPersonaEndpoints();
 app.MapInscripcionEndpoints();
 app.MapDictadoEndpoints();
+app.MapAuthEndpoints();
 
 app.Run();
