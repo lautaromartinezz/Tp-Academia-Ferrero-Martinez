@@ -28,7 +28,7 @@ namespace Domain.Services
         {
             if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
                 return null;
-
+            //if (request.Username == "admin" && request.Password == "1234")
             var usuario = await usuarioRepository.GetByUsernameAsync(request.Username);
 
             if (usuario == null || !usuario.ValidatePassword(request.Password))
