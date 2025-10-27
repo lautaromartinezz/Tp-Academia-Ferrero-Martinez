@@ -144,5 +144,34 @@ namespace API.Clients
                 throw new Exception($"Timeout al actualizar la curso con Id {curso.Id}: {ex.Message}", ex);
             }
         }
+
+        public static async Task<IEnumerable<CursoDTO>> GetByPlan(int idPlan)
+        {
+            try
+            {
+                using var client = await CreateHttpClientAsync();
+
+                HttpResponseMessage response = await client.GetAsync("cursos/plan/"+idPlan);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<IEnumerable<CursoDTO>>();
+                }
+                else
+                {
+                    await HandleUnauthorizedResponseAsync(response);
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener lista de cursos. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al obtener lista de cursos: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al obtener lista de cursos: {ex.Message}", ex);
+            }
+        }
     }
 }

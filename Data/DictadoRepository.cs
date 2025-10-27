@@ -70,5 +70,15 @@ namespace Data
             }
             return false;
         }
+
+        public IEnumerable<Dictado> GetByProfesorId(int profesorId)
+        {
+            using var context = CreateContext();
+            return context.Dictados
+                .Include(i => i.Profesor)
+                .Include(i => i.Curso)
+                .Where(i => i.IdProfesor == profesorId)
+                .ToList();
+        }
     }
 }

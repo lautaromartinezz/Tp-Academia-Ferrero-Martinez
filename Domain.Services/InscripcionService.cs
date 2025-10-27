@@ -20,12 +20,12 @@ namespace Domain.Services
             return inscripciones.Select(inscripcion => new InscripcionDTO()
             {
                 Id = inscripcion.Id,
-                Nota=inscripcion.Nota,
-                Situacion=inscripcion.Situacion,
-                IdCurso=inscripcion.IdCurso,
-                IdAlumno=inscripcion.IdAlumno,
-                CursoAnio=inscripcion.Curso.AnioCalendario,
-                AlumnoLegajo=inscripcion.Alumno.Legajo
+                Nota = inscripcion.Nota,
+                Situacion = inscripcion.Situacion,
+                IdCurso = inscripcion.IdCurso,
+                IdAlumno = inscripcion.IdAlumno,
+                CursoAnio = inscripcion.Curso.AnioCalendario,
+                AlumnoLegajo = inscripcion.Alumno.Legajo
 
             }).ToList();
 
@@ -58,15 +58,28 @@ namespace Domain.Services
             Persona? persona = personaRepository.Get(dto.IdAlumno);
 
             var cursoRepository = new CursoRepository();
-            Curso? curso= cursoRepository.Get(dto.IdCurso);
-
-            if (persona == null || curso==null ) return null;
+            Curso? curso = cursoRepository.Get(dto.IdCurso);
+            if (persona == null || curso == null) return null;
+            if (curso.Cupo <= 0) return null;
             else
             {
                 var inscripcionRepository = new InscripcionRepository();
-                Inscripcion inscripcion = new Inscripcion(0,dto.Situacion,dto.Nota,dto.IdAlumno,dto.IdCurso);
+                Inscripcion inscripcion = new Inscripcion(0, dto.Situacion, dto.Nota, dto.IdAlumno, dto.IdCurso);
                 inscripcionRepository.Add(inscripcion);
                 dto.Id = inscripcion.Id;
+
+                CursoDTO cursoDTO = new CursoDTO()
+                {
+                    Id = curso.Id,
+                    AnioCalendario = curso.AnioCalendario,
+                    Cupo = curso.Cupo - 1,
+                    IdComision = curso.IdComision,
+                    IdMateria = curso.IdMateria,
+                    DescripcionComision = curso.Comision.Descripcion,
+                    DescripcionMateria = curso.Materia.Descripcion
+                };
+                cursoRepository.Update(new Curso(cursoDTO.Id, cursoDTO.AnioCalendario, cursoDTO.Cupo, cursoDTO.IdComision, cursoDTO.IdMateria));
+
                 return dto;
             }
         }
@@ -85,14 +98,48 @@ namespace Domain.Services
             Curso? curso = cursoRepository.Get(dto.IdCurso);
 
             if (persona == null || curso == null) return false;
+            if (curso.Cupo <= 0) return false;
             else
             {
                 var inscripcionRepository = new InscripcionRepository();
 
-                Inscripcion inscripcion = new Inscripcion(dto.Id,dto.Situacion, dto.Nota, dto.IdAlumno, dto.IdCurso);
+                Inscripcion inscripcion = new Inscripcion(dto.Id, dto.Situacion, dto.Nota, dto.IdAlumno, dto.IdCurso);
+
+
+                CursoDTO cursoDTO = new CursoDTO()
+                {
+                    Id = curso.Id,
+                    AnioCalendario = curso.AnioCalendario,
+                    Cupo = curso.Cupo - 1,
+                    IdComision = curso.IdComision,
+                    IdMateria = curso.IdMateria,
+                    DescripcionComision = curso.Comision.Descripcion,
+                    DescripcionMateria = curso.Materia.Descripcion
+                };
+                cursoRepository.Update(new Curso(cursoDTO.Id, cursoDTO.AnioCalendario, cursoDTO.Cupo, cursoDTO.IdComision, cursoDTO.IdMateria));
+
+
                 return inscripcionRepository.Update(inscripcion);
 
             }
         }
+        public IEnumerable<InscripcionDTO> getByCurso(int idCurso)
+        {
+            var inscripcionRepository = new InscripcionRepository();
+            var inscripciones = inscripcionRepository.GetByCurso(idCurso);
+
+            return inscripciones.Select(inscripcion => new InscripcionDTO()
+            {
+                Id = inscripcion.Id,
+                Nota = inscripcion.Nota,
+                Situacion = inscripcion.Situacion,
+                IdCurso = inscripcion.IdCurso,
+                IdAlumno = inscripcion.IdAlumno,
+                CursoAnio = inscripcion.Curso.AnioCalendario,
+                AlumnoLegajo = inscripcion.Alumno.Legajo
+
+            }).ToList();
+
+        }
     }
-}
+    }

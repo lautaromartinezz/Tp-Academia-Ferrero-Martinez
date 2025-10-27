@@ -72,5 +72,15 @@ namespace Data
             return false;
         }
 
+        public IEnumerable<Inscripcion> GetByCurso(int idCurso)
+        {
+            using var context = CreateContext();
+            return context.Inscripciones
+                .Include(i => i.Alumno)
+                .Include(i => i.Curso)
+                .Where(i => i.IdCurso == idCurso)
+                .ToList();
+        }
+
     }
 }

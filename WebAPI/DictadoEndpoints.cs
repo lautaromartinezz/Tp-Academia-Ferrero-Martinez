@@ -107,6 +107,15 @@ namespace WebAPI
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
+
+            app.MapGet("/dictados/profesor/{idProfesor}", (int idProfesor) =>
+            {
+                DictadoService dictadoService = new DictadoService();
+                var dtos = dictadoService.getByProfesorId(idProfesor);
+                return Results.Ok(dtos);
+            }).WithName("GetByDictadosByProfesor")
+            .Produces<List<DTOs.DictadoDTO>>(StatusCodes.Status200OK)
+            .WithOpenApi();
         }
     }
 }

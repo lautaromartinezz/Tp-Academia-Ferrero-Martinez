@@ -91,5 +91,21 @@ namespace Domain.Services
 
             }
         }
+
+        public IEnumerable<DictadoDTO> getByProfesorId(int idProfesor)
+        {
+            var dictadoRepository = new DictadoRepository();
+            var dictados = dictadoRepository.GetByProfesorId(idProfesor);
+            return dictados.Select(dictado => new DictadoDTO()
+            {
+                Id = dictado.Id,
+                Cargo = dictado.Cargo,
+                IdCurso = dictado.IdCurso,
+                IdProfesor = dictado.IdProfesor,
+                CursoAnio = dictado.Curso.AnioCalendario,
+                ProfesorLegajo = dictado.Profesor.Legajo
+
+            }).ToList();
+        }
     }
 }

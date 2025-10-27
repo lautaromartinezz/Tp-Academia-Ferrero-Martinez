@@ -106,7 +106,7 @@ namespace Data
 
                 entity.HasData(
                     new { Id = 1, Cupo = 1, AnioCalendario = DateTime.Now, IdComision = 2, IdMateria = 1 },
-                    new { Id = 2, Cupo = 432, AnioCalendario = new DateTime(2025, 10, 09), IdComision = 2, IdMateria = 1 },
+                    new { Id = 2, Cupo = 0, AnioCalendario = new DateTime(2025, 10, 09), IdComision = 2, IdMateria = 1 },
                     new { Id = 3, Cupo = 2332, AnioCalendario = new DateTime(2025, 09, 09), IdComision = 1, IdMateria = 2 },
                     new { Id = 4, Cupo = 233, AnioCalendario = new DateTime(2025, 07, 09), IdComision = 1, IdMateria = 2 },
                     new { Id = 5, Cupo = 1234, AnioCalendario = new DateTime(2025, 10, 10), IdComision = 2, IdMateria = 4 }

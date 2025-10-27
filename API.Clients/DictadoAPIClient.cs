@@ -145,5 +145,32 @@ namespace API.Clients
                 throw new Exception($"{ex.Message}", ex);
             }
         }
+
+        public static async Task<IEnumerable<DictadoDTO>> GetByProfesorLegajoAsync(int id)
+        {
+            try
+            {
+                using var client = await CreateHttpClientAsync();
+                HttpResponseMessage response = await client.GetAsync($"dictados/profesor/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<IEnumerable<DictadoDTO>>();
+                }
+                else
+                {
+                    await HandleUnauthorizedResponseAsync(response);
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener dictados para el profesor con id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al obtener dictados para el profesor con id {id}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al obtener dictados para el profesor con id {id}: {ex.Message}", ex);
+            }
+        }
     }
 }
