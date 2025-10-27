@@ -9,25 +9,20 @@ using DTOs;
 
 namespace API.Clients
 {
-    public class ModuloAPIClient
+    public class ModuloAPIClient : BaseApiClient
     {
-        private static HttpClient client = new HttpClient();
-        static ModuloAPIClient()
-        {
-            client.BaseAddress = new Uri("https://localhost:7111/");
-            client.DefaultRequestHeaders.Accept.Clear(); //
-            client.DefaultRequestHeaders.Accept.Add( // Lineas no necesariamente necesarias
-                new MediaTypeWithQualityHeaderValue("application/json"));
-        }
 
         public static async Task<IEnumerable<ModuloDTO>> GetAllAsync()
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("modulos");
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string message = await response.Content.ReadAsStringAsync();
                     throw new ArgumentException(message);
                 } else
@@ -50,10 +45,13 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("modulos/" + id);
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string message = await response.Content.ReadAsStringAsync();
 
                     throw new Exception(message);
@@ -73,10 +71,13 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PostAsJsonAsync("modulos", dto);
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string message = await response.Content.ReadAsStringAsync();
 
                     throw new Exception(message);
@@ -92,10 +93,13 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PutAsJsonAsync("modulos", dto);
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string message = await response.Content.ReadAsStringAsync();
 
                     throw new Exception(message);
@@ -111,10 +115,13 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.DeleteAsync("modulos/" + id);
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string message = await response.Content.ReadAsStringAsync();
 
                     throw new Exception(message);
