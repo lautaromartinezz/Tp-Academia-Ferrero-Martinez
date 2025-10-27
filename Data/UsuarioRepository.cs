@@ -114,7 +114,7 @@ namespace Data
         public async Task<Usuario?> GetByUsernameAsync(string username)
         {
             using var context = CreateContext();
-            return await context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == username && u.Habilitado);
+            return await context.Usuarios.Include(u=>u.Persona).FirstOrDefaultAsync(u => u.NombreUsuario == username && u.Habilitado);
         }
     }
 }
