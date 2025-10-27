@@ -34,9 +34,12 @@ namespace Domain.Services
             Usuario? usuario = null;
             string? token = null;
 
+            Console.WriteLine(adminData["user"]);
+            Console.WriteLine(adminData["password"]);
+
             if (adminData != null && request.Username == adminData["user"] && request.Password == adminData["password"])
             {
-                usuario = new Usuario(0, "admin", "admin", adminData["user"], "admin@admin.com", true, adminData["password"], 0);
+                usuario = new Usuario(10, "admin", "admin", adminData["user"], "admin@admin.com", true, adminData["password"], 10);
                 token = GenerateJwtToken(usuario, "Admin");
             } else
             {

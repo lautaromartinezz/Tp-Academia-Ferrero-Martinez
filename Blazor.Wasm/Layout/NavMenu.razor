@@ -67,28 +67,46 @@
 </div>
 
 @code {
+    private string? role;
     private bool collapseNavMenu = true;
-
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private string? role;
+    protected override async Task OnInitializedAsync()
+    {
+        // Suscribirse al evento de login/logout
+        BlazorAuthService.AuthenticationStateChanged += OnAuthStateChanged;
+
+        await LoadRole();
+    }
+
+    private async void OnAuthStateChanged(bool isAuthenticated)
+    {
+        await LoadRole();
+        // Forzar rerender del componente
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task LoadRole()
+    {
+        var token = await BlazorAuthService.GetTokenAsync();
+
+        if (string.IsNullOrEmpty(token))
+        {
+            role = null;
+        }
+        else
+        {
+            role = await AuthApiClient.GetRoleFromTokenAsync(token);
+        }
+    }
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
 
-    protected override async Task OnInitializedAsync()
+    public void Dispose()
     {
-        string? token = await BlazorAuthService.GetTokenAsync();
-
-        if(token == null)
-        {
-            role = null;
-        } else
-        {
-            role = await AuthApiClient.GetRoleFromTokenAsync(token);
-        }
-        return;
-    } 
+        BlazorAuthService.AuthenticationStateChanged -= OnAuthStateChanged;
+    }
 }
