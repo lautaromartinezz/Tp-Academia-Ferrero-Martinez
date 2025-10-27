@@ -140,6 +140,21 @@ namespace Domain.Services
             }
         }
 
+        public string? GetRoleFromToken(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jsonToken = tokenHandler.ReadJwtToken(token);
+                var roleClaim = jsonToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+                return roleClaim?.Value;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         private int GetExpirationMinutes()
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
