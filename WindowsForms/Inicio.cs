@@ -74,5 +74,17 @@ namespace WindowsForms
             ComisionLista com = new ComisionLista();
             com.Show();
         }
+
+        private void inscripcionBttn_Click(object sender, EventArgs e)
+        {
+            InscripcionLista ins = new InscripcionLista();
+            ins.Show();
+        }
+
+        private void dictadoBttn_Click(object sender, EventArgs e)
+        {
+            DictadoLista dic = new DictadoLista();
+            dic.Show();
+        }
     }
 }

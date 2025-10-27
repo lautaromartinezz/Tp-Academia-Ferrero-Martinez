@@ -37,6 +37,8 @@
             ModulosButton = new Button();
             especialidadButton = new Button();
             comButton = new Button();
+            inscripcionBttn = new Button();
+            dictadoBttn = new Button();
             SuspendLayout();
             // 
             // usuarioButton
@@ -129,12 +131,34 @@
             comButton.UseVisualStyleBackColor = true;
             comButton.Click += comButton_Click;
             // 
+            // inscripcionBttn
+            // 
+            inscripcionBttn.Location = new Point(132, 55);
+            inscripcionBttn.Name = "inscripcionBttn";
+            inscripcionBttn.Size = new Size(114, 40);
+            inscripcionBttn.TabIndex = 11;
+            inscripcionBttn.Text = "Inscripciones";
+            inscripcionBttn.UseVisualStyleBackColor = true;
+            inscripcionBttn.Click += inscripcionBttn_Click;
+            // 
+            // dictadoBttn
+            // 
+            dictadoBttn.Location = new Point(132, 101);
+            dictadoBttn.Name = "dictadoBttn";
+            dictadoBttn.Size = new Size(114, 40);
+            dictadoBttn.TabIndex = 12;
+            dictadoBttn.Text = "Dictado";
+            dictadoBttn.UseVisualStyleBackColor = true;
+            dictadoBttn.Click += dictadoBttn_Click;
+            // 
             // Inicio
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnClose;
             ClientSize = new Size(382, 379);
+            Controls.Add(dictadoBttn);
+            Controls.Add(inscripcionBttn);
             Controls.Add(comButton);
             Controls.Add(especialidadButton);
             Controls.Add(ModulosButton);
@@ -162,5 +186,7 @@
         private Button ModulosButton;
         private Button especialidadButton;
         private Button comButton;
+        private Button inscripcionBttn;
+        private Button dictadoBttn;
     }
 }
