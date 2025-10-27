@@ -76,9 +76,9 @@ namespace Domain.Services
         {
             var usuarioRepository = new UsuarioRepository();
 
-            Usuario usuario = new Usuario(dto.Id, dto.Nombre, dto.NombreUsuario, dto.Apellido, dto.Email, dto.Habilitado,dto.Clave, dto.IdPersona);
+            Usuario usuario = new Usuario(dto.Id, dto.Nombre, dto.NombreUsuario, dto.Apellido, dto.Email, dto.Habilitado,dto.IdPersona);
 
-            return usuarioRepository.Update(usuario);
+            return usuarioRepository.Update(usuario, dto.Clave);
             
         }
     }

@@ -71,7 +71,7 @@ namespace Data
             return context.Usuarios.Include(c => c.Persona).ToList();
         }
 
-        public bool Update(Usuario usuario)
+        public bool Update(Usuario usuario, string clave)
         {
             using var context = CreateContext();
             var usuarioToUpdate = context.Usuarios.FirstOrDefault(c => c.Id == usuario.Id);
@@ -82,9 +82,9 @@ namespace Data
                 usuarioToUpdate.SetEmail(usuario.Email);
                 usuarioToUpdate.SetNombreUsuario(usuario.NombreUsuario);
                 usuarioToUpdate.SetHabilitado(usuario.Habilitado);
-                if (!string.IsNullOrWhiteSpace(usuario.Clave))
+                if (!string.IsNullOrWhiteSpace(clave))
                 {
-                    usuarioToUpdate.SetClaveSinHash(usuario.Clave); // Ya viene hasheada de antes 
+                    usuarioToUpdate.SetClave(clave); 
                 }
 
                 try

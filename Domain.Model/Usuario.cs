@@ -40,6 +40,17 @@ namespace Domain.Model
             SetIdPersona(idPersona);
         }
 
+        public Usuario(int id, string nombre, string nombreUsuario, string apellido, string email, bool habilitado, int idPersona)
+        {
+            SetId(id);
+            SetNombre(nombre);
+            SetNombreUsuario(nombreUsuario);
+            SetApellido(apellido);
+            SetEmail(email);
+            SetHabilitado(habilitado);
+            SetIdPersona(idPersona);
+        }
+
         public void SetClave(string password)
         {
             if (!string.IsNullOrWhiteSpace(password) && password.Length < 6)
