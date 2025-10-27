@@ -28,13 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
-            textUsuario = new TextBox();
-            textPass = new TextBox();
-            btnIngresar = new Button();
-            linkForgotPass = new LinkLabel();
+            usernameTextBox = new TextBox();
+            passwordTextBox = new TextBox();
+            loginButton = new Button();
+            cancelButton = new Button();
+            errorProvider = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -57,7 +60,6 @@
             label2.Size = new Size(115, 15);
             label2.TabIndex = 1;
             label2.Text = "Nombre del usuario:";
-            label2.Click += label2_Click;
             // 
             // label3
             // 
@@ -68,52 +70,55 @@
             label3.TabIndex = 2;
             label3.Text = "Contraseña:";
             // 
-            // textUsuario
+            // usernameTextBox
             // 
-            textUsuario.Location = new Point(126, 115);
-            textUsuario.Name = "textUsuario";
-            textUsuario.Size = new Size(199, 23);
-            textUsuario.TabIndex = 3;
+            usernameTextBox.Location = new Point(126, 115);
+            usernameTextBox.Name = "usernameTextBox";
+            usernameTextBox.Size = new Size(199, 23);
+            usernameTextBox.TabIndex = 3;
             // 
-            // textPass
+            // passwordTextBox
             // 
-            textPass.Location = new Point(126, 165);
-            textPass.Name = "textPass";
-            textPass.PasswordChar = '*';
-            textPass.Size = new Size(199, 23);
-            textPass.TabIndex = 4;
+            passwordTextBox.Location = new Point(126, 165);
+            passwordTextBox.Name = "passwordTextBox";
+            passwordTextBox.PasswordChar = '*';
+            passwordTextBox.Size = new Size(199, 23);
+            passwordTextBox.TabIndex = 4;
             // 
-            // btnIngresar
+            // loginButton
             // 
-            btnIngresar.Location = new Point(126, 229);
-            btnIngresar.Name = "btnIngresar";
-            btnIngresar.Size = new Size(75, 23);
-            btnIngresar.TabIndex = 5;
-            btnIngresar.Text = "Ingresar";
-            btnIngresar.UseVisualStyleBackColor = true;
-            btnIngresar.Click += btnIngresar_Click;
+            loginButton.Location = new Point(126, 229);
+            loginButton.Name = "loginButton";
+            loginButton.Size = new Size(75, 23);
+            loginButton.TabIndex = 5;
+            loginButton.Text = "Ingresar";
+            loginButton.UseVisualStyleBackColor = true;
+            loginButton.Click += loginButton_Click;
             // 
-            // linkForgotPass
+            // cancelButton
             // 
-            linkForgotPass.AutoSize = true;
-            linkForgotPass.Location = new Point(5, 274);
-            linkForgotPass.Name = "linkForgotPass";
-            linkForgotPass.Size = new Size(119, 15);
-            linkForgotPass.TabIndex = 6;
-            linkForgotPass.TabStop = true;
-            linkForgotPass.Text = "Olvidé mi contraseña";
-            linkForgotPass.LinkClicked += linkForgotPass_LinkClicked;
+            cancelButton.Location = new Point(231, 230);
+            cancelButton.Name = "cancelButton";
+            cancelButton.Size = new Size(75, 23);
+            cancelButton.TabIndex = 7;
+            cancelButton.Text = "Cancelar";
+            cancelButton.UseVisualStyleBackColor = true;
+            cancelButton.Click += cancelButton_Click_1;
+            // 
+            // errorProvider
+            // 
+            errorProvider.ContainerControl = this;
             // 
             // formLogin
             // 
-            AcceptButton = btnIngresar;
+            AcceptButton = loginButton;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(362, 305);
-            Controls.Add(linkForgotPass);
-            Controls.Add(btnIngresar);
-            Controls.Add(textPass);
-            Controls.Add(textUsuario);
+            Controls.Add(cancelButton);
+            Controls.Add(loginButton);
+            Controls.Add(passwordTextBox);
+            Controls.Add(usernameTextBox);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -123,6 +128,7 @@
             Name = "formLogin";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Ingreso";
+            ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -132,9 +138,10 @@
         private Label label1;
         private Label label2;
         private Label label3;
-        private TextBox textUsuario;
-        private TextBox textPass;
-        private Button btnIngresar;
-        private LinkLabel linkForgotPass;
+        private TextBox usernameTextBox;
+        private TextBox passwordTextBox;
+        private Button loginButton;
+        private Button cancelButton;
+        private ErrorProvider errorProvider;
     }
 }
