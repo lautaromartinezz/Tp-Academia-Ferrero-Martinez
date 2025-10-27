@@ -170,7 +170,6 @@
             Controls.Add(usuarioButton);
             Name = "Inicio";
             Text = "Academia";
-            Load += Inicio_Load;
             ResumeLayout(false);
             PerformLayout();
         }

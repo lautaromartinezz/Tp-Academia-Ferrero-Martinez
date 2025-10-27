@@ -40,17 +40,7 @@ namespace WindowsForms
             planLista.Show();
         }
 
-        private void Inicio_Load(object sender, EventArgs e)
-        {
-            formLogin appLogin = new formLogin();
-            DialogResult diagRes = appLogin.ShowDialog();
-            if (diagRes != DialogResult.OK)
-            {
-                this.Dispose();
-            }
 
-
-        }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
