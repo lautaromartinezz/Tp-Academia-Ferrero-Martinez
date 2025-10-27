@@ -12,10 +12,16 @@ using System.Windows.Forms;
 
 namespace WindowsForms
 {
+    public enum FormModeInsc
+    {
+        Add,
+        Update,
+        Profesor
+    }
     public partial class InscripcionDetalle : Form
     {
         private InscripcionDTO inscripcion;
-        private FormMode mode;
+        private FormModeInsc mode;
 
         public InscripcionDTO Inscripcion
         {
@@ -27,7 +33,7 @@ namespace WindowsForms
             }
         }
 
-        public FormMode Mode
+        public FormModeInsc Mode
         {
             get
             {
@@ -35,13 +41,13 @@ namespace WindowsForms
             }
             set
             {
-                SetFormMode(value);
+                SetFormModeInsc(value);
             }
         }
         public InscripcionDetalle()
         {
             InitializeComponent();
-            Mode = FormMode.Add;
+            Mode = FormModeInsc.Add;
 
         }
 
@@ -61,7 +67,7 @@ namespace WindowsForms
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
                     //en la Lista o tal vez en un Presenter o Controler
 
-                    if (this.Mode == FormMode.Update)
+                    if (this.Mode == FormModeInsc.Update || this.Mode == FormModeInsc.Profesor)
                     {
                         await InscripcionAPIClient.UpdateAsync(this.Inscripcion);
                     }
@@ -94,22 +100,31 @@ namespace WindowsForms
 
         }
 
-        private void SetFormMode(FormMode value)
+        private void SetFormModeInsc(FormModeInsc value)
         {
             mode = value;
 
-            if (Mode == FormMode.Add)
+            if (Mode == FormModeInsc.Add)
             {
                 idLabel.Visible = false;
                 idTextBox.Visible = false;
 
             }
 
-            if (Mode == FormMode.Update)
+            if (Mode == FormModeInsc.Update)
             {
                 idLabel.Visible = true;
                 idTextBox.Visible = true;
 
+            }
+            if(Mode == FormModeInsc.Profesor)
+            {
+                idLabel.Visible = false;
+                idTextBox.Visible = false;
+                idAlumnoTextBox.Visible = false;
+                idAlumnoLabel.Visible = false;
+                idCursoLabel.Visible = false;
+                idCursoTextBox.Visible = false;
             }
         }
 

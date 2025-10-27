@@ -108,7 +108,7 @@ namespace WebAPI
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
-            app.MapGet("/inscripciones/curso{idCurso}", (int idCurso) =>
+            app.MapGet("/inscripciones/curso/{idCurso}", (int idCurso) =>
             {
                 InscripcionService inscripcionService = new InscripcionService();
 

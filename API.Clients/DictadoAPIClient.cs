@@ -146,7 +146,7 @@ namespace API.Clients
             }
         }
 
-        public static async Task<IEnumerable<DictadoDTO>> GetByProfesorLegajoAsync(int id)
+        public static async Task<IEnumerable<DictadoDTO>> GetByProfesorAsync(int id)
         {
             try
             {

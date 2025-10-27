@@ -147,7 +147,9 @@ namespace WindowsForms
 
         private void profesorBttn_Click(object sender, EventArgs e)
         {
-
+            CUProfesorListaDictados profList = new CUProfesorListaDictados();
+            profList.UserId = this.UserId;
+            profList.Show();
         }
 
         private void alumnoBttn_Click(object sender, EventArgs e)

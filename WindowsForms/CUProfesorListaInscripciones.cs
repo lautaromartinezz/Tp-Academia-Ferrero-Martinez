@@ -12,31 +12,20 @@ using System.Windows.Forms;
 
 namespace WindowsForms
 {
-    public partial class InscripcionLista : Form
+    public partial class CUProfesorListaInscripciones : Form
     {
-        public InscripcionLista()
+        private int _cursoId;
+        public int CursoId { get { return _cursoId; } set { _cursoId = value; } }
+        public CUProfesorListaInscripciones()
         {
             InitializeComponent();
         }
-
         private void Inscripcion_Load(object sender, EventArgs e)
         {
             this.GetAllAndLoad();
         }
 
-        private void agregarButton_Click(object sender, EventArgs e)
-        {
-            InscripcionDetalle inscripcionDetalle = new InscripcionDetalle();
 
-            InscripcionDTO inscripcionNuevo = new InscripcionDTO();
-
-            inscripcionDetalle.Mode = FormModeInsc.Add;
-            inscripcionDetalle.Inscripcion = inscripcionNuevo;
-
-            inscripcionDetalle.ShowDialog();
-
-            this.GetAllAndLoad();
-        }
 
         private async void modificarButton_Click(object sender, EventArgs e)
         {
@@ -48,7 +37,7 @@ namespace WindowsForms
 
                 InscripcionDTO inscripcion = await InscripcionAPIClient.GetAsync(id);
 
-                inscripcionDetalle.Mode = FormModeInsc.Update;
+                inscripcionDetalle.Mode = FormModeInsc.Profesor;
                 inscripcionDetalle.Inscripcion = inscripcion;
 
                 inscripcionDetalle.ShowDialog();
@@ -61,51 +50,28 @@ namespace WindowsForms
             }
         }
 
-        private async void eliminarButton_Click(object sender, EventArgs e)
-        {
-
-            try
-            {
-                int id = this.SelectedItem().Id;
-
-                var result = MessageBox.Show($"¿Está seguro que desea eliminar el inscripcion con Id {id}?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
-                {
-                    await InscripcionAPIClient.DeleteAsync(id);
-                    this.GetAllAndLoad();
-
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"111Error al eliminar materia: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        
 
         private async void GetAllAndLoad()
         {
             try
             {
                 this.inscripcionDataGridView.DataSource = null;
-                this.inscripcionDataGridView.DataSource = await InscripcionAPIClient.GetAllAsync();
+                this.inscripcionDataGridView.DataSource = await InscripcionAPIClient.GetByCursoAsync(CursoId);
 
                 if (this.inscripcionDataGridView.Rows.Count > 0)
                 {
                     this.inscripcionDataGridView.Rows[0].Selected = true;
-                    this.eliminarButton.Enabled = true;
                     this.modificarButton.Enabled = true;
                 }
                 else
                 {
-                    this.eliminarButton.Enabled = false;
                     this.modificarButton.Enabled = false;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar la lista de inscripcions: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.eliminarButton.Enabled = false;
                 this.modificarButton.Enabled = false;
             }
         }
