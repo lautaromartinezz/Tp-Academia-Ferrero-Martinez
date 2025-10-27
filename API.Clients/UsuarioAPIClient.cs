@@ -10,23 +10,16 @@ using System.Threading.Tasks;
 
 namespace API.Clients
 {
-    public class UsuarioAPIClient
+    public class UsuarioAPIClient : BaseApiClient
     {
 
-        private static HttpClient client = new HttpClient();
-        static UsuarioAPIClient()
-        {
-            client.BaseAddress = new Uri("https://localhost:7111/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-        }
 
 
         public static async Task<UsuarioDTO> GetAsync(int id)
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
                 HttpResponseMessage response = await client.GetAsync("usuarios/" + id);
 
                 if (response.IsSuccessStatusCode)
@@ -53,6 +46,7 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
                 HttpResponseMessage response = await client.GetAsync("usuarios");
 
                 if (response.IsSuccessStatusCode)
@@ -79,6 +73,7 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
                 HttpResponseMessage responsePersona = await client.PostAsJsonAsync("personas", persona);
                 if (!responsePersona.IsSuccessStatusCode)
                 {
@@ -109,6 +104,7 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
                 HttpResponseMessage response = await client.DeleteAsync("usuarios/" + id);
 
                 if (!response.IsSuccessStatusCode)
@@ -131,6 +127,7 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
                 HttpResponseMessage response = await client.PutAsJsonAsync("usuarios", usuario);
 
                 if (!response.IsSuccessStatusCode)

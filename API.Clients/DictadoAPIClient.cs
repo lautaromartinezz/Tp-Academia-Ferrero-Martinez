@@ -8,22 +8,17 @@ using System.Threading.Tasks;
 
 namespace API.Clients
 {
-    public class DictadoAPIClient
+    public class DictadoAPIClient : BaseApiClient
     {
-        private static HttpClient client = new HttpClient();
-        static DictadoAPIClient()
-        {
-            client.BaseAddress = new Uri("https://localhost:7111/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-        }
+        
 
 
         public static async Task<DictadoDTO> GetAsync(int id)
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("dictados/" + id);
 
                 if (response.IsSuccessStatusCode)
@@ -50,6 +45,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("dictados");
 
                 if (response.IsSuccessStatusCode)
@@ -76,6 +73,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PostAsJsonAsync("dictados", dictado);
 
                 if (!response.IsSuccessStatusCode)
@@ -98,6 +97,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.DeleteAsync("dictados/" + id);
 
                 if (!response.IsSuccessStatusCode)
@@ -120,6 +121,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PutAsJsonAsync("dictados", dictado);
 
                 if (!response.IsSuccessStatusCode)

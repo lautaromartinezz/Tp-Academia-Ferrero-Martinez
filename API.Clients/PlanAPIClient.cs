@@ -8,22 +8,17 @@ using System.Threading.Tasks;
 
 namespace API.Clients
 {
-    public class PlanAPIClient
+    public class PlanAPIClient : BaseApiClient
     {
-        private static HttpClient client = new HttpClient();
-        static PlanAPIClient()
-        {
-            client.BaseAddress = new Uri("https://localhost:7111/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-        }
+
 
 
         public static async Task<PlanDTO> GetAsync(int id)
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("planes/" + id);
 
                 if (response.IsSuccessStatusCode)
@@ -50,6 +45,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("planes");
 
                 if (response.IsSuccessStatusCode)
@@ -76,6 +73,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PostAsJsonAsync("planes", plan);
 
                 if (!response.IsSuccessStatusCode)
@@ -98,6 +97,7 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
                 HttpResponseMessage response = await client.DeleteAsync("planes/" + id);
 
                 if (!response.IsSuccessStatusCode)
@@ -120,6 +120,7 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
                 HttpResponseMessage response = await client.PutAsJsonAsync("planes", plan);
 
                 if (!response.IsSuccessStatusCode)

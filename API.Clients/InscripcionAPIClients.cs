@@ -8,22 +8,15 @@ using System.Threading.Tasks;
 
 namespace API.Clients
 {
-    public class InscripcionAPIClient
+    public class InscripcionAPIClient : BaseApiClient
     {
-        private static HttpClient client = new HttpClient();
-        static InscripcionAPIClient()
-        {
-            client.BaseAddress = new Uri("https://localhost:7111/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-        }
-
-
+ 
         public static async Task<InscripcionDTO> GetAsync(int id)
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("inscripciones/" + id);
 
                 if (response.IsSuccessStatusCode)
@@ -50,6 +43,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("inscripciones");
 
                 if (response.IsSuccessStatusCode)
@@ -76,6 +71,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PostAsJsonAsync("inscripciones", inscripcion);
 
                 if (!response.IsSuccessStatusCode)
@@ -98,6 +95,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.DeleteAsync("inscripciones/" + id);
 
                 if (!response.IsSuccessStatusCode)
@@ -120,6 +119,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PutAsJsonAsync("inscripciones", inscripcion);
 
                 if (!response.IsSuccessStatusCode)

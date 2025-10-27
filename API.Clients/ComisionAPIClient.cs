@@ -8,22 +8,16 @@ using DTOs;
 
 namespace API.Clients
 {
-    public class ComisionAPIClient
+    public class ComisionAPIClient : BaseApiClient
     {
-        private static HttpClient client = new HttpClient();
-        static ComisionAPIClient()
-        {
-            client.BaseAddress = new Uri("https://localhost:7111/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-        }
 
 
         public static async Task<ComisionDTO> GetAsync(int id)
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("comisiones/" + id);
 
                 if (response.IsSuccessStatusCode)
@@ -50,6 +44,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("comisiones");
 
                 if (response.IsSuccessStatusCode)
@@ -76,6 +72,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PostAsJsonAsync("comisiones", comision);
 
                 if (!response.IsSuccessStatusCode)
@@ -98,6 +96,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.DeleteAsync("comisiones/" + id);
 
                 if (!response.IsSuccessStatusCode)
@@ -120,6 +120,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PutAsJsonAsync("comisiones", comision);
 
                 if (!response.IsSuccessStatusCode)

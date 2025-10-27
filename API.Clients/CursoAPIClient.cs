@@ -8,22 +8,16 @@ using DTOs;
 
 namespace API.Clients
 {
-    public class CursoAPIClient
+    public class CursoAPIClient : BaseApiClient
     {
-        private static HttpClient client = new HttpClient();
-        static CursoAPIClient()
-        {
-            client.BaseAddress = new Uri("https://localhost:7111/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-        }
 
 
         public static async Task<CursoDTO> GetAsync(int id)
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("cursos/" + id);
 
                 if (response.IsSuccessStatusCode)
@@ -50,6 +44,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("cursos");
 
                 if (response.IsSuccessStatusCode)
@@ -76,6 +72,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PostAsJsonAsync("cursos", curso);
 
                 if (!response.IsSuccessStatusCode)
@@ -98,6 +96,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.DeleteAsync("cursos/" + id);
 
                 if (!response.IsSuccessStatusCode)
@@ -120,6 +120,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PutAsJsonAsync("cursos", curso);
 
                 if (!response.IsSuccessStatusCode)
