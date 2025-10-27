@@ -32,31 +32,32 @@ namespace Domain.Services
             var adminData = configuration.GetSection("AdminData");
 
             Usuario? usuario = null;
+            string? token = null;
 
             if (adminData != null && request.Username == adminData["user"] && request.Password == adminData["password"])
             {
                 usuario = new Usuario(0, "admin", "admin", adminData["user"], "admin@admin.com", true, adminData["password"], 0);
+                token = GenerateJwtToken(usuario, "Admin");
             } else
             {
                 usuario = await usuarioRepository.GetByUsernameAsync(request.Username);
 
                 if (usuario == null || !usuario.ValidatePassword(request.Password))
                     return null;
+                token = GenerateJwtToken(usuario, usuario.Persona.TipoPersona);
             }
 
-            var token = GenerateJwtToken(usuario);
             var expiresAt = DateTime.UtcNow.AddMinutes(GetExpirationMinutes());
 
             return new LoginResponse
             {
                 Token = token,
                 ExpiresAt = expiresAt,
-                Username = usuario.NombreUsuario,
-                TipoPersona = usuario.Persona != null ? usuario.Persona.TipoPersona : "admin"
+                Username = usuario.NombreUsuario
             };
         }
 
-        private string GenerateJwtToken(Usuario usuario)
+        private string GenerateJwtToken(Usuario usuario, string role)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = jwtSettings["SecretKey"];
@@ -71,6 +72,7 @@ namespace Domain.Services
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                 new Claim(ClaimTypes.Name, usuario.NombreUsuario),
                 new Claim(ClaimTypes.Email, usuario.Email),
+                new Claim(ClaimTypes.Role, role),
                 new Claim("jti", Guid.NewGuid().ToString())
             };
 
