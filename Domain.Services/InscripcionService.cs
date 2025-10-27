@@ -141,5 +141,22 @@ namespace Domain.Services
             }).ToList();
 
         }
+
+        public IEnumerable<CursoDTO> getCursosWithoutInsc(int idAlumno)
+        {
+            var inscripcionRepository = new InscripcionRepository();
+            var inscripciones = inscripcionRepository.GetCursosWithoutInsc(idAlumno);
+
+            return inscripciones.Select(curso => new CursoDTO()
+            {
+                Id = curso.Id,
+                AnioCalendario = curso.AnioCalendario,
+                Cupo = curso.Cupo,
+                DescripcionComision = curso.Comision.Descripcion,
+                DescripcionMateria = curso.Materia.Descripcion
+
+            }).ToList();
+
+        }
     }
     }
