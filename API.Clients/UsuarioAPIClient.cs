@@ -28,6 +28,7 @@ namespace API.Clients
                 }
                 else
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al obtener usuario con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
@@ -55,6 +56,7 @@ namespace API.Clients
                 }
                 else
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al obtener lista de usuarios. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
@@ -77,6 +79,7 @@ namespace API.Clients
                 HttpResponseMessage responsePersona = await client.PostAsJsonAsync("personas", persona);
                 if (!responsePersona.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(responsePersona);
                     string errorContent = await responsePersona.Content.ReadAsStringAsync();
                     throw new Exception($"Error al crear persona. Status: {responsePersona.StatusCode}, Detalle: {errorContent}");
                 }
@@ -86,6 +89,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al crear usuario. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
@@ -109,6 +113,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al eliminar usuario con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
@@ -132,6 +137,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al actualizar usuario con Id {usuario.Id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }

@@ -22,6 +22,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string message = await response.Content.ReadAsStringAsync();
                     throw new ArgumentException(message);
                 } else
@@ -50,6 +51,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string message = await response.Content.ReadAsStringAsync();
 
                     throw new Exception(message);
@@ -75,6 +77,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string message = await response.Content.ReadAsStringAsync();
 
                     throw new Exception(message);
@@ -96,6 +99,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string message = await response.Content.ReadAsStringAsync();
 
                     throw new Exception(message);
@@ -117,6 +121,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string message = await response.Content.ReadAsStringAsync();
 
                     throw new Exception(message);

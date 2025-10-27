@@ -25,6 +25,7 @@ namespace API.Clients
                 }
                 else
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al obtener la materia con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
@@ -53,6 +54,7 @@ namespace API.Clients
                 }
                 else
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al obtener lista de materias. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
@@ -77,6 +79,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error: {errorContent}");
                 }
@@ -101,6 +104,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error: {errorContent}");
                 }
@@ -125,6 +129,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error: {errorContent}");
                 }

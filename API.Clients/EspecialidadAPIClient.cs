@@ -27,6 +27,7 @@ namespace API.Clients
                 }
                 else
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al obtener la especialidad con Id {id}. Detalle: {errorContent}");
                 }
@@ -55,6 +56,7 @@ namespace API.Clients
                 }
                 else
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al obtener lista de especialidadess. Detalle: {errorContent}");
                 }
@@ -79,6 +81,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error. {errorContent}");
                 }
@@ -103,6 +106,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Detalle: {errorContent}");
                 }
@@ -127,6 +131,7 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"{errorContent}");
                 }
