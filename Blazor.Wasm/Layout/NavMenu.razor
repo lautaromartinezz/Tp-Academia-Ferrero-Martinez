@@ -1,4 +1,9 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using API.Clients
+@inject AuthApiClient AuthApiClient
+@using API.Auth.Blazor.WebAssembly
+@inject IAuthService BlazorAuthService
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Blazor.Wasm</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -14,56 +19,94 @@
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="usuarios">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Usuarios
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="materias">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Materias
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="cursos">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Cursos
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="planes">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Planes
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="especialidades">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Especialidades
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="comisiones">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Comisiones
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="inscripciones">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Inscripciones
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="dictados">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Dictados
-            </NavLink>
-        </div>
+        @if(role == "Admin")
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="usuarios">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Usuarios
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="materias">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Materias
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="cursos">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Cursos
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="planes">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Planes
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="especialidades">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Especialidades
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="comisiones">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Comisiones
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="inscripciones">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Inscripciones
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="dictados">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Dictados
+                </NavLink>
+            </div>
+        }
+        
     </nav>
 </div>
 
 @code {
+    private string? role;
     private bool collapseNavMenu = true;
-
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Suscribirse al evento de login/logout
+        BlazorAuthService.AuthenticationStateChanged += OnAuthStateChanged;
+
+        await LoadRole();
+    }
+
+    private async void OnAuthStateChanged(bool isAuthenticated)
+    {
+        await LoadRole();
+        // Forzar rerender del componente
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task LoadRole()
+    {
+        var token = await BlazorAuthService.GetTokenAsync();
+
+        if (string.IsNullOrEmpty(token))
+        {
+            role = null;
+        }
+        else
+        {
+            role = await AuthApiClient.GetRoleFromTokenAsync(token);
+        }
+    }
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    public void Dispose()
+    {
+        BlazorAuthService.AuthenticationStateChanged -= OnAuthStateChanged;
     }
 }
