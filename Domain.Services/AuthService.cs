@@ -28,11 +28,21 @@ namespace Domain.Services
         {
             if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
                 return null;
-            //if (request.Username == "admin" && request.Password == "1234")
-            var usuario = await usuarioRepository.GetByUsernameAsync(request.Username);
 
-            if (usuario == null || !usuario.ValidatePassword(request.Password))
-                return null;
+            var adminData = configuration.GetSection("AdminData");
+
+            Usuario? usuario = null;
+
+            if (adminData != null && request.Username == adminData["user"] && request.Password == adminData["password"])
+            {
+                usuario = new Usuario(0, "admin", "admin", adminData["user"], "admin@admin.com", true, adminData["password"], 0);
+            } else
+            {
+                usuario = await usuarioRepository.GetByUsernameAsync(request.Username);
+
+                if (usuario == null || !usuario.ValidatePassword(request.Password))
+                    return null;
+            }
 
             var token = GenerateJwtToken(usuario);
             var expiresAt = DateTime.UtcNow.AddMinutes(GetExpirationMinutes());
@@ -41,7 +51,8 @@ namespace Domain.Services
             {
                 Token = token,
                 ExpiresAt = expiresAt,
-                Username = usuario.NombreUsuario
+                Username = usuario.NombreUsuario,
+                TipoPersona = usuario.Persona != null ? usuario.Persona.TipoPersona : "admin"
             };
         }
 
