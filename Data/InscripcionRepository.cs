@@ -82,5 +82,21 @@ namespace Data
                 .ToList();
         }
 
+        public IEnumerable<Curso> GetCursosWithoutInsc(int idAlumno)
+        {
+            using var context = CreateContext();
+            
+            var cursosInscriptoIds = context.Inscripciones
+                .Where(i => i.IdAlumno == idAlumno)
+                .Select(i => i.IdCurso)
+                .ToList();
+
+            return context.Cursos
+                .Include(c => c.Materia)
+                .Include(c => c.Comision)
+                .Where(c => !cursosInscriptoIds.Contains(c.Id))
+                .ToList();
+        }
+
     }
 }

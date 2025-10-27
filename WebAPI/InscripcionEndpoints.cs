@@ -1,4 +1,5 @@
-﻿using Domain.Services;
+﻿using Domain.Model;
+using Domain.Services;
 using DTOs;
 
 namespace WebAPI
@@ -121,6 +122,19 @@ namespace WebAPI
             .WithName("GetAllInscripcionesByCurso")
             .Produces<List<DTOs.InscripcionDTO>>(StatusCodes.Status200OK)
             .WithOpenApi();
+
+            app.MapGet("/inscripciones/without/{idAlumno}", (int idAlumno) =>
+            {
+                InscripcionService inscripcionService = new InscripcionService();
+
+
+                var dtos = inscripcionService.getCursosWithoutInsc(idAlumno);
+
+                return Results.Ok(dtos);
+            })
+                .WithName("GetAllCursosWithoutInsc")
+            .Produces<List<DTOs.CursoDTO>>(StatusCodes.Status200OK)
+            .WithOpenApi(); ;
         }
     }
     
