@@ -59,6 +59,33 @@ namespace WebAPI
             .Produces(StatusCodes.Status500InternalServerError)
             .WithOpenApi()
             .AllowAnonymous();
+
+            app.MapPost("/auth/getId", async (LoginRequest request, IConfiguration configuration) =>
+            {
+                try
+                {
+                    var authService = new AuthService(configuration);
+
+                    int? userId = authService.GetUserIdFromToken(request.Token);
+
+                    if (userId == null)
+                    {
+                        return Results.Unauthorized();
+                    }
+                    LoginResponse response = new LoginResponse() { UserId = userId.ToString() };
+                    return Results.Ok(response);
+                }
+                catch (Exception ex)
+                {
+                    return Results.Problem($"Error durante el login: {ex.Message}");
+                }
+            })
+                .WithName("GetId")
+                .Produces<LoginResponse>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status401Unauthorized)
+                .Produces(StatusCodes.Status500InternalServerError)
+                .WithOpenApi()
+                .AllowAnonymous();
         }
     }
 }
