@@ -33,6 +33,7 @@ namespace WindowsForms
             while (true)
             {
                 string? userRol = null;
+                string? userId = null;
                 if (!await authService.IsAuthenticatedAsync())
                 {
                     var loginForm = new formLogin();
@@ -54,25 +55,45 @@ namespace WindowsForms
                     {
                         return;
                     }
+                    userId = await authApiClient.GetUserIdFromToken(token);
+
+                    if (userId == null)
+                    {
+                        MessageBox.Show("No se pudo obtener el ID del usuario desde el token.", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                 }
 
                 try
                 {
                     if(userRol == "Admin")
                     {
-                        Application.Run(new Inicio());
+                        Inicio inicio = new Inicio();
+                        inicio.Mode = TipoUsuario.Admin;
+                        inicio.UserId = userId;
+                        Application.Run(inicio);
                     } else if (userRol == "Profesor")
                     {
                         // CU de Profesor
 
-                        Application.Run(new DictadoLista());
-                    } else if (userRol == "Alumno")
+                        Inicio inicio = new Inicio();
+                        inicio.Mode = TipoUsuario.Profesor;
+                        inicio.UserId= userId;
+                        Application.Run(inicio);
+
+                    }
+                    else if (userRol == "Alumno")
                     {
                         // CU de Alumno
 
-                        Application.Run(new InscripcionLista());
+                        Inicio inicio = new Inicio();
+                        inicio.Mode = TipoUsuario.Alumno;
+                        inicio.UserId = userId;
+                        Application.Run(inicio);
+
                     }
-                        break; // La aplicación se cerró normalmente
+                    break; // La aplicación se cerró normalmente
                 }
                 catch (UnauthorizedAccessException ex)
                 {

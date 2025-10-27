@@ -1,21 +1,45 @@
-﻿using System;
+﻿using Academia;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Academia;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsForms
 {
+        public enum TipoUsuario
+        {
+            Admin,
+            Profesor,
+            Alumno
+        }
     public partial class Inicio : Form
     {
+        private TipoUsuario mode;
+        private string _userId;
+
+        public string UserId { get { return _userId; } set { _userId = value; } }
+        public TipoUsuario Mode
+        {
+            get
+            {
+                return mode;
+            }
+            set
+            {
+                SetTipoUsuario(value);
+            }
+        }
         public Inicio()
         {
             InitializeComponent();
+
         }
         private void usuarioButton_Click(object sender, EventArgs e)
         {
@@ -75,6 +99,60 @@ namespace WindowsForms
         {
             DictadoLista dic = new DictadoLista();
             dic.Show();
+        }
+
+        private void SetTipoUsuario(TipoUsuario value)
+        {
+            mode = value;
+
+            if (Mode == TipoUsuario.Admin)
+            {
+                profesorBttn.Visible = false;
+                alumnoBttn.Visible = false;
+
+            }
+
+            if (Mode == TipoUsuario.Profesor)
+            {
+                button1.Visible = false;
+                comButton.Visible = false;
+                alumnoBttn.Visible = false;
+                usuarioButton.Visible = false;
+                comButton.Visible = false;
+                inscripcionBttn.Visible = false;
+                dictadoBttn.Visible = false;
+                materiaButton.Visible = false;
+                bttnCursos.Visible = false;
+                especialidadButton.Visible = false;
+                ModulosButton.Visible = false;
+
+            }
+
+            if (Mode == TipoUsuario.Alumno)
+            {
+                button1.Visible = false;
+                comButton.Visible = false;
+                profesorBttn.Visible = false;
+                usuarioButton.Visible = false;
+                comButton.Visible = false;
+                inscripcionBttn.Visible = false;
+                dictadoBttn.Visible = false;
+                materiaButton.Visible = false;
+                bttnCursos.Visible = false;
+                especialidadButton.Visible = false;
+                ModulosButton.Visible = false;
+
+            }
+        }
+
+        private void profesorBttn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void alumnoBttn_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

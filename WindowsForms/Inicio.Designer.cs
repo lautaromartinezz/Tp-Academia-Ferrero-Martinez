@@ -39,6 +39,8 @@
             comButton = new Button();
             inscripcionBttn = new Button();
             dictadoBttn = new Button();
+            profesorBttn = new Button();
+            alumnoBttn = new Button();
             SuspendLayout();
             // 
             // usuarioButton
@@ -151,12 +153,34 @@
             dictadoBttn.UseVisualStyleBackColor = true;
             dictadoBttn.Click += dictadoBttn_Click;
             // 
+            // profesorBttn
+            // 
+            profesorBttn.Location = new Point(132, 147);
+            profesorBttn.Name = "profesorBttn";
+            profesorBttn.Size = new Size(114, 38);
+            profesorBttn.TabIndex = 13;
+            profesorBttn.Text = "Agregar Notas";
+            profesorBttn.UseVisualStyleBackColor = true;
+            profesorBttn.Click += profesorBttn_Click;
+            // 
+            // alumnoBttn
+            // 
+            alumnoBttn.Location = new Point(132, 191);
+            alumnoBttn.Name = "alumnoBttn";
+            alumnoBttn.Size = new Size(114, 38);
+            alumnoBttn.TabIndex = 14;
+            alumnoBttn.Text = "Inscribirse a Curso";
+            alumnoBttn.UseVisualStyleBackColor = true;
+            alumnoBttn.Click += alumnoBttn_Click;
+            // 
             // Inicio
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnClose;
             ClientSize = new Size(382, 379);
+            Controls.Add(alumnoBttn);
+            Controls.Add(profesorBttn);
             Controls.Add(dictadoBttn);
             Controls.Add(inscripcionBttn);
             Controls.Add(comButton);
@@ -187,5 +211,7 @@
         private Button comButton;
         private Button inscripcionBttn;
         private Button dictadoBttn;
+        private Button profesorBttn;
+        private Button alumnoBttn;
     }
 }
