@@ -110,5 +110,11 @@ namespace Data
             }
             return false;
         }
+
+        public async Task<Usuario?> GetByUsernameAsync(string username)
+        {
+            using var context = CreateContext();
+            return await context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == username && u.Habilitado);
+        }
     }
 }

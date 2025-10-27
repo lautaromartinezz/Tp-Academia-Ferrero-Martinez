@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Domain.Model
 
         public bool Habilitado { get; private set; }
 
-
+        public string Salt { get; private set; }
         public string Email { get; private set; }
 
         public string Clave { get; set; }
@@ -25,7 +26,7 @@ namespace Domain.Model
         public Persona Persona { get; private set; }
         public ICollection<Modulo> Modulos { get; set; }
         
-        public Usuario() { }
+        private Usuario() { }
 
         public Usuario(int id, string nombre, string nombreUsuario,string apellido, string email, bool habilitado, string clave, int idPersona)
         {
@@ -39,6 +40,17 @@ namespace Domain.Model
             SetIdPersona(idPersona);
         }
 
+        public void SetClave(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("La contraseña no puede ser nula o vacía.", nameof(password));
+
+            if (password.Length < 6)
+                throw new ArgumentException("La contraseña debe tener al menos 6 caracteres.", nameof(password));
+
+            Salt = GenerateSalt();
+            Clave = HashPassword(password, Salt); // ESTA REALMENTE SERIA LA CLAVE HASHEADA (LA QUE SE ESTA GUARDANDO EN EL BACK)
+        }
         public void SetHabilitado(bool habil)
         {
            Habilitado = habil;
@@ -93,5 +105,25 @@ namespace Domain.Model
             return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
         }
 
+        public bool ValidatePassword(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+                return false;
+
+            string hashedInput = HashPassword(password, Salt);
+            return Clave == hashedInput; // COMPARA LA CLAVE HASHEADA INGRESADA CON LA GUARDADA
+        }
+        private static string HashPassword(string password, string salt)
+        {
+            using var pbkdf2 = new Rfc2898DeriveBytes(password, Convert.FromBase64String(salt), 10000, HashAlgorithmName.SHA256);
+            byte[] hashBytes = pbkdf2.GetBytes(32);
+            return Convert.ToBase64String(hashBytes);
+        }
+        private static string GenerateSalt()
+        {
+            byte[] saltBytes = new byte[32];
+            RandomNumberGenerator.Fill(saltBytes);
+            return Convert.ToBase64String(saltBytes);
+        }
     }
 }
