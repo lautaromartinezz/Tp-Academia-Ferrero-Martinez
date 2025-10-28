@@ -24,7 +24,7 @@ namespace Data
         public DbSet<Dictado> Dictados { get; set; }
         internal AcademiaContext()
         {
-            //this.Database.EnsureDeleted(); // SOLO EN DEV 
+            // this.Database.EnsureDeleted(); // SOLO EN DEV 
 
             this.Database.EnsureCreated();
         }
@@ -106,7 +106,7 @@ namespace Data
 
                 entity.HasData(
                     new { Id = 1, Cupo = 1, AnioCalendario = DateTime.Now, IdComision = 2, IdMateria = 1 },
-                    new { Id = 2, Cupo = 432, AnioCalendario = new DateTime(2025, 10, 09), IdComision = 2, IdMateria = 1 },
+                    new { Id = 2, Cupo = 0, AnioCalendario = new DateTime(2025, 10, 09), IdComision = 2, IdMateria = 1 },
                     new { Id = 3, Cupo = 2332, AnioCalendario = new DateTime(2025, 09, 09), IdComision = 1, IdMateria = 2 },
                     new { Id = 4, Cupo = 233, AnioCalendario = new DateTime(2025, 07, 09), IdComision = 1, IdMateria = 2 },
                     new { Id = 5, Cupo = 1234, AnioCalendario = new DateTime(2025, 10, 10), IdComision = 2, IdMateria = 4 }
@@ -131,15 +131,25 @@ namespace Data
 
                 entity.Property(e => e.Habilitado).IsRequired().HasMaxLength(15);
 
+                entity.Property(e => e.Salt)
+                        .IsRequired()
+                        .HasMaxLength(255);
+
                 entity.HasOne((u) => u.Persona)
                     .WithMany((p) => p.Usuarios)
                     .HasForeignKey(e => e.IdPersona)
                     .OnDelete(DeleteBehavior.Cascade).IsRequired();
 
+
+                var adminUser = new Domain.Model.Usuario(1, "admin", "admin", "admin", "admin@admin.com", true, "admin123", 1);
+
+                entity.HasData(
+                    new { Id = adminUser.Id, Nombre = adminUser.Nombre,Apellido=adminUser.Apellido, NombreUsuario = adminUser.NombreUsuario, Clave = adminUser.Clave, Email = adminUser.Email, Habilitado = adminUser.Habilitado, Salt = adminUser.Salt, IdPersona = adminUser.IdPersona });
+                /*
                 entity.HasData(
                     new { Id = 1, Nombre = "Santiago", Apellido = "Ferrero", Email = "santifnob@gmail.com", NombreUsuario = "vamoniubels", Habilitado = true, Clave = "asd", IdPersona = 1 },
                     new { Id = 2, Nombre = "Lautaro", Apellido = "Martinez", Email = "lautaromartinez@gmail.com", NombreUsuario = "vamoslalepra", Habilitado = true, Clave = "asd", IdPersona = 2 }
-                );
+                );*/
 
                 entity.HasMany(u => u.Modulos).WithMany(m => m.Usuarios);
 

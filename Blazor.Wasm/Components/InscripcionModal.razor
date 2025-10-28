@@ -25,52 +25,56 @@
                     <EditForm Model="currentInscripcion" OnValidSubmit="HandleValidSubmit">
                         <DataAnnotationsValidator />
 
-                        @if (mode == FormMode.Update)
+                        @if (mode == FormMode.Update || mode == FormMode.Profesor)
                         {
                             <div class="mb-3">
                                 <label class="form-label">Id</label>
                                 <input type="text" class="form-control" value="@currentInscripcion.Id" readonly />
                             </div>
                         }
-
-                        <div class="mb-3">
-                            <label class="form-label">Alumno *</label>
-                            <InputSelect @bind-Value="currentInscripcion.IdAlumno" class="form-control">
-                                <option value="0">Seleccionar Alumno</option>
-                                @if (alumnos != null)
-                                {
-                                    foreach (var alumno in alumnos)
+                        @if (mode == FormMode.Update || mode == FormMode.Add)
+                        {
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Alumno *</label>
+                                <InputSelect @bind-Value="currentInscripcion.IdAlumno" class="form-control">
+                                    <option value="0">Seleccionar Alumno</option>
+                                    @if (alumnos != null)
                                     {
-                                        <option value="@alumno.Id">@alumno.Legajo</option>
+                                        foreach (var alumno in alumnos)
+                                        {
+                                            <option value="@alumno.Id">@alumno.Legajo</option>
+                                        }
                                     }
-                                }
-                            </InputSelect>
-                            @if (validationErrors.ContainsKey("Alumno"))
-                            {
-                                <div class="text-danger small">@validationErrors["Alumno"]</div>
-
-                            }
-
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Curso *</label>
-                            <InputSelect @bind-Value="currentInscripcion.IdCurso" class="form-control">
-                                <option value="0">Seleccionar Curso</option>
-                                @if (cursos != null)
+                                </InputSelect>
+                                @if (validationErrors.ContainsKey("Alumno"))
                                 {
-                                    foreach (var curso in cursos)
-                                    {
-                                        <option value="@curso.Id">@curso.AnioCalendario</option>
-                                    }
+                                    <div class="text-danger small">@validationErrors["Alumno"]</div>
+
                                 }
-                            </InputSelect>
-                            @if (validationErrors.ContainsKey("Curso"))
-                            {
-                                <div class="text-danger small">@validationErrors["Curso"]</div>
 
-                            }
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Curso *</label>
+                                <InputSelect @bind-Value="currentInscripcion.IdCurso" class="form-control">
+                                    <option value="0">Seleccionar Curso</option>
+                                    @if (cursos != null)
+                                    {
+                                        foreach (var curso in cursos)
+                                        {
+                                            <option value="@curso.Id">@curso.AnioCalendario</option>
+                                        }
+                                    }
+                                </InputSelect>
+                                @if (validationErrors.ContainsKey("Curso"))
+                                {
+                                    <div class="text-danger small">@validationErrors["Curso"]</div>
 
-                        </div>
+                                }
+
+                            </div>
+                        }
+
                         <div class="mb-3">
                             <label class="form-label">Situacion *</label>
                             <InputText @bind-Value="currentInscripcion.Situacion" class="form-control" />
@@ -129,7 +133,8 @@
     public enum FormMode
     {
         Add,
-        Update
+        Update,
+        Profesor
     }
 
     public async Task ShowAddModal()
@@ -160,6 +165,25 @@
         };
         await LoadAlumnos();
         await LoadCursos();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+
+
+    }
+    public async Task ShowEditProfesor(InscripcionDTO inscripcion)
+    {
+        mode = FormMode.Profesor;
+        currentInscripcion = new InscripcionDTO
+        {
+            Id = inscripcion.Id,
+            Nota = inscripcion.Nota,
+            Situacion = inscripcion.Situacion,
+            IdAlumno = inscripcion.IdAlumno,
+            IdCurso = inscripcion.IdCurso,
+            AlumnoLegajo = inscripcion.AlumnoLegajo,
+            CursoAnio = inscripcion.CursoAnio
+        };
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();

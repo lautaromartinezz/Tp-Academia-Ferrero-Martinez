@@ -116,5 +116,21 @@ namespace Domain.Services
                 return cursoRepository.Update(curso);
             }
         }
+
+        public IEnumerable<CursoDTO> getByPlan(int idPlan)
+        {
+            var cursoRepository = new CursoRepository();
+            var cursos = cursoRepository.GetByPlan(idPlan);
+            return cursos.Select(curso => new CursoDTO()
+            {
+                Id = curso.Id,
+                Cupo = curso.Cupo,
+                IdComision = curso.IdComision,
+                AnioCalendario = curso.AnioCalendario,
+                IdMateria = curso.IdMateria,
+                DescripcionMateria = curso.Materia.Descripcion,
+                DescripcionComision = curso.Comision.Descripcion
+            }).ToList();
+        }
     }
 }

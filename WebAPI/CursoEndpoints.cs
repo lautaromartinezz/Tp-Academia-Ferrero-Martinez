@@ -107,6 +107,21 @@ namespace WebAPI
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
+
+
+            app.MapGet("/cursos/plan/{idPlan}", (int idPlan) =>
+            {
+                CursoService cursoService = new CursoService();
+
+
+                var dtos = cursoService.getByPlan(idPlan);
+
+                return Results.Ok(dtos);
+
+            })
+            .WithName("GetAllCursosByPlan")
+            .Produces<List<DTOs.CursoDTO>>(StatusCodes.Status200OK)
+            .WithOpenApi();
         }
     }
 }

@@ -1,3 +1,5 @@
+using API.Clients;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
 namespace Academia
@@ -9,33 +11,81 @@ namespace Academia
             InitializeComponent();
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private async void loginButton_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void linkForgotPass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            MessageBox.Show("Es Ud. un usario muy descuidado, haga memoria", "Olvidé mi contraseña", MessageBoxButtons.OK);
-
-        }
-
-        private void btnIngresar_Click(object sender, EventArgs e)
-        {
-            String adminName = "admin";
-            String adminPass = "1234";
-
-            if (this.textUsuario.Text == adminName && this.textPass.Text == adminPass)
-            {   
-                this.DialogResult = DialogResult.OK;
-            }
-            else
+            if (ValidateInput())
             {
-                MessageBox.Show("Usuario y/o contraseña incorrectos", "Login", MessageBoxButtons.OK
-                    , MessageBoxIcon.Error);
-            }
-            
+                try
+                {
+                    loginButton.Enabled = false;
+                    loginButton.Text = "Iniciando sesión...";
 
+                    var authService = AuthServiceProvider.Instance;
+                    bool success = await authService.LoginAsync(usernameTextBox.Text, passwordTextBox.Text);
+
+                    if (success)
+                    {
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Usuario o contraseña incorrectos.", "Error de autenticación",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        passwordTextBox.Clear();
+                        passwordTextBox.Focus();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al iniciar sesión: {ex.Message}", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    loginButton.Enabled = true;
+                    loginButton.Text = "Iniciar Sesión";
+                    
+                }
+            }
+        }
+
+
+        private bool ValidateInput()
+        {
+            errorProvider.SetError(usernameTextBox, string.Empty);
+            errorProvider.SetError(passwordTextBox, string.Empty);
+
+            bool isValid = true;
+
+            if (string.IsNullOrWhiteSpace(usernameTextBox.Text))
+            {
+                errorProvider.SetError(usernameTextBox, "El nombre de usuario es requerido");
+                isValid = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(passwordTextBox.Text))
+            {
+                errorProvider.SetError(passwordTextBox, "La contraseña es requerida");
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        private void passwordTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                loginButton_Click(sender, EventArgs.Empty);
+                e.Handled = true;
+            }
+        }
+
+        private void cancelButton_Click_1(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
         }
     }
 }

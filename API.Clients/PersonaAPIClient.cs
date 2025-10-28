@@ -8,22 +8,16 @@ using DTOs;
 
 namespace API.Clients
 {
-    public class PersonaAPIClient
+    public class PersonaAPIClient:BaseApiClient
     {
-        private static HttpClient client = new HttpClient();
-        static PersonaAPIClient()
-        {
-            client.BaseAddress = new Uri("https://localhost:7111/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-        }
 
 
         public static async Task<PersonaDTO> GetAsync(int id)
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("personas/" + id);
 
                 if (response.IsSuccessStatusCode)
@@ -32,6 +26,7 @@ namespace API.Clients
                 }
                 else
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error: {errorContent}");
                 }
@@ -49,6 +44,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("personas");
 
                 if (response.IsSuccessStatusCode)
@@ -57,6 +54,7 @@ namespace API.Clients
                 }
                 else
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al obtener lista de personas. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }

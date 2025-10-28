@@ -8,22 +8,17 @@ using DTOs;
 
 namespace API.Clients
 {
-    public class EspecialidadAPIClient
+    public class EspecialidadAPIClient : BaseApiClient
     {
-        private static HttpClient client = new HttpClient();
-        static EspecialidadAPIClient()
-        {
-            client.BaseAddress = new Uri("https://localhost:7111/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-        }
+
 
 
         public static async Task<EspecialidadDTO> GetAsync(int id)
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("especialidades/" + id);
 
                 if (response.IsSuccessStatusCode)
@@ -32,6 +27,7 @@ namespace API.Clients
                 }
                 else
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al obtener la especialidad con Id {id}. Detalle: {errorContent}");
                 }
@@ -50,6 +46,8 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.GetAsync("especialidades");
 
                 if (response.IsSuccessStatusCode)
@@ -58,6 +56,7 @@ namespace API.Clients
                 }
                 else
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al obtener lista de especialidadess. Detalle: {errorContent}");
                 }
@@ -76,10 +75,13 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PostAsJsonAsync("especialidades", especialidad);
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error. {errorContent}");
                 }
@@ -98,10 +100,13 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.DeleteAsync("especialidades/" + id);
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Detalle: {errorContent}");
                 }
@@ -120,10 +125,13 @@ namespace API.Clients
         {
             try
             {
+                using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.PutAsJsonAsync("especialidades", especialidad);
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"{errorContent}");
                 }

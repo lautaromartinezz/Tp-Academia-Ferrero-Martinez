@@ -69,5 +69,15 @@ namespace Data
             }
             return false;
         }
+
+        public IEnumerable<Curso> GetByPlan(int idPlan)
+        {
+            using var context = CreateContext();
+            return context.Cursos
+                .Include(c => c.Materia)
+                .Include(c => c.Comision)
+                .Where(c => c.Materia.IdPlan == idPlan && c.Cupo>=0)
+                .ToList();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Services;
+﻿using Domain.Model;
+using Domain.Services;
 using DTOs;
 
 namespace WebAPI
@@ -107,6 +108,33 @@ namespace WebAPI
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
+
+            app.MapGet("/inscripciones/curso/{idCurso}", (int idCurso) =>
+            {
+                InscripcionService inscripcionService = new InscripcionService();
+
+
+                var dtos = inscripcionService.getByCurso(idCurso);
+
+                return Results.Ok(dtos);
+
+            })
+            .WithName("GetAllInscripcionesByCurso")
+            .Produces<List<DTOs.InscripcionDTO>>(StatusCodes.Status200OK)
+            .WithOpenApi();
+
+            app.MapGet("/inscripciones/without/{idAlumno}", (int idAlumno) =>
+            {
+                InscripcionService inscripcionService = new InscripcionService();
+
+
+                var dtos = inscripcionService.getCursosWithoutInsc(idAlumno);
+
+                return Results.Ok(dtos);
+            })
+                .WithName("GetAllCursosWithoutInsc")
+            .Produces<List<DTOs.CursoDTO>>(StatusCodes.Status200OK)
+            .WithOpenApi(); ;
         }
     }
     

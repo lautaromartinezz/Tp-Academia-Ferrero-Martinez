@@ -71,7 +71,7 @@ namespace Data
             return context.Usuarios.Include(c => c.Persona).ToList();
         }
 
-        public bool Update(Usuario usuario)
+        public bool Update(Usuario usuario, string clave)
         {
             using var context = CreateContext();
             var usuarioToUpdate = context.Usuarios.FirstOrDefault(c => c.Id == usuario.Id);
@@ -81,8 +81,11 @@ namespace Data
                 usuarioToUpdate.SetApellido(usuario.Apellido);
                 usuarioToUpdate.SetEmail(usuario.Email);
                 usuarioToUpdate.SetNombreUsuario(usuario.NombreUsuario);
-                usuarioToUpdate.SetHabilitado(usuario.Habilitado); 
-                usuarioToUpdate.Clave = usuario.Clave;
+                usuarioToUpdate.SetHabilitado(usuario.Habilitado);
+                if (!string.IsNullOrWhiteSpace(clave))
+                {
+                    usuarioToUpdate.SetClave(clave); 
+                }
 
                 try
                 {
@@ -109,6 +112,12 @@ namespace Data
                 }
             }
             return false;
+        }
+
+        public async Task<Usuario?> GetByUsernameAsync(string username)
+        {
+            using var context = CreateContext();
+            return await context.Usuarios.Include(u=>u.Persona).FirstOrDefaultAsync(u => u.NombreUsuario == username && u.Habilitado);
         }
     }
 }

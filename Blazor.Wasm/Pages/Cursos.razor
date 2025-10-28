@@ -3,6 +3,7 @@
 @using API.Clients
 @using Blazor.Wasm.Components
 @inject IJSRuntime JSRuntime
+@inject IAuthService AuthService
 @inject NavigationManager Navigation
 
 
@@ -98,6 +99,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (!isAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
         await LoadCursos();
     }
     /*

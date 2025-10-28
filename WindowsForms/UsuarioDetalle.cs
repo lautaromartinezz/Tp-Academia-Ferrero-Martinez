@@ -154,7 +154,10 @@ namespace WindowsForms
             errorProvider.SetError(usuarioTextBox, string.Empty);
             errorProvider.SetError(apellidoTextBox, string.Empty);
             errorProvider.SetError(emailTextBox, string.Empty);
-            errorProvider.SetError(claveTextBox, string.Empty);
+            if(mode == FormMode.Add)
+            {
+                errorProvider.SetError(claveTextBox, string.Empty);
+            }
             errorProvider.SetError(DireccionTextBox, string.Empty);
             errorProvider.SetError(TelefonoTextBox, string.Empty);
             errorProvider.SetError(tipoPersonaTextBox, string.Empty);   
@@ -204,10 +207,13 @@ namespace WindowsForms
                 isValid = false;
                 errorProvider.SetError(emailTextBox, "El Email es Requerido");
             }
-            if (this.claveTextBox.Text == string.Empty)
+            if (mode == FormMode.Add)
             {
-                isValid = false;
-                errorProvider.SetError(claveTextBox, "La contrasena es requerida");
+                if (this.claveTextBox.Text == string.Empty)
+                {
+                    isValid = false;
+                    errorProvider.SetError(claveTextBox, "La contrasena es requerida");
+                }
             }
             else if (!EsEmailValido(this.emailTextBox.Text))
             {
