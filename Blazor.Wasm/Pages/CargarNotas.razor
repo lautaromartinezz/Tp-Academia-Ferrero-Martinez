@@ -1,0 +1,167 @@
+﻿@page "/cargarNotas"
+@using DTOs
+@using API.Clients
+@using Blazor.Wasm.Components
+@inject IJSRuntime JSRuntime
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+@inject AuthApiClient AuthApiClient
+@using API.Auth.Blazor.WebAssembly
+@inject IAuthService BlazorAuthService
+
+
+<PageTitle>Dictados</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h3>Dictados</h3>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" idUser="alert">
+                    @errorMessage
+                    <button type="button" class="btn-close" @onclick="() => errorMessage = string.Empty"></button>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                <div class="alert alert-success alert-dismissible fade show" idUser="alert">
+                    @successMessage
+                    <button type="button" class="btn-close" @onclick="() => successMessage = string.Empty"></button>
+                </div>
+            }
+
+            @if (loading)
+            {
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border" idUser="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Profesor</th>
+                                <th>Curso</th>
+                                <th>Cargo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (dictados != null && dictados.Any())
+                            {
+                                @foreach (var dictado in dictados)
+                                {
+                                    <tr>
+                                        <td>@dictado.Id</td>
+                                        <td>@dictado.ProfesorLegajo</td>
+                                        <td>@dictado.CursoAnio</td>
+                                        <td>@dictado.Cargo</td>
+
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(dictado)">
+                                                <i class="fas fa-edit"></i> Seleccionar Curso
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<DictadoDTO>? dictados;
+    private bool loading = true;
+    private string errorMessage = string.Empty;
+    private string successMessage = string.Empty;
+    private string? idUser;
+
+
+    private async Task LoadRole()
+    {
+        var token = await BlazorAuthService.GetTokenAsync();
+
+        if (string.IsNullOrEmpty(token))
+        {
+            idUser = null;
+        }
+        else
+        {
+            idUser = await AuthApiClient.GetUserIdFromToken(token);
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (!isAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+        await LoadDictados();
+    }
+    /*
+     *
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Verificar autenticación antes de cargar datos
+            var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            if (!isAuthenticated)
+            {
+                Navigation.NavigateTo("/login");
+                return;
+                }
+
+
+            await LoadDictados();
+            StateHasChanged();
+            }
+        await base.OnAfterRenderAsync(firstRender);
+        }
+     */
+
+
+    private async Task LoadDictados()
+    {
+        try
+        {
+            await LoadRole();
+            loading = true;
+            dictados = (await DictadoAPIClient.GetByProfesorAsync(int.Parse(idUser)))?.ToList();
+            successMessage = string.Empty; // Clear success message when reloading
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar dictados: {ex.Message}";
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private async Task OpenEditModal(DictadoDTO dictado)
+    {
+        Navigation.NavigateTo($"/inscripciones/{dictado.IdCurso}");
+
+    }
+
+
+
+}

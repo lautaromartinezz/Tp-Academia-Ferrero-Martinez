@@ -1,0 +1,154 @@
+﻿@page "/inscripciones/{idCurso:int}"
+@using DTOs
+@using API.Clients
+@using Blazor.Wasm.Components
+@inject IJSRuntime JSRuntime
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+
+<PageTitle>Inscripciones</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h3>Inscripciones</h3>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @errorMessage
+                    <button type="button" class="btn-close" @onclick="() => errorMessage = string.Empty"></button>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @successMessage
+                    <button type="button" class="btn-close" @onclick="() => successMessage = string.Empty"></button>
+                </div>
+            }
+
+
+            @if (loading)
+            {
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Alumno</th>
+                                <th>Curso</th>
+                                <th>Nota</th>
+                                <th>Situacion</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (inscripciones != null && inscripciones.Any())
+                            {
+                                @foreach (var inscripcion in inscripciones)
+                                {
+                                    <tr>
+                                        <td>@inscripcion.Id</td>
+                                        <td>@inscripcion.AlumnoLegajo</td>
+                                        <td>@inscripcion.CursoAnio</td>
+                                        <td>@inscripcion.Nota</td>
+                                        <td>@inscripcion.Situacion</td>
+
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(inscripcion)">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<InscripcionModal @ref="inscripcionModal" OnUsuarioChanged="LoadInscripciones" />
+
+@code {    
+    [Parameter]
+    public int idCurso { get; set; }
+    private List<InscripcionDTO>? inscripciones;
+    private bool loading = true;
+    private string errorMessage = string.Empty;
+    private string successMessage = string.Empty;
+    private InscripcionModal? inscripcionModal;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (!isAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+        await LoadInscripciones();
+    }
+    /*
+     *
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Verificar autenticación antes de cargar datos
+            var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            if (!isAuthenticated)
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+
+            await LoadInscripciones();
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+     */
+
+
+    private async Task LoadInscripciones()
+    {
+        try
+        {
+            loading = true;
+            inscripciones = (await InscripcionAPIClient.GetByCursoAsync(idCurso))?.ToList();
+            successMessage = string.Empty; // Clear success message when reloading
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar inscripciones: {ex.Message}";
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+
+    private async Task OpenEditModal(InscripcionDTO inscripcion)
+    {
+        await inscripcionModal.ShowEditProfesor(inscripcion);
+    }
+
+
+}

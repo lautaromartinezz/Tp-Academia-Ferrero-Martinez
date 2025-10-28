@@ -59,7 +59,7 @@
             verCursoButton.UseVisualStyleBackColor = true;
             verCursoButton.Click += modificarButton_Click;
             // 
-            // CUProfesorLista
+            // CUProfesorListaDictados
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -67,8 +67,8 @@
             Controls.Add(verCursoButton);
             Controls.Add(dictadoDataGridView);
             Margin = new Padding(2, 1, 2, 1);
-            Name = "CUProfesorLista";
-            Text = "Cursos";
+            Name = "CUProfesorListaDictados";
+            Text = "Mis Cursos";
             Load += Cursos_Load;
             ((System.ComponentModel.ISupportInitialize)dictadoDataGridView).EndInit();
             ResumeLayout(false);

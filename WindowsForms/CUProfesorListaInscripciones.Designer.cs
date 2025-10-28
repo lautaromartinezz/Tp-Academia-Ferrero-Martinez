@@ -68,7 +68,7 @@
             Controls.Add(inscripcionDataGridView);
             Margin = new Padding(2, 1, 2, 1);
             Name = "CUProfesorListaInscripciones";
-            Text = "Cursos";
+            Text = "Alumnos inscriptos";
             Load += Inscripcion_Load;
             ((System.ComponentModel.ISupportInitialize)inscripcionDataGridView).EndInit();
             ResumeLayout(false);
