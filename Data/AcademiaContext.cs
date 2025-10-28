@@ -24,7 +24,7 @@ namespace Data
         public DbSet<Dictado> Dictados { get; set; }
         internal AcademiaContext()
         {
-            this.Database.EnsureDeleted(); // SOLO EN DEV 
+            // this.Database.EnsureDeleted(); // SOLO EN DEV 
 
             this.Database.EnsureCreated();
         }

@@ -70,14 +70,23 @@
                 </NavLink>
             </div>
         }
+        @if (role == "Alumno")
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href=@($"inscripcionesCursos/{idUsuario}")>
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Inscribirse a Curso
+                </NavLink>
+            </div>
+        }
 
-        
+
 
     </nav>
 </div>
 
 @code {
     private string? role;
+    private string? idUsuario;
     private bool collapseNavMenu = true;
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -86,17 +95,17 @@
         // Suscribirse al evento de login/logout
         BlazorAuthService.AuthenticationStateChanged += OnAuthStateChanged;
 
-        await LoadRole();
+        await LoadRoleAndId();
     }
 
     private async void OnAuthStateChanged(bool isAuthenticated)
     {
-        await LoadRole();
+        await LoadRoleAndId();
         // Forzar rerender del componente
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task LoadRole()
+    private async Task LoadRoleAndId()
     {
         var token = await BlazorAuthService.GetTokenAsync();
 
@@ -107,6 +116,7 @@
         else
         {
             role = await AuthApiClient.GetRoleFromTokenAsync(token);
+            idUsuario = await AuthApiClient.GetUserIdFromToken(token);
         }
     }
 
