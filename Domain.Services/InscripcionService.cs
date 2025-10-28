@@ -72,7 +72,7 @@ namespace Domain.Services
                 {
                     Id = curso.Id,
                     AnioCalendario = curso.AnioCalendario,
-                    Cupo = curso.Cupo - 1,
+                    Cupo = curso.Cupo - 1,     // Lo ideal seria manejarlo con un count y que el cupo sea puramente informativo
                     IdComision = curso.IdComision,
                     IdMateria = curso.IdMateria,
                     DescripcionComision = curso.Comision.Descripcion,
@@ -137,6 +137,25 @@ namespace Domain.Services
                 IdAlumno = inscripcion.IdAlumno,
                 CursoAnio = inscripcion.Curso.AnioCalendario,
                 AlumnoLegajo = inscripcion.Alumno.Legajo
+
+            }).ToList();
+
+        }
+
+        public IEnumerable<CursoDTO> getCursosWithoutInsc(int idAlumno)
+        {
+            var inscripcionRepository = new InscripcionRepository();
+            var inscripciones = inscripcionRepository.GetCursosWithoutInsc(idAlumno);
+
+            return inscripciones.Select(curso => new CursoDTO()
+            {
+                Id = curso.Id,
+                AnioCalendario = curso.AnioCalendario,
+                Cupo = curso.Cupo,
+                DescripcionComision = curso.Comision.Descripcion,
+                DescripcionMateria = curso.Materia.Descripcion,
+                IdComision = curso.IdComision,
+                IdMateria = curso.IdMateria
 
             }).ToList();
 

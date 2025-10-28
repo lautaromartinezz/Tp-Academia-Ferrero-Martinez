@@ -154,7 +154,9 @@ namespace WindowsForms
 
         private void alumnoBttn_Click(object sender, EventArgs e)
         {
-
+            CUAlumnoListaCursos profList = new CUAlumnoListaCursos();
+            profList.UserId = this.UserId;
+            profList.Show();
         }
     }
 }
