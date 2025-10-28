@@ -173,7 +173,7 @@ namespace API.Clients
             }
         }
 
-        public static async Task<IEnumerable<InscripcionDTO>> GetWithoutInscAsync(int idAlumno)
+        public static async Task<IEnumerable<CursoDTO>> GetWithoutInscAsync(int idAlumno)
         {
             try
             {
@@ -183,22 +183,22 @@ namespace API.Clients
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return await response.Content.ReadAsAsync<IEnumerable<InscripcionDTO>>();
+                    return await response.Content.ReadAsAsync<IEnumerable<CursoDTO>>();
                 }
                 else
                 {
                     await HandleUnauthorizedResponseAsync(response);
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener lista de inscripciones. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al obtener lista de cursos. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener lista de inscripciones: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al obtener lista de cursos: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener lista de inscripciones: {ex.Message}", ex);
+                throw new Exception($"Timeout al obtener lista de cursos: {ex.Message}", ex);
             }
         }
     }
