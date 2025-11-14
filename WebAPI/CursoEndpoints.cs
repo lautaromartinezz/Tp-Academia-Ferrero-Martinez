@@ -48,7 +48,7 @@ namespace WebAPI
 
                     if(cursoDto == null)
                     {
-                        return Results.NotFound("La materia ingresada no existe");
+                        return Results.NotFound("Error al crear el curso, la materia y la comision deben pertenecer al mismo plan");
                     }
 
                     return Results.Created($"/cursos/{cursoDto.Id}", cursoDto);
