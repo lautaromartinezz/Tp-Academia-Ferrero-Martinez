@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="25.1.6" />
+    <PackageReference Include="DevExpress.Data" Version="25.1.6" />
+    <PackageReference Include="DevExpress.Reporting.Core" Version="25.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.18" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>

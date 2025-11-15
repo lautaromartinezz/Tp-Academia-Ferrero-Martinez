@@ -3,6 +3,11 @@ using Domain.Model ;
 using DTOs;
 using Data;
 using WebAPI;
+using DevExpress.AspNetCore;
+using DevExpress.AspNetCore.Reporting;
+using DevExpress.XtraReports.Web.Extensions;
+using DevExpress.XtraReports.Native.Printing;
+using WebAPI.Reports;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +28,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Configuración de DevExpress
+
+builder.Services.AddDevExpressControls();
+builder.Services.AddSingleton<ReportStorageWebExtension, CustomReportStorage>();
+
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,7 +49,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
+app.UseDevExpressControls();
 
+app.MapControllers();
 app.MapMateriaEndpoints();
 app.MapCursoEndpoints();
 app.MapUsuarioEndpoints();
