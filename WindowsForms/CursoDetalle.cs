@@ -23,7 +23,6 @@ namespace WindowsForms
             set
             {
                 curso = value;
-                this.SetCurso();
             }
         }
 
@@ -42,8 +41,25 @@ namespace WindowsForms
         public CursoDetalle()
         {
             InitializeComponent();
-
             Mode = FormMode.Add;
+        }
+        private async Task LoadComboBox()
+        {
+            try
+            {
+                var materias = await MateriaAPIClient.GetAllAsync();
+                materiaComboBox.DataSource = materias;
+                materiaComboBox.DisplayMember = "Descripcion";
+                materiaComboBox.ValueMember = "Id";
+                var comisiones = await ComisionAPIClient.GetAllAsync();
+                comisionComboBox.DataSource = comisiones;
+                comisionComboBox.DisplayMember = "Descripcion";
+                comisionComboBox.ValueMember = "Id";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar las materias o comisiones: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async void aceptarButton_Click(object sender, EventArgs e)
@@ -54,8 +70,8 @@ namespace WindowsForms
                 {
                     this.Curso.AnioCalendario = this.anioCalendarioTimePicker.Value;
                     this.Curso.Cupo = int.Parse(cupoTextBox.Text);
-                    this.Curso.IdComision = int.Parse(idComisionTextBox.Text);
-                    this.Curso.IdMateria = int.Parse(idMateriaTextBox.Text);
+                    this.Curso.IdComision = (int)comisionComboBox.SelectedValue;
+                    this.Curso.IdMateria = (int)materiaComboBox.SelectedValue;
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
@@ -88,8 +104,8 @@ namespace WindowsForms
         {
             this.idTextBox.Text = this.Curso.Id.ToString();
             this.cupoTextBox.Text = this.Curso.Cupo.ToString();
-            this.idComisionTextBox.Text = this.Curso.IdComision.ToString();
-            this.idMateriaTextBox.Text = this.Curso.IdMateria.ToString();
+            this.comisionComboBox.SelectedValue = this.Curso.IdComision;
+            this.materiaComboBox.SelectedValue = this.Curso.IdMateria;
             this.anioCalendarioTimePicker.Value = this.Curso.AnioCalendario;
         }
 
@@ -117,9 +133,8 @@ namespace WindowsForms
             bool isValid = true;
 
             errorProvider.SetError(cupoTextBox, string.Empty);
-            errorProvider.SetError(idComisionTextBox, string.Empty);
-            errorProvider.SetError(idMateriaTextBox, string.Empty);
-
+            errorProvider.SetError(materiaComboBox, string.Empty);
+            errorProvider.SetError(comisionComboBox, string.Empty);
 
 
             if (this.cupoTextBox.Text == string.Empty)
@@ -127,20 +142,28 @@ namespace WindowsForms
                 isValid = false;
                 errorProvider.SetError(cupoTextBox, "La descripcion es Requerido");
             }
-
-            if (this.idComisionTextBox.Text == string.Empty)
+            if (this.materiaComboBox.SelectedItem == null)
             {
                 isValid = false;
-                errorProvider.SetError(idComisionTextBox, "Las horas semanales es Requerido");
+                errorProvider.SetError(materiaComboBox, "La materia es Requerida");
             }
-            if (this.idMateriaTextBox.Text == string.Empty)
+            if (this.comisionComboBox.SelectedItem == null)
             {
                 isValid = false;
-                errorProvider.SetError(idMateriaTextBox, "Las horas totales es Requerido");
+                errorProvider.SetError(comisionComboBox, "La comision es Requerida");
             }
 
             return isValid;
         }
 
+        private async void CursoDetalle_Load(object sender, EventArgs e) 
+        {
+            await LoadComboBox();
+            if (this.Mode == FormMode.Update)
+            {
+                SetCurso();
+            }
+        }
+        
     }
 }

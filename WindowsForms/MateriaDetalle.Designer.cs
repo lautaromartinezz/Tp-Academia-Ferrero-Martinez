@@ -41,7 +41,7 @@
             idTextBox = new TextBox();
             hsTotalesLabel = new Label();
             hsTotalesTextBox = new TextBox();
-            idPlanTextBox = new TextBox();
+            planComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -143,7 +143,7 @@
             hsTotalesLabel.Location = new Point(24, 111);
             hsTotalesLabel.Margin = new Padding(2, 0, 2, 0);
             hsTotalesLabel.Name = "hsTotalesLabel";
-            hsTotalesLabel.Size = new Size(77, 15);
+            hsTotalesLabel.Size = new Size(78, 15);
             hsTotalesLabel.TabIndex = 13;
             hsTotalesLabel.Text = "Horas Totales";
             // 
@@ -155,20 +155,20 @@
             hsTotalesTextBox.Size = new Size(110, 23);
             hsTotalesTextBox.TabIndex = 30;
             // 
-            // idPlanTextBox
+            // planComboBox
             // 
-            idPlanTextBox.Location = new Point(131, 147);
-            idPlanTextBox.Margin = new Padding(2, 1, 2, 1);
-            idPlanTextBox.Name = "idPlanTextBox";
-            idPlanTextBox.Size = new Size(110, 23);
-            idPlanTextBox.TabIndex = 71;
+            planComboBox.FormattingEnabled = true;
+            planComboBox.Location = new Point(131, 144);
+            planComboBox.Name = "planComboBox";
+            planComboBox.Size = new Size(110, 23);
+            planComboBox.TabIndex = 71;
             // 
             // MateriaDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(431, 236);
-            Controls.Add(idPlanTextBox);
+            Controls.Add(planComboBox);
             Controls.Add(hsTotalesLabel);
             Controls.Add(hsTotalesTextBox);
             Controls.Add(idLabel);
@@ -183,6 +183,7 @@
             Margin = new Padding(2, 1, 2, 1);
             Name = "MateriaDetalle";
             Text = "Materia";
+            Load += MateriaDetalle_Load;
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -202,6 +203,6 @@
         private TextBox idTextBox;
         private Label hsTotalesLabel;
         private TextBox hsTotalesTextBox;
-        private TextBox idPlanTextBox;
+        private ComboBox planComboBox;
     }
 }

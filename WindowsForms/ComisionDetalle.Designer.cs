@@ -37,9 +37,9 @@
             idLabel = new Label();
             idTextBox = new TextBox();
             idPlanLabel = new Label();
-            idPlanTextBox = new TextBox();
             descripcionLabel = new Label();
             descTextBox = new TextBox();
+            planComboBox1 = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -117,14 +117,6 @@
             idPlanLabel.TabIndex = 13;
             idPlanLabel.Text = "Plan (ID)";
             // 
-            // idPlanTextBox
-            // 
-            idPlanTextBox.Location = new Point(131, 108);
-            idPlanTextBox.Margin = new Padding(2, 1, 2, 1);
-            idPlanTextBox.Name = "idPlanTextBox";
-            idPlanTextBox.Size = new Size(110, 23);
-            idPlanTextBox.TabIndex = 30;
-            // 
             // descripcionLabel
             // 
             descripcionLabel.AutoSize = true;
@@ -144,15 +136,23 @@
             descTextBox.Size = new Size(110, 23);
             descTextBox.TabIndex = 72;
             // 
+            // planComboBox1
+            // 
+            planComboBox1.FormattingEnabled = true;
+            planComboBox1.Location = new Point(131, 111);
+            planComboBox1.Name = "planComboBox1";
+            planComboBox1.Size = new Size(110, 23);
+            planComboBox1.TabIndex = 73;
+            // 
             // ComisionDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(355, 188);
+            Controls.Add(planComboBox1);
             Controls.Add(descTextBox);
             Controls.Add(descripcionLabel);
             Controls.Add(idPlanLabel);
-            Controls.Add(idPlanTextBox);
             Controls.Add(idLabel);
             Controls.Add(idTextBox);
             Controls.Add(anioEspecialidadLabel);
@@ -162,6 +162,7 @@
             Margin = new Padding(2, 1, 2, 1);
             Name = "ComisionDetalle";
             Text = "Curso";
+            Load += ComisionDetalle_Load;
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -178,8 +179,8 @@
         private Label idLabel;
         private TextBox idTextBox;
         private Label idPlanLabel;
-        private TextBox idPlanTextBox;
         private TextBox descTextBox;
         private Label descripcionLabel;
+        private ComboBox planComboBox1;
     }
 }

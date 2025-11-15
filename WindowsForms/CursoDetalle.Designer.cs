@@ -39,9 +39,9 @@
             idLabel = new Label();
             idTextBox = new TextBox();
             idComisionLabel = new Label();
-            idComisionTextBox = new TextBox();
-            idMateriaTextBox = new TextBox();
             anioCalendarioTimePicker = new DateTimePicker();
+            comisionComboBox = new ComboBox();
+            materiaComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -139,22 +139,6 @@
             idComisionLabel.TabIndex = 13;
             idComisionLabel.Text = "Comision (ID)";
             // 
-            // idComisionTextBox
-            // 
-            idComisionTextBox.Location = new Point(131, 111);
-            idComisionTextBox.Margin = new Padding(2, 1, 2, 1);
-            idComisionTextBox.Name = "idComisionTextBox";
-            idComisionTextBox.Size = new Size(110, 23);
-            idComisionTextBox.TabIndex = 30;
-            // 
-            // idMateriaTextBox
-            // 
-            idMateriaTextBox.Location = new Point(131, 147);
-            idMateriaTextBox.Margin = new Padding(2, 1, 2, 1);
-            idMateriaTextBox.Name = "idMateriaTextBox";
-            idMateriaTextBox.Size = new Size(110, 23);
-            idMateriaTextBox.TabIndex = 71;
-            // 
             // anioCalendarioTimePicker
             // 
             anioCalendarioTimePicker.Location = new Point(131, 51);
@@ -162,15 +146,31 @@
             anioCalendarioTimePicker.Size = new Size(200, 23);
             anioCalendarioTimePicker.TabIndex = 72;
             // 
+            // comisionComboBox
+            // 
+            comisionComboBox.FormattingEnabled = true;
+            comisionComboBox.Location = new Point(131, 111);
+            comisionComboBox.Name = "comisionComboBox";
+            comisionComboBox.Size = new Size(110, 23);
+            comisionComboBox.TabIndex = 73;
+            // 
+            // materiaComboBox
+            // 
+            materiaComboBox.FormattingEnabled = true;
+            materiaComboBox.Location = new Point(131, 144);
+            materiaComboBox.Name = "materiaComboBox";
+            materiaComboBox.Size = new Size(110, 23);
+            materiaComboBox.TabIndex = 74;
+            // 
             // CursoDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(431, 236);
+            Controls.Add(materiaComboBox);
+            Controls.Add(comisionComboBox);
             Controls.Add(anioCalendarioTimePicker);
-            Controls.Add(idMateriaTextBox);
             Controls.Add(idComisionLabel);
-            Controls.Add(idComisionTextBox);
             Controls.Add(idLabel);
             Controls.Add(idTextBox);
             Controls.Add(idMateriaLabel);
@@ -182,6 +182,7 @@
             Margin = new Padding(2, 1, 2, 1);
             Name = "CursoDetalle";
             Text = "Curso";
+            Load += CursoDetalle_Load;
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -200,8 +201,8 @@
         private Label idLabel;
         private TextBox idTextBox;
         private Label idComisionLabel;
-        private TextBox idComisionTextBox;
-        private TextBox idMateriaTextBox;
         private DateTimePicker anioCalendarioTimePicker;
+        private ComboBox materiaComboBox;
+        private ComboBox comisionComboBox;
     }
 }

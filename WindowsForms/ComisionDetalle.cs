@@ -29,7 +29,6 @@ namespace WindowsForms
             set
             {
                 comision = value;
-                this.SetComision();
             }
         }
 
@@ -48,10 +47,23 @@ namespace WindowsForms
         public ComisionDetalle()
         {
             InitializeComponent();
-
             Mode = FormMode.Add;
         }
 
+        private async Task LoadComboBox()
+        {
+            try
+            {
+                var planes = await PlanAPIClient.GetAllAsync();
+                planComboBox1.DataSource = planes;
+                planComboBox1.DisplayMember = "Descripcion";
+                planComboBox1.ValueMember = "Id";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar los planes: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private async void aceptarButton_Click(object sender, EventArgs e)
         {
             if (this.ValidateComision())
@@ -60,7 +72,7 @@ namespace WindowsForms
                 {
                     this.Comision.AnioEspecialidad = int.Parse(anioEspTextBox.Text);
                     this.Comision.Descripcion = (descTextBox.Text);
-                    this.Comision.IdPlan = int.Parse(idPlanTextBox.Text);
+                    this.Comision.IdPlan = (int)planComboBox1.SelectedValue;
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
@@ -93,7 +105,7 @@ namespace WindowsForms
         {
             this.idTextBox.Text = this.Comision.Id.ToString();
             this.anioEspTextBox.Text = this.Comision.AnioEspecialidad.ToString();
-            this.idPlanTextBox.Text = this.Comision.IdPlan.ToString();
+            this.planComboBox1.SelectedValue = this.Comision.IdPlan;
             this.descTextBox.Text = this.Comision.Descripcion;
         }
 
@@ -116,12 +128,14 @@ namespace WindowsForms
             }
         }
 
+
+
         private bool ValidateComision()
         {
             bool isValid = true;
 
             errorProvider.SetError(anioEspTextBox, string.Empty);
-            errorProvider.SetError(idPlanTextBox, string.Empty);
+            errorProvider.SetError(planComboBox1, string.Empty);
             errorProvider.SetError(descTextBox, string.Empty);
 
 
@@ -132,10 +146,10 @@ namespace WindowsForms
                 errorProvider.SetError(anioEspTextBox, "El año es Requerido");
             }
 
-            if (this.idPlanTextBox.Text == string.Empty)
+            if (this.planComboBox1.SelectedItem == null)
             {
                 isValid = false;
-                errorProvider.SetError(idPlanTextBox, "El plan es Requerido");
+                errorProvider.SetError(planComboBox1, "El plan es Requerido");
             }
             if (this.descTextBox.Text == string.Empty)
             {
@@ -146,5 +160,12 @@ namespace WindowsForms
             return isValid;
         }
 
+        private async void ComisionDetalle_Load(object sender, EventArgs e)
+        {
+            await LoadComboBox();         
+
+            if (Mode == FormMode.Update)
+                SetComision();              
+        }
     }
 }

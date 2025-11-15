@@ -24,7 +24,6 @@ namespace WindowsForms
             set
             {
                 materia = value;
-                this.SetMateria();
             }
         }
 
@@ -46,7 +45,20 @@ namespace WindowsForms
 
             Mode = FormMode.Add;
         }
-
+        private async Task LoadComboBox()
+        {
+            try
+            {
+                var planes = await PlanAPIClient.GetAllAsync();
+                planComboBox.DataSource = planes;
+                planComboBox.DisplayMember = "Descripcion";
+                planComboBox.ValueMember = "Id";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private async void aceptarButton_Click(object sender, EventArgs e)
         {
             if (this.ValidateMateria())
@@ -56,7 +68,7 @@ namespace WindowsForms
                     this.Materia.Descripcion = descripcionTextBox.Text;
                     this.Materia.HsSemanales = int.Parse(hsSemanalesTextBox.Text);
                     this.Materia.HsTotales = int.Parse(hsTotalesTextBox.Text);
-                    this.Materia.IdPlan = int.Parse(idPlanTextBox.Text);
+                    this.Materia.IdPlan = (int)planComboBox.SelectedValue;
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
@@ -91,7 +103,7 @@ namespace WindowsForms
             this.descripcionTextBox.Text = this.Materia.Descripcion;
             this.hsSemanalesTextBox.Text = this.Materia.HsSemanales.ToString();
             this.hsTotalesTextBox.Text = this.Materia.HsTotales.ToString();
-            this.idPlanTextBox.Text = this.Materia.IdPlan.ToString();
+            this.planComboBox.SelectedValue= this.Materia.IdPlan;
         }
 
         private void SetFormMode(FormMode value)
@@ -120,7 +132,7 @@ namespace WindowsForms
             errorProvider.SetError(descripcionTextBox, string.Empty);
             errorProvider.SetError(hsSemanalesTextBox, string.Empty);
             errorProvider.SetError(hsTotalesTextBox, string.Empty);
-            errorProvider.SetError(idPlanTextBox, string.Empty);
+            errorProvider.SetError(planComboBox, string.Empty);
 
 
 
@@ -140,14 +152,22 @@ namespace WindowsForms
                 isValid = false;
                 errorProvider.SetError(hsSemanalesTextBox, "Las horas totales es Requerido");
             }
-            if (this.idPlanTextBox.Text == string.Empty)
+            if (this.planComboBox.SelectedValue == null)
             {
                 isValid = false;
-                errorProvider.SetError(idPlanTextBox, "El IDPlan totales es Requerido");
+                errorProvider.SetError(planComboBox, "El IDPlan es Requerido");
             }
 
             return isValid;
         }
 
+        private async void MateriaDetalle_Load(object sender, EventArgs e)
+        {
+            await LoadComboBox();
+            if (this.Mode == FormMode.Update)
+            {
+                this.SetMateria();
+            }
+        }
     }
 }

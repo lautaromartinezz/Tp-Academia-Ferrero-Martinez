@@ -23,7 +23,6 @@ namespace WindowsForms
             set
             {
                 dictado = value;
-                this.SetDictado();
             }
         }
 
@@ -41,9 +40,26 @@ namespace WindowsForms
         public DictadoDetalle()
         {
             InitializeComponent();
-
             Mode = FormMode.Add;
 
+        }
+        private async Task LoadComboBox()
+        {
+            try
+            {
+                var cursos = await CursoAPIClient.GetAllAsync();
+                cursoComboBox.DataSource = cursos;
+                cursoComboBox.DisplayMember = "AnioCalendario";
+                cursoComboBox.ValueMember = "Id";
+                var profesores = await PersonaAPIClient.GetAllAsync();
+                profesorComboBox.DataSource = profesores;
+                profesorComboBox.DisplayMember = "Legajo";
+                profesorComboBox.ValueMember = "Id";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar los cursos o los profesores: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async void aceptarButton_Click(object sender, EventArgs e)
@@ -53,8 +69,8 @@ namespace WindowsForms
                 try
                 {
                     this.Dictado.Cargo = cargoTextBox.Text;
-                    this.Dictado.IdProfesor = int.Parse(idProfesorTextBox.Text);
-                    this.Dictado.IdCurso = int.Parse(idCursoTextBox.Text);
+                    this.Dictado.IdProfesor = (int)profesorComboBox.SelectedValue;
+                    this.Dictado.IdCurso = (int)cursoComboBox.SelectedValue;
 
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
@@ -88,8 +104,9 @@ namespace WindowsForms
         {
             this.idTextBox.Text = this.Dictado.Id.ToString();
             this.cargoTextBox.Text = this.Dictado.Cargo;
-            this.idProfesorTextBox.Text = this.Dictado.IdProfesor.ToString();
-            this.idCursoTextBox.Text = this.Dictado.IdCurso.ToString();
+            this.profesorComboBox.SelectedValue = this.Dictado.IdProfesor;
+            this.cursoComboBox.SelectedValue = this.Dictado.IdCurso;
+
 
         }
 
@@ -117,8 +134,8 @@ namespace WindowsForms
             bool isValid = true;
 
             errorProvider.SetError(cargoTextBox, string.Empty);
-            errorProvider.SetError(idProfesorTextBox, string.Empty);
-            errorProvider.SetError(idCursoTextBox, string.Empty);
+            errorProvider.SetError(profesorComboBox, string.Empty);
+            errorProvider.SetError(cursoComboBox, string.Empty);
 
 
 
@@ -128,18 +145,26 @@ namespace WindowsForms
                 isValid = false;
                 errorProvider.SetError(cargoTextBox, "La situacion es Requerido");
             }
-            if (this.idProfesorTextBox.Text == string.Empty)
+            if (this.profesorComboBox.SelectedValue == null)
             {
                 isValid = false;
-                errorProvider.SetError(idProfesorTextBox, "El Profesor es Requerido");
+                errorProvider.SetError(profesorComboBox, "El Profesor es Requerido");
             }
-            if (this.idCursoTextBox.Text == string.Empty)
+            if (this.cursoComboBox.SelectedValue == null)
             {
                 isValid = false;
-                errorProvider.SetError(idProfesorTextBox, "El Curso es Requerido");
+                errorProvider.SetError(cursoComboBox, "El Curso es Requerido");
             }
 
             return isValid;
+        }
+
+        private async void DictadoDetalle_Load(object sender, EventArgs e)
+        {
+            await LoadComboBox();          
+
+            if (Mode == FormMode.Update)
+                SetDictado();            
         }
     }
 }

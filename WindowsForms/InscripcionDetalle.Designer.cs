@@ -39,9 +39,9 @@
             idTextBox = new TextBox();
             situacionLabel = new Label();
             SituacionTextBox = new TextBox();
-            idAlumnoTextBox = new TextBox();
-            idCursoTextBox = new TextBox();
             idCursoLabel = new Label();
+            alumnoComboBox = new ComboBox();
+            cursoComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -137,22 +137,6 @@
             SituacionTextBox.Size = new Size(110, 23);
             SituacionTextBox.TabIndex = 30;
             // 
-            // idAlumnoTextBox
-            // 
-            idAlumnoTextBox.Location = new Point(131, 111);
-            idAlumnoTextBox.Margin = new Padding(2, 1, 2, 1);
-            idAlumnoTextBox.Name = "idAlumnoTextBox";
-            idAlumnoTextBox.Size = new Size(110, 23);
-            idAlumnoTextBox.TabIndex = 71;
-            // 
-            // idCursoTextBox
-            // 
-            idCursoTextBox.Location = new Point(131, 146);
-            idCursoTextBox.Margin = new Padding(2, 1, 2, 1);
-            idCursoTextBox.Name = "idCursoTextBox";
-            idCursoTextBox.Size = new Size(110, 23);
-            idCursoTextBox.TabIndex = 73;
-            // 
             // idCursoLabel
             // 
             idCursoLabel.AutoSize = true;
@@ -163,14 +147,30 @@
             idCursoLabel.TabIndex = 72;
             idCursoLabel.Text = "Curso (ID)";
             // 
+            // alumnoComboBox
+            // 
+            alumnoComboBox.FormattingEnabled = true;
+            alumnoComboBox.Location = new Point(131, 111);
+            alumnoComboBox.Name = "alumnoComboBox";
+            alumnoComboBox.Size = new Size(109, 23);
+            alumnoComboBox.TabIndex = 73;
+            // 
+            // cursoComboBox
+            // 
+            cursoComboBox.FormattingEnabled = true;
+            cursoComboBox.Location = new Point(131, 146);
+            cursoComboBox.Name = "cursoComboBox";
+            cursoComboBox.Size = new Size(110, 23);
+            cursoComboBox.TabIndex = 74;
+            // 
             // InscripcionDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(431, 236);
-            Controls.Add(idCursoTextBox);
+            Controls.Add(cursoComboBox);
+            Controls.Add(alumnoComboBox);
             Controls.Add(idCursoLabel);
-            Controls.Add(idAlumnoTextBox);
             Controls.Add(situacionLabel);
             Controls.Add(SituacionTextBox);
             Controls.Add(idLabel);
@@ -183,6 +183,7 @@
             Margin = new Padding(2, 1, 2, 1);
             Name = "InscripcionDetalle";
             Text = "Curso";
+            Load += InscripcionDetalle_Load;
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -201,8 +202,8 @@
         private TextBox idTextBox;
         private Label situacionLabel;
         private TextBox SituacionTextBox;
-        private TextBox idAlumnoTextBox;
-        private TextBox idCursoTextBox;
         private Label idCursoLabel;
+        private ComboBox cursoComboBox;
+        private ComboBox alumnoComboBox;
     }
 }
