@@ -29,7 +29,6 @@ namespace WindowsForms
             set
             {
                 inscripcion = value;
-                this.SetInscripcion();
             }
         }
 
@@ -51,6 +50,24 @@ namespace WindowsForms
 
         }
 
+        private async Task LoadComboBox()
+        {
+            try
+            {
+                var alumnos = await PersonaAPIClient.GetAllAsync();
+                alumnoComboBox.DataSource = alumnos;
+                alumnoComboBox.DisplayMember = "Legajo";
+                alumnoComboBox.ValueMember = "Id";
+                var cursos = await CursoAPIClient.GetAllAsync();
+                cursoComboBox.DataSource = cursos;
+                cursoComboBox.DisplayMember = "AnioCalendario";
+                cursoComboBox.ValueMember = "Id";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private async void aceptarButton_Click(object sender, EventArgs e)
         {
             if (this.ValidateInscripcion())
@@ -58,9 +75,9 @@ namespace WindowsForms
                 try
                 {
                     this.Inscripcion.Nota = int.Parse(notaTextBox.Text);
-                    this.Inscripcion.Situacion= SituacionTextBox.Text;
-                    this.Inscripcion.IdAlumno = int.Parse(idAlumnoTextBox.Text);
-                    this.Inscripcion.IdCurso = int.Parse(idCursoTextBox.Text);
+                    this.Inscripcion.Situacion = SituacionTextBox.Text;
+                    this.Inscripcion.IdAlumno = (int)alumnoComboBox.SelectedValue;
+                    this.Inscripcion.IdCurso = (int)cursoComboBox.SelectedValue;
 
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
@@ -95,8 +112,8 @@ namespace WindowsForms
             this.idTextBox.Text = this.Inscripcion.Id.ToString();
             this.notaTextBox.Text = this.Inscripcion.Nota.ToString();
             this.SituacionTextBox.Text = this.Inscripcion.Situacion;
-            this.idAlumnoTextBox.Text = this.Inscripcion.IdAlumno.ToString();
-            this.idCursoTextBox.Text = this.Inscripcion.IdCurso.ToString();
+            this.alumnoComboBox.SelectedValue = this.Inscripcion.IdAlumno;
+            this.cursoComboBox.SelectedValue = this.Inscripcion.IdCurso;
 
         }
 
@@ -117,14 +134,14 @@ namespace WindowsForms
                 idTextBox.Visible = true;
 
             }
-            if(Mode == FormModeInsc.Profesor)
+            if (Mode == FormModeInsc.Profesor)
             {
                 idLabel.Visible = false;
                 idTextBox.Visible = false;
-                idAlumnoTextBox.Visible = false;
+                alumnoComboBox.Visible = false;
                 idAlumnoLabel.Visible = false;
                 idCursoLabel.Visible = false;
-                idCursoTextBox.Visible = false;
+                cursoComboBox.Visible = false;
             }
         }
 
@@ -134,8 +151,8 @@ namespace WindowsForms
 
             errorProvider.SetError(notaTextBox, string.Empty);
             errorProvider.SetError(SituacionTextBox, string.Empty);
-            errorProvider.SetError(idAlumnoTextBox, string.Empty);
-            errorProvider.SetError(idCursoTextBox, string.Empty);
+            errorProvider.SetError(alumnoComboBox, string.Empty);
+            errorProvider.SetError(cursoComboBox, string.Empty);
 
 
 
@@ -151,18 +168,27 @@ namespace WindowsForms
                 isValid = false;
                 errorProvider.SetError(SituacionTextBox, "La situacion es Requerido");
             }
-            if (this.idAlumnoTextBox.Text == string.Empty)
+            if (this.alumnoComboBox == null)
             {
                 isValid = false;
-                errorProvider.SetError(idAlumnoTextBox, "El Alumno es Requerido");
+                errorProvider.SetError(alumnoComboBox, "El Alumno es Requerido");
             }
-            if (this.idCursoTextBox.Text == string.Empty)
+            if (this.cursoComboBox == null)
             {
                 isValid = false;
-                errorProvider.SetError(idAlumnoTextBox, "El Curso es Requerido");
+                errorProvider.SetError(cursoComboBox, "El Curso es Requerido");
             }
 
             return isValid;
+        }
+
+        private async void InscripcionDetalle_Load(object sender, EventArgs e)
+        {
+            await LoadComboBox();
+            if (this.Mode == FormModeInsc.Update)
+            {
+                SetInscripcion();
+            }
         }
     }
 }

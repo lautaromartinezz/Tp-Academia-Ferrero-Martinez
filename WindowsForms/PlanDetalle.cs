@@ -23,7 +23,6 @@ namespace WindowsForms
             set
             {
                 plan = value;
-                this.SetPlan();
             }
         }
 
@@ -46,6 +45,20 @@ namespace WindowsForms
             Mode = FormMode.Add;
         }
 
+        private async Task LoadComboBox()
+        {
+            try
+            {
+                var especialidades = await EspecialidadAPIClient.GetAllAsync();
+                especialidadComboBox.DataSource = especialidades;
+                especialidadComboBox.DisplayMember = "DescEspecialidad";
+                especialidadComboBox.ValueMember = "Id";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private async void aceptarButton_Click(object sender, EventArgs e)
         {
             if (this.ValidatePlan())
@@ -53,7 +66,7 @@ namespace WindowsForms
                 try
                 {
                     this.Plan.Descripcion = descTextBox.Text;
-                    this.Plan.IdEspecialidad = int.Parse(idEspecialidadTextBox.Text);
+                    this.Plan.IdEspecialidad = (int)especialidadComboBox.SelectedValue;
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
@@ -86,7 +99,7 @@ namespace WindowsForms
         {
             this.idTextBox.Text = this.Plan.Id.ToString();
             this.descTextBox.Text = this.Plan.Descripcion;
-            this.idEspecialidadTextBox.Text = this.Plan.IdEspecialidad.ToString();
+            this.especialidadComboBox.SelectedValue = this.Plan.IdEspecialidad;
         }
 
         private void SetFormMode(FormMode value)
@@ -113,7 +126,7 @@ namespace WindowsForms
             bool isValid = true;
 
             errorProvider.SetError(descTextBox, string.Empty);
-            errorProvider.SetError(idEspecialidadTextBox, string.Empty);
+            errorProvider.SetError(especialidadComboBox, string.Empty);
 
 
 
@@ -123,13 +136,22 @@ namespace WindowsForms
                 errorProvider.SetError(descTextBox, "La descripcion es Requerido");
             }
 
-            if (this.idEspecialidadTextBox.Text == string.Empty)
+            if (this.especialidadComboBox.SelectedValue == null)
             {
                 isValid = false;
-                errorProvider.SetError(idEspecialidadTextBox, "El id Especiliadad es Requerido");
+                errorProvider.SetError(especialidadComboBox, "El id Especiliadad es Requerido");
             }
 
             return isValid;
+        }
+
+        private async void PlanDetalle_Load(object sender, EventArgs e)
+        {
+            await LoadComboBox();
+            if (this.Mode == FormMode.Add)
+            {
+                this.SetPlan();
+            }
         }
     }
 }

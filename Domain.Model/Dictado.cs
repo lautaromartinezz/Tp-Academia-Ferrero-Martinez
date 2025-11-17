@@ -44,7 +44,7 @@ namespace Domain.Model
             SetId(id);
             SetCargo(cargo);
             SetIdCurso(idCurso);
-            SetIdProefsor(idCurso);
+            SetIdProefsor(idProfesor);
         }
     }
 }

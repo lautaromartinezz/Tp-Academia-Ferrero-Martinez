@@ -37,7 +37,7 @@
             idLabel = new Label();
             idTextBox = new TextBox();
             idEspecialidadLabel = new Label();
-            idEspecialidadTextBox = new TextBox();
+            especialidadComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -79,7 +79,7 @@
             // 
             // descTextBox
             // 
-            descTextBox.Location = new Point(131, 49);
+            descTextBox.Location = new Point(130, 46);
             descTextBox.Margin = new Padding(2, 1, 2, 1);
             descTextBox.Name = "descTextBox";
             descTextBox.Size = new Size(110, 23);
@@ -115,21 +115,21 @@
             idEspecialidadLabel.TabIndex = 13;
             idEspecialidadLabel.Text = "Especialidad (ID)";
             // 
-            // idEspecialidadTextBox
+            // especialidadComboBox
             // 
-            idEspecialidadTextBox.Location = new Point(131, 78);
-            idEspecialidadTextBox.Margin = new Padding(2, 1, 2, 1);
-            idEspecialidadTextBox.Name = "idEspecialidadTextBox";
-            idEspecialidadTextBox.Size = new Size(110, 23);
-            idEspecialidadTextBox.TabIndex = 30;
+            especialidadComboBox.FormattingEnabled = true;
+            especialidadComboBox.Location = new Point(130, 75);
+            especialidadComboBox.Name = "especialidadComboBox";
+            especialidadComboBox.Size = new Size(111, 23);
+            especialidadComboBox.TabIndex = 71;
             // 
             // PlanDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(431, 236);
+            Controls.Add(especialidadComboBox);
             Controls.Add(idEspecialidadLabel);
-            Controls.Add(idEspecialidadTextBox);
             Controls.Add(idLabel);
             Controls.Add(idTextBox);
             Controls.Add(descLabel);
@@ -139,6 +139,7 @@
             Margin = new Padding(2, 1, 2, 1);
             Name = "PlanDetalle";
             Text = "Curso";
+            Load += PlanDetalle_Load;
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -155,6 +156,6 @@
         private Label idLabel;
         private TextBox idTextBox;
         private Label idEspecialidadLabel;
-        private TextBox idEspecialidadTextBox;
+        private ComboBox especialidadComboBox;
     }
 }
