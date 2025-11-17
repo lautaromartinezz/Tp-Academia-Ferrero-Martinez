@@ -1,4 +1,4 @@
-﻿using Academia;
+using Academia;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -41,24 +41,24 @@ namespace WindowsForms
             InitializeComponent();
 
         }
-        private void usuarioButton_Click(object sender, EventArgs e)
+        private void usuariosToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             UsuarioLista usuarioLista = new UsuarioLista();
             usuarioLista.Show();
         }
 
-        private void materiaButton_Click(object sender, EventArgs e)
+        private void materiasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MateriaLista materiaLista = new MateriaLista();
             materiaLista.Show();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void cursosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CursoLista cursoLista = new CursoLista();
             cursoLista.Show();
         }
-        private void bttnCursos_Click(object sender, EventArgs e)
+        private void planesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PlanLista planLista = new PlanLista();
             planLista.Show();
@@ -71,31 +71,31 @@ namespace WindowsForms
             this.Dispose();
         }
 
-        private void ModulosButton_Click(object sender, EventArgs e)
+        private void modulosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ModuloLista m = new ModuloLista();
             m.Show();
         }
 
-        private void especialidadButton_Click(object sender, EventArgs e)
+        private void especialidadesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EspecialidadLista esp = new EspecialidadLista();
             esp.Show();
         }
 
-        private void comButton_Click(object sender, EventArgs e)
+        private void comisionesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ComisionLista com = new ComisionLista();
             com.Show();
         }
 
-        private void inscripcionBttn_Click(object sender, EventArgs e)
+        private void inscripcionesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InscripcionLista ins = new InscripcionLista();
             ins.Show();
         }
 
-        private void dictadoBttn_Click(object sender, EventArgs e)
+        private void dictadosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DictadoLista dic = new DictadoLista();
             dic.Show();
@@ -107,52 +107,36 @@ namespace WindowsForms
 
             if (Mode == TipoUsuario.Admin)
             {
-                profesorBttn.Visible = false;
-                alumnoBttn.Visible = false;
 
+                alumnoToolStripMenuItem.Visible = false;
+                profesorToolStripMenuItem.Visible = false;
             }
 
             if (Mode == TipoUsuario.Profesor)
             {
-                button1.Visible = false;
-                comButton.Visible = false;
-                alumnoBttn.Visible = false;
-                usuarioButton.Visible = false;
-                comButton.Visible = false;
-                inscripcionBttn.Visible = false;
-                dictadoBttn.Visible = false;
-                materiaButton.Visible = false;
-                bttnCursos.Visible = false;
-                especialidadButton.Visible = false;
-                ModulosButton.Visible = false;
+
+                adminToolStripMenuItem.Visible = false;
+                alumnoToolStripMenuItem.Visible = false;
+
 
             }
 
             if (Mode == TipoUsuario.Alumno)
             {
-                button1.Visible = false;
-                comButton.Visible = false;
-                profesorBttn.Visible = false;
-                usuarioButton.Visible = false;
-                comButton.Visible = false;
-                inscripcionBttn.Visible = false;
-                dictadoBttn.Visible = false;
-                materiaButton.Visible = false;
-                bttnCursos.Visible = false;
-                especialidadButton.Visible = false;
-                ModulosButton.Visible = false;
+                adminToolStripMenuItem.Visible = false;
+                profesorToolStripMenuItem.Visible = false;
 
             }
         }
 
-        private void profesorBttn_Click(object sender, EventArgs e)
+        private void cargarNotasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CUProfesorListaDictados profList = new CUProfesorListaDictados();
             profList.UserId = this.UserId;
             profList.Show();
         }
 
-        private void alumnoBttn_Click(object sender, EventArgs e)
+        private void inscribirseACursoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CUAlumnoListaCursos profList = new CUAlumnoListaCursos();
             profList.UserId = this.UserId;

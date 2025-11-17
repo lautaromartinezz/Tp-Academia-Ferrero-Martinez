@@ -78,6 +78,8 @@ namespace Domain.Services
 
             if (materia == null || comision == null) return null;
 
+            if (materia.IdPlan != comision.IdPlan) return null;
+
             else
             {
                 var cursoRepository = new CursoRepository();
@@ -107,6 +109,8 @@ namespace Domain.Services
             Comision? comision = comisionRepository.Get(dto.IdComision);
 
             if (materia == null || comision == null) return false;
+            if (materia.IdPlan != comision.IdPlan) return false;
+
 
             else
             {

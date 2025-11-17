@@ -1,4 +1,4 @@
-﻿namespace WindowsForms
+namespace WindowsForms
 {
     partial class Inicio
     {
@@ -28,42 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            usuarioButton = new Button();
-            materiaButton = new Button();
             btnClose = new Button();
             label1 = new Label();
-            button1 = new Button();
-            bttnCursos = new Button();
-            ModulosButton = new Button();
-            especialidadButton = new Button();
-            comButton = new Button();
-            inscripcionBttn = new Button();
-            dictadoBttn = new Button();
-            profesorBttn = new Button();
-            alumnoBttn = new Button();
-            reporteCursosButton = new Button();
-            reportePlanesButton = new Button();
+            menuStrip1 = new MenuStrip();
+            adminToolStripMenuItem = new ToolStripMenuItem();
+            materiasToolStripMenuItem1 = new ToolStripMenuItem();
+            materiasToolStripMenuItem = new ToolStripMenuItem();
+            cursosToolStripMenuItem = new ToolStripMenuItem();
+            planesToolStripMenuItem = new ToolStripMenuItem();
+            modulosToolStripMenuItem = new ToolStripMenuItem();
+            especialidadesToolStripMenuItem = new ToolStripMenuItem();
+            comisionesToolStripMenuItem = new ToolStripMenuItem();
+            inscripcionesToolStripMenuItem = new ToolStripMenuItem();
+            dictadosToolStripMenuItem = new ToolStripMenuItem();
+            profesorToolStripMenuItem = new ToolStripMenuItem();
+            cargarNotasToolStripMenuItem = new ToolStripMenuItem();
+            alumnoToolStripMenuItem = new ToolStripMenuItem();
+            inscribirseACursoToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
-            // 
-            // usuarioButton
-            // 
-            usuarioButton.Location = new Point(12, 55);
-            usuarioButton.Name = "usuarioButton";
-            usuarioButton.Size = new Size(114, 40);
-            usuarioButton.TabIndex = 0;
-            usuarioButton.Text = "Usuarios";
-            usuarioButton.UseVisualStyleBackColor = true;
-            usuarioButton.Click += usuarioButton_Click;
-            // 
-            // materiaButton
-            // 
-            materiaButton.Location = new Point(12, 101);
-            materiaButton.Name = "materiaButton";
-            materiaButton.Size = new Size(114, 40);
-            materiaButton.TabIndex = 2;
-            materiaButton.Text = "Materias";
-            materiaButton.UseVisualStyleBackColor = true;
-            materiaButton.Click += materiaButton_Click;
             // 
             // btnClose
             // 
@@ -79,101 +62,118 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(12, 9);
+            label1.Location = new Point(145, 20);
             label1.Name = "label1";
             label1.Size = new Size(101, 32);
             label1.TabIndex = 5;
             label1.Text = "Gestión";
             // 
-            // button1
+            // menuStrip1
             // 
-            button1.Location = new Point(12, 147);
-            button1.Name = "button1";
-            button1.Size = new Size(114, 38);
-            button1.TabIndex = 6;
-            button1.Text = "Cursos";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            menuStrip1.Items.AddRange(new ToolStripItem[] { adminToolStripMenuItem, profesorToolStripMenuItem, alumnoToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(382, 24);
+            menuStrip1.TabIndex = 15;
+            menuStrip1.Text = "menuStrip1";
             // 
-            // bttnCursos
+            // adminToolStripMenuItem
             // 
-            bttnCursos.Location = new Point(12, 191);
-            bttnCursos.Name = "bttnCursos";
-            bttnCursos.Size = new Size(114, 38);
-            bttnCursos.TabIndex = 7;
-            bttnCursos.Text = "Planes";
-            bttnCursos.UseVisualStyleBackColor = true;
-            bttnCursos.Click += bttnCursos_Click;
+            adminToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { materiasToolStripMenuItem1, materiasToolStripMenuItem, cursosToolStripMenuItem, planesToolStripMenuItem, modulosToolStripMenuItem, especialidadesToolStripMenuItem, comisionesToolStripMenuItem, inscripcionesToolStripMenuItem, dictadosToolStripMenuItem });
+            adminToolStripMenuItem.Name = "adminToolStripMenuItem";
+            adminToolStripMenuItem.Size = new Size(55, 20);
+            adminToolStripMenuItem.Text = "Admin";
             // 
-            // ModulosButton
+            // materiasToolStripMenuItem1
             // 
-            ModulosButton.Location = new Point(12, 235);
-            ModulosButton.Name = "ModulosButton";
-            ModulosButton.Size = new Size(114, 34);
-            ModulosButton.TabIndex = 8;
-            ModulosButton.Text = "Modulos";
-            ModulosButton.UseVisualStyleBackColor = true;
-            ModulosButton.Click += ModulosButton_Click;
+            materiasToolStripMenuItem1.Name = "materiasToolStripMenuItem1";
+            materiasToolStripMenuItem1.Size = new Size(180, 22);
+            materiasToolStripMenuItem1.Text = "Usuarios";
+            materiasToolStripMenuItem1.Click += usuariosToolStripMenuItem1_Click;
             // 
-            // especialidadButton
+            // materiasToolStripMenuItem
             // 
-            especialidadButton.Location = new Point(12, 275);
-            especialidadButton.Name = "especialidadButton";
-            especialidadButton.Size = new Size(114, 34);
-            especialidadButton.TabIndex = 9;
-            especialidadButton.Text = "Especialidades";
-            especialidadButton.UseVisualStyleBackColor = true;
-            especialidadButton.Click += especialidadButton_Click;
+            materiasToolStripMenuItem.Name = "materiasToolStripMenuItem";
+            materiasToolStripMenuItem.Size = new Size(180, 22);
+            materiasToolStripMenuItem.Text = "Materias";
+            materiasToolStripMenuItem.Click += materiasToolStripMenuItem_Click;
             // 
-            // comButton
+            // cursosToolStripMenuItem
             // 
-            comButton.Location = new Point(12, 315);
-            comButton.Name = "comButton";
-            comButton.Size = new Size(114, 34);
-            comButton.TabIndex = 10;
-            comButton.Text = "Comisiones";
-            comButton.UseVisualStyleBackColor = true;
-            comButton.Click += comButton_Click;
+            cursosToolStripMenuItem.Name = "cursosToolStripMenuItem";
+            cursosToolStripMenuItem.Size = new Size(180, 22);
+            cursosToolStripMenuItem.Text = "Cursos";
+            cursosToolStripMenuItem.Click += cursosToolStripMenuItem_Click;
             // 
-            // inscripcionBttn
+            // planesToolStripMenuItem
             // 
-            inscripcionBttn.Location = new Point(132, 55);
-            inscripcionBttn.Name = "inscripcionBttn";
-            inscripcionBttn.Size = new Size(114, 40);
-            inscripcionBttn.TabIndex = 11;
-            inscripcionBttn.Text = "Inscripciones";
-            inscripcionBttn.UseVisualStyleBackColor = true;
-            inscripcionBttn.Click += inscripcionBttn_Click;
+            planesToolStripMenuItem.Name = "planesToolStripMenuItem";
+            planesToolStripMenuItem.Size = new Size(180, 22);
+            planesToolStripMenuItem.Text = "Planes";
+            planesToolStripMenuItem.Click += planesToolStripMenuItem_Click;
             // 
-            // dictadoBttn
+            // modulosToolStripMenuItem
             // 
-            dictadoBttn.Location = new Point(132, 101);
-            dictadoBttn.Name = "dictadoBttn";
-            dictadoBttn.Size = new Size(114, 40);
-            dictadoBttn.TabIndex = 12;
-            dictadoBttn.Text = "Dictado";
-            dictadoBttn.UseVisualStyleBackColor = true;
-            dictadoBttn.Click += dictadoBttn_Click;
+            modulosToolStripMenuItem.Name = "modulosToolStripMenuItem";
+            modulosToolStripMenuItem.Size = new Size(180, 22);
+            modulosToolStripMenuItem.Text = "Modulos";
+            modulosToolStripMenuItem.Click += modulosToolStripMenuItem_Click;
             // 
-            // profesorBttn
+            // especialidadesToolStripMenuItem
             // 
-            profesorBttn.Location = new Point(132, 147);
-            profesorBttn.Name = "profesorBttn";
-            profesorBttn.Size = new Size(114, 38);
-            profesorBttn.TabIndex = 13;
-            profesorBttn.Text = "Agregar Notas";
-            profesorBttn.UseVisualStyleBackColor = true;
-            profesorBttn.Click += profesorBttn_Click;
+            especialidadesToolStripMenuItem.Name = "especialidadesToolStripMenuItem";
+            especialidadesToolStripMenuItem.Size = new Size(180, 22);
+            especialidadesToolStripMenuItem.Text = "Especialidades";
+            especialidadesToolStripMenuItem.Click += especialidadesToolStripMenuItem_Click;
             // 
-            // alumnoBttn
+            // comisionesToolStripMenuItem
             // 
-            alumnoBttn.Location = new Point(132, 191);
-            alumnoBttn.Name = "alumnoBttn";
-            alumnoBttn.Size = new Size(114, 38);
-            alumnoBttn.TabIndex = 14;
-            alumnoBttn.Text = "Inscribirse a Curso";
-            alumnoBttn.UseVisualStyleBackColor = true;
-            alumnoBttn.Click += alumnoBttn_Click;
+            comisionesToolStripMenuItem.Name = "comisionesToolStripMenuItem";
+            comisionesToolStripMenuItem.Size = new Size(180, 22);
+            comisionesToolStripMenuItem.Text = "Comisiones";
+            comisionesToolStripMenuItem.Click += comisionesToolStripMenuItem_Click;
+            // 
+            // inscripcionesToolStripMenuItem
+            // 
+            inscripcionesToolStripMenuItem.Name = "inscripcionesToolStripMenuItem";
+            inscripcionesToolStripMenuItem.Size = new Size(180, 22);
+            inscripcionesToolStripMenuItem.Text = "Inscripciones";
+            inscripcionesToolStripMenuItem.Click += inscripcionesToolStripMenuItem_Click;
+            // 
+            // dictadosToolStripMenuItem
+            // 
+            dictadosToolStripMenuItem.Name = "dictadosToolStripMenuItem";
+            dictadosToolStripMenuItem.Size = new Size(180, 22);
+            dictadosToolStripMenuItem.Text = "Dictados";
+            dictadosToolStripMenuItem.Click += dictadosToolStripMenuItem_Click;
+            // 
+            // profesorToolStripMenuItem
+            // 
+            profesorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cargarNotasToolStripMenuItem });
+            profesorToolStripMenuItem.Name = "profesorToolStripMenuItem";
+            profesorToolStripMenuItem.Size = new Size(63, 20);
+            profesorToolStripMenuItem.Text = "Profesor";
+            // 
+            // cargarNotasToolStripMenuItem
+            // 
+            cargarNotasToolStripMenuItem.Name = "cargarNotasToolStripMenuItem";
+            cargarNotasToolStripMenuItem.Size = new Size(180, 22);
+            cargarNotasToolStripMenuItem.Text = "Cargar Notas";
+            cargarNotasToolStripMenuItem.Click += cargarNotasToolStripMenuItem_Click;
+            // 
+            // alumnoToolStripMenuItem
+            // 
+            alumnoToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { inscribirseACursoToolStripMenuItem });
+            alumnoToolStripMenuItem.Name = "alumnoToolStripMenuItem";
+            alumnoToolStripMenuItem.Size = new Size(62, 20);
+            alumnoToolStripMenuItem.Text = "Alumno";
+            // 
+            // inscribirseACursoToolStripMenuItem
+            // 
+            inscribirseACursoToolStripMenuItem.Name = "inscribirseACursoToolStripMenuItem";
+            inscribirseACursoToolStripMenuItem.Size = new Size(180, 22);
+            inscribirseACursoToolStripMenuItem.Text = "Inscribirse a Curso";
+            inscribirseACursoToolStripMenuItem.Click += inscribirseACursoToolStripMenuItem_Click;
             // 
             // reporteCursosButton
             // 
@@ -201,44 +201,41 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnClose;
             ClientSize = new Size(382, 379);
-            Controls.Add(reportePlanesButton);
             Controls.Add(reporteCursosButton);
-            Controls.Add(alumnoBttn);
-            Controls.Add(profesorBttn);
-            Controls.Add(dictadoBttn);
-            Controls.Add(inscripcionBttn);
-            Controls.Add(comButton);
-            Controls.Add(especialidadButton);
-            Controls.Add(ModulosButton);
-            Controls.Add(bttnCursos);
-            Controls.Add(button1);
+            Controls.Add(reportePlanesButton);
             Controls.Add(label1);
             Controls.Add(btnClose);
-            Controls.Add(materiaButton);
-            Controls.Add(usuarioButton);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             Name = "Inicio";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Academia";
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button usuarioButton;
-        private Button materiaButton;
         private Button btnClose;
         private Label label1;
-        private Button button1;
-        private Button bttnCursos;
-        private Button ModulosButton;
-        private Button especialidadButton;
-        private Button comButton;
-        private Button inscripcionBttn;
-        private Button dictadoBttn;
-        private Button profesorBttn;
-        private Button alumnoBttn;
-        private Button reporteCursosButton;
         private Button reportePlanesButton;
+        private Button reporteCursosButton;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem adminToolStripMenuItem;
+        private ToolStripMenuItem profesorToolStripMenuItem;
+        private ToolStripMenuItem materiasToolStripMenuItem1;
+        private ToolStripMenuItem materiasToolStripMenuItem;
+        private ToolStripMenuItem cursosToolStripMenuItem;
+        private ToolStripMenuItem planesToolStripMenuItem;
+        private ToolStripMenuItem modulosToolStripMenuItem;
+        private ToolStripMenuItem especialidadesToolStripMenuItem;
+        private ToolStripMenuItem comisionesToolStripMenuItem;
+        private ToolStripMenuItem inscripcionesToolStripMenuItem;
+        private ToolStripMenuItem dictadosToolStripMenuItem;
+        private ToolStripMenuItem cargarNotasToolStripMenuItem;
+        private ToolStripMenuItem alumnoToolStripMenuItem;
+        private ToolStripMenuItem inscribirseACursoToolStripMenuItem;
     }
 }
