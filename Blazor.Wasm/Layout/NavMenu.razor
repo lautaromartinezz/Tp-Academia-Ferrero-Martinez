@@ -61,16 +61,6 @@
                     <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Dictados
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href=@($"reporte/cursos/{idUsuario}")>
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Reporte Cursos
-                </NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="dictados">
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Reporte Planes
-                </NavLink>
-            </div>
         }
         @if (role == "Profesor")
         {
@@ -79,11 +69,7 @@
                     <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Cargar Notas
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href=@($"reporte/cursos/{idUsuario}")>
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Reporte Cursos
-                </NavLink>
-            </div>
+            
         }
         @if (role == "Alumno")
         {
@@ -92,13 +78,19 @@
                     <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Inscribirse a Curso
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href=@($"reporte/cursos/{idUsuario}")>
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Reporte Cursos
-                </NavLink>
-            </div>
+           
         }
 
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href=@($"reporte/cursos/{idUsuario}")>
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Reporte Cursos
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href=@($"reporte/planes/{idUsuario}")>
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Reporte Planes
+            </NavLink>
+        </div>
 
 
     </nav>

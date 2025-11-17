@@ -1,5 +1,6 @@
 ﻿using Domain.Services;
 using DTOs;
+using WebAPI.Reports;
 
 namespace WebAPI
 {
@@ -22,6 +23,22 @@ namespace WebAPI
             .WithName("GetPlan")
             .Produces<DTOs.PlanDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi();
+
+            app.MapGet("/planes/report/{id}", (int id) =>
+            {
+                var report = new ReportePlanes(id);
+
+                report.CreateDocument();
+
+                using var ms = new MemoryStream();
+                report.ExportToPdf(ms);
+                ms.Position = 0;
+
+                return Results.File(ms.ToArray(), "application/pdf");
+
+            })
+            .WithName("GetReportePlanes")
             .WithOpenApi();
 
             app.MapGet("/planes", () =>
