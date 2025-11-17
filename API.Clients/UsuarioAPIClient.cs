@@ -109,6 +109,7 @@ namespace API.Clients
             try
             {
                 using var client = await CreateHttpClientAsync();
+
                 HttpResponseMessage response = await client.DeleteAsync("usuarios/" + id);
 
                 if (!response.IsSuccessStatusCode)
@@ -128,11 +129,20 @@ namespace API.Clients
             }
         }
 
-        public static async Task UpdateAsync(UsuarioDTO usuario)
+        public static async Task UpdateAsync(UsuarioDTO usuario, PersonaDTO persona)
         {
             try
             {
                 using var client = await CreateHttpClientAsync();
+
+                HttpResponseMessage responsePersona = await client.PutAsJsonAsync("personas/" + persona.Id, persona);
+                if (!responsePersona.IsSuccessStatusCode)
+                {
+                    await HandleUnauthorizedResponseAsync(responsePersona);
+                    string errorContent = await responsePersona.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al crear persona. Status: {responsePersona.StatusCode}, Detalle: {errorContent}");
+                }
+
                 HttpResponseMessage response = await client.PutAsJsonAsync("usuarios", usuario);
 
                 if (!response.IsSuccessStatusCode)

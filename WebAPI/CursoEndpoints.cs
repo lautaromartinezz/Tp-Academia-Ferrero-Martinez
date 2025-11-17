@@ -41,13 +41,9 @@ namespace WebAPI
             .Produces<List<DTOs.CursoDTO>>(StatusCodes.Status200OK)
             .WithOpenApi();
 
-            app.MapGet("/cursos/report", () =>
+            app.MapGet("/cursos/report/{id}", (int id) =>
             {
-                CursoService cursoService = new CursoService();
-
-                var dtos = cursoService.getAll();
-
-                var report = new CursosReport(dtos);
+                var report = new XtraReport1(id);
 
                 report.CreateDocument();
 
@@ -55,9 +51,7 @@ namespace WebAPI
                 report.ExportToPdf(ms);
                 ms.Position = 0;
 
-                string fileName = "CursosReport.pdf";
-
-                return Results.File(ms.ToArray(), "aplicattion/pdf", fileName);
+                return Results.File(ms.ToArray(), "application/pdf");
 
             })
             .WithName("GetReporteCursos")

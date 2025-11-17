@@ -141,15 +141,12 @@ namespace Data
                     .OnDelete(DeleteBehavior.Cascade).IsRequired();
 
 
-                var adminUser = new Domain.Model.Usuario(1, "admin", "admin", "admin", "admin@admin.com", true, "admin123", 1);
+                entity.HasData(
+                    new { Id = 1, Nombre = "Santiago", Apellido = "Ferrero", Email = "santifnob@gmail.com", NombreUsuario = "alumno", Habilitado = true, Clave = "123456", IdPersona = 1, Salt = "as" },
+                    new { Id = 2, Nombre = "Lautaro", Apellido = "Martinez", Email = "lautaromartinez@gmail.com", NombreUsuario = "docente", Habilitado = true, Clave = "123456", IdPersona = 2, Salt = "as" },
+                    new { Id = 3, Nombre = "Admin", Apellido = "Admin", Email = "Admin@gmail.com", NombreUsuario = "admin", Habilitado = true, Clave = "123456", IdPersona = 3, Salt = "as" }
 
-                entity.HasData(
-                    new { Id = adminUser.Id, Nombre = adminUser.Nombre,Apellido=adminUser.Apellido, NombreUsuario = adminUser.NombreUsuario, Clave = adminUser.Clave, Email = adminUser.Email, Habilitado = adminUser.Habilitado, Salt = adminUser.Salt, IdPersona = adminUser.IdPersona });
-                /*
-                entity.HasData(
-                    new { Id = 1, Nombre = "Santiago", Apellido = "Ferrero", Email = "santifnob@gmail.com", NombreUsuario = "vamoniubels", Habilitado = true, Clave = "asd", IdPersona = 1 },
-                    new { Id = 2, Nombre = "Lautaro", Apellido = "Martinez", Email = "lautaromartinez@gmail.com", NombreUsuario = "vamoslalepra", Habilitado = true, Clave = "asd", IdPersona = 2 }
-                );*/
+                );
 
                 entity.HasMany(u => u.Modulos).WithMany(m => m.Usuarios);
 
@@ -257,7 +254,9 @@ namespace Data
 
                 entity.HasData(
                     new { Id = 1, Nombre = "Juan", Apellido = "Pérez", Direccion = "Calle 123", Email = "juan@mail.com", Telefono = "111-222", Legajo = 1001, TipoPersona = "Alumno", FechaNac = new DateTime(2000, 1, 10), IdPlan = 1 },
-                    new { Id = 2, Nombre = "Ana", Apellido = "García", Direccion = "Av. 456", Email = "ana@mail.com", Telefono = "333-444", Legajo = 1002, TipoPersona = "Docente", FechaNac = new DateTime(1990, 5, 15), IdPlan = 2 }
+                    new { Id = 2, Nombre = "Ana", Apellido = "García", Direccion = "Av. 456", Email = "ana@mail.com", Telefono = "333-444", Legajo = 1002, TipoPersona = "Profesor", FechaNac = new DateTime(1990, 5, 15), IdPlan = 2 },
+                    new { Id = 3, Nombre = "Admin", Apellido = "Admin", Direccion = "Av. asd", Email = "asd@mail.com", Telefono = "444-444", Legajo = 1003, TipoPersona = "Profesor", FechaNac = new DateTime(1990, 5, 15), IdPlan = 2 }
+
                 );
             });
 

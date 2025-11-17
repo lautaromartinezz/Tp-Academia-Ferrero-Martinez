@@ -30,9 +30,6 @@ builder.Services.AddCors(options =>
 
 // Configuración de DevExpress
 
-builder.Services.AddDevExpressControls();
-builder.Services.AddSingleton<ReportStorageWebExtension, CustomReportStorage>();
-
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -49,7 +46,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
-app.UseDevExpressControls();
 
 app.MapControllers();
 app.MapMateriaEndpoints();

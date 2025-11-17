@@ -34,12 +34,12 @@ namespace Domain.Services
             Usuario? usuario = null;
             string? token = null;
 
-            Console.WriteLine(adminData["user"]);
-            Console.WriteLine(adminData["password"]);
+            Console.WriteLine(request.Username + request.Password);
+
 
             if (adminData != null && request.Username == adminData["user"] && request.Password == adminData["password"])
             {
-                usuario = new Usuario(10, "admin", "admin", adminData["user"], "admin@admin.com", true, adminData["password"], 10);
+                usuario = new Usuario(3, "admin", "admin", adminData["user"], "admin@admin.com", true, adminData["password"], 3); //todo hardcodeado para evitar hacer la query, pero si esta en la base
                 token = GenerateJwtToken(usuario, "Admin");
             } else
             {
