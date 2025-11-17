@@ -45,6 +45,8 @@ namespace WindowsForms
             cargarNotasToolStripMenuItem = new ToolStripMenuItem();
             alumnoToolStripMenuItem = new ToolStripMenuItem();
             inscribirseACursoToolStripMenuItem = new ToolStripMenuItem();
+            reportePlanesButton = new Button();
+            reporteCursosButton = new Button();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -87,63 +89,63 @@ namespace WindowsForms
             // materiasToolStripMenuItem1
             // 
             materiasToolStripMenuItem1.Name = "materiasToolStripMenuItem1";
-            materiasToolStripMenuItem1.Size = new Size(180, 22);
+            materiasToolStripMenuItem1.Size = new Size(150, 22);
             materiasToolStripMenuItem1.Text = "Usuarios";
             materiasToolStripMenuItem1.Click += usuariosToolStripMenuItem1_Click;
             // 
             // materiasToolStripMenuItem
             // 
             materiasToolStripMenuItem.Name = "materiasToolStripMenuItem";
-            materiasToolStripMenuItem.Size = new Size(180, 22);
+            materiasToolStripMenuItem.Size = new Size(150, 22);
             materiasToolStripMenuItem.Text = "Materias";
             materiasToolStripMenuItem.Click += materiasToolStripMenuItem_Click;
             // 
             // cursosToolStripMenuItem
             // 
             cursosToolStripMenuItem.Name = "cursosToolStripMenuItem";
-            cursosToolStripMenuItem.Size = new Size(180, 22);
+            cursosToolStripMenuItem.Size = new Size(150, 22);
             cursosToolStripMenuItem.Text = "Cursos";
             cursosToolStripMenuItem.Click += cursosToolStripMenuItem_Click;
             // 
             // planesToolStripMenuItem
             // 
             planesToolStripMenuItem.Name = "planesToolStripMenuItem";
-            planesToolStripMenuItem.Size = new Size(180, 22);
+            planesToolStripMenuItem.Size = new Size(150, 22);
             planesToolStripMenuItem.Text = "Planes";
             planesToolStripMenuItem.Click += planesToolStripMenuItem_Click;
             // 
             // modulosToolStripMenuItem
             // 
             modulosToolStripMenuItem.Name = "modulosToolStripMenuItem";
-            modulosToolStripMenuItem.Size = new Size(180, 22);
+            modulosToolStripMenuItem.Size = new Size(150, 22);
             modulosToolStripMenuItem.Text = "Modulos";
             modulosToolStripMenuItem.Click += modulosToolStripMenuItem_Click;
             // 
             // especialidadesToolStripMenuItem
             // 
             especialidadesToolStripMenuItem.Name = "especialidadesToolStripMenuItem";
-            especialidadesToolStripMenuItem.Size = new Size(180, 22);
+            especialidadesToolStripMenuItem.Size = new Size(150, 22);
             especialidadesToolStripMenuItem.Text = "Especialidades";
             especialidadesToolStripMenuItem.Click += especialidadesToolStripMenuItem_Click;
             // 
             // comisionesToolStripMenuItem
             // 
             comisionesToolStripMenuItem.Name = "comisionesToolStripMenuItem";
-            comisionesToolStripMenuItem.Size = new Size(180, 22);
+            comisionesToolStripMenuItem.Size = new Size(150, 22);
             comisionesToolStripMenuItem.Text = "Comisiones";
             comisionesToolStripMenuItem.Click += comisionesToolStripMenuItem_Click;
             // 
             // inscripcionesToolStripMenuItem
             // 
             inscripcionesToolStripMenuItem.Name = "inscripcionesToolStripMenuItem";
-            inscripcionesToolStripMenuItem.Size = new Size(180, 22);
+            inscripcionesToolStripMenuItem.Size = new Size(150, 22);
             inscripcionesToolStripMenuItem.Text = "Inscripciones";
             inscripcionesToolStripMenuItem.Click += inscripcionesToolStripMenuItem_Click;
             // 
             // dictadosToolStripMenuItem
             // 
             dictadosToolStripMenuItem.Name = "dictadosToolStripMenuItem";
-            dictadosToolStripMenuItem.Size = new Size(180, 22);
+            dictadosToolStripMenuItem.Size = new Size(150, 22);
             dictadosToolStripMenuItem.Text = "Dictados";
             dictadosToolStripMenuItem.Click += dictadosToolStripMenuItem_Click;
             // 
@@ -157,7 +159,7 @@ namespace WindowsForms
             // cargarNotasToolStripMenuItem
             // 
             cargarNotasToolStripMenuItem.Name = "cargarNotasToolStripMenuItem";
-            cargarNotasToolStripMenuItem.Size = new Size(180, 22);
+            cargarNotasToolStripMenuItem.Size = new Size(143, 22);
             cargarNotasToolStripMenuItem.Text = "Cargar Notas";
             cargarNotasToolStripMenuItem.Click += cargarNotasToolStripMenuItem_Click;
             // 
@@ -171,29 +173,29 @@ namespace WindowsForms
             // inscribirseACursoToolStripMenuItem
             // 
             inscribirseACursoToolStripMenuItem.Name = "inscribirseACursoToolStripMenuItem";
-            inscribirseACursoToolStripMenuItem.Size = new Size(180, 22);
+            inscribirseACursoToolStripMenuItem.Size = new Size(170, 22);
             inscribirseACursoToolStripMenuItem.Text = "Inscribirse a Curso";
             inscribirseACursoToolStripMenuItem.Click += inscribirseACursoToolStripMenuItem_Click;
             // 
-            // reporteCursosButton
-            // 
-            reporteCursosButton.Location = new Point(252, 55);
-            reporteCursosButton.Name = "reporteCursosButton";
-            reporteCursosButton.Size = new Size(118, 40);
-            reporteCursosButton.TabIndex = 15;
-            reporteCursosButton.Text = "Reporte Cursos";
-            reporteCursosButton.UseVisualStyleBackColor = true;
-            reporteCursosButton.Click += button2_Click;
-            // 
             // reportePlanesButton
             // 
-            reportePlanesButton.Location = new Point(252, 101);
+            reportePlanesButton.Location = new Point(12, 335);
             reportePlanesButton.Name = "reportePlanesButton";
-            reportePlanesButton.Size = new Size(118, 40);
+            reportePlanesButton.Size = new Size(96, 32);
             reportePlanesButton.TabIndex = 16;
             reportePlanesButton.Text = "Reporte Planes";
             reportePlanesButton.UseVisualStyleBackColor = true;
-            reportePlanesButton.Click += reportePlanesButton_Click_1;
+            reportePlanesButton.Click += reportePlanesButton_Click;
+            // 
+            // reporteCursosButton
+            // 
+            reporteCursosButton.Location = new Point(114, 335);
+            reporteCursosButton.Name = "reporteCursosButton";
+            reporteCursosButton.Size = new Size(99, 32);
+            reporteCursosButton.TabIndex = 17;
+            reporteCursosButton.Text = "Reporte Cursos";
+            reporteCursosButton.UseVisualStyleBackColor = true;
+            reporteCursosButton.Click += reporteCursosButton_Click;
             // 
             // Inicio
             // 
@@ -220,8 +222,6 @@ namespace WindowsForms
 
         private Button btnClose;
         private Label label1;
-        private Button reportePlanesButton;
-        private Button reporteCursosButton;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem adminToolStripMenuItem;
         private ToolStripMenuItem profesorToolStripMenuItem;
@@ -237,5 +237,7 @@ namespace WindowsForms
         private ToolStripMenuItem cargarNotasToolStripMenuItem;
         private ToolStripMenuItem alumnoToolStripMenuItem;
         private ToolStripMenuItem inscribirseACursoToolStripMenuItem;
+        private Button reportePlanesButton;
+        private Button reporteCursosButton;
     }
 }
