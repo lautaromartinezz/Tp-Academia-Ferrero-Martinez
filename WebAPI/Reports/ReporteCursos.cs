@@ -7,15 +7,16 @@ using DevExpress.XtraReports.UI;
 
 namespace WebAPI.Reports
 {
-    public partial class XtraReport1 : DevExpress.XtraReports.UI.XtraReport
+    public partial class ReporteCursos : DevExpress.XtraReports.UI.XtraReport
     {
-        public XtraReport1(int idUsuarioDado)
+        public ReporteCursos(int idUsuarioDado)
         {
             InitializeComponent();
             this.IdPersona.ExpressionBindings.AddRange(new DevExpress.XtraReports.Expressions.BasicExpressionBinding[] {
             new DevExpress.XtraReports.Expressions.BasicExpressionBinding("Value", idUsuarioDado.ToString())});
-            
-            
+            Random random = new Random();
+            this.invoiceNumber.Text = random.Next(1,10000).ToString();
+
         }
     }
 }

@@ -36,16 +36,17 @@
             reporteCursosViewer.Dock = DockStyle.Fill;
             reporteCursosViewer.Location = new Point(0, 0);
             reporteCursosViewer.Name = "reporteCursosViewer";
-            reporteCursosViewer.Size = new Size(815, 733);
+            reporteCursosViewer.Size = new Size(1069, 733);
             reporteCursosViewer.TabIndex = 0;
             // 
             // ReporteCursos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(815, 733);
+            ClientSize = new Size(1069, 733);
             Controls.Add(reporteCursosViewer);
             Name = "ReporteCursos";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "ReporteCursos";
             Load += ReporteCursos_Load;
             ResumeLayout(false);

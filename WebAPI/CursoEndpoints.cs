@@ -43,7 +43,7 @@ namespace WebAPI
 
             app.MapGet("/cursos/report/{id}", (int id) =>
             {
-                var report = new XtraReport1(id);
+                var report = new ReporteCursos(id);
 
                 report.CreateDocument();
 
