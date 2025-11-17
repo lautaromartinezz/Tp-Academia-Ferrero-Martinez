@@ -1,5 +1,8 @@
 ﻿using Domain.Services;
 using DTOs;
+using WebAPI.Reports;
+using DevExpress.XtraReports.Web.ClientControls;
+using System.Net.Mime;
 
 namespace WebAPI
 {
@@ -36,6 +39,22 @@ namespace WebAPI
             })
             .WithName("GetAllCursos")
             .Produces<List<DTOs.CursoDTO>>(StatusCodes.Status200OK)
+            .WithOpenApi();
+
+            app.MapGet("/cursos/report/{id}", (int id) =>
+            {
+                var report = new ReporteCursos(id);
+
+                report.CreateDocument();
+
+                using var ms = new MemoryStream();
+                report.ExportToPdf(ms);
+                ms.Position = 0;
+
+                return Results.File(ms.ToArray(), "application/pdf");
+
+            })
+            .WithName("GetReporteCursos")
             .WithOpenApi();
 
             app.MapPost("/cursos", (CursoDTO dto) =>

@@ -84,10 +84,11 @@ namespace WindowsForms
                     this.Persona.Nombre = nombreTextBox.Text;
                     this.Persona.Apellido = apellidoTextBox.Text;
                     this.Persona.Email = emailTextBox.Text;
+                    this.Persona.Id = usuario.IdPersona;
 
                     if (this.Mode == FormMode.Update)
                     {
-                        await API.Clients.UsuarioAPIClient.UpdateAsync(this.Usuario);
+                        await API.Clients.UsuarioAPIClient.UpdateAsync(this.Usuario, this.Persona);
                     }
                     else
                     {

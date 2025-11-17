@@ -1,0 +1,34 @@
+﻿@page "/reporte/cursos/{idUser:int}"
+@using API.Clients
+@using Blazor.Wasm.Components
+@inject IJSRuntime JSRuntime
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+@inject AuthApiClient AuthApiClient
+@using API.Auth.Blazor.WebAssembly
+
+
+<PageTitle>Reporte-Cursos</PageTitle>
+
+<iframe src="@url" width="100%" height="900px">
+    Este navegador no soporta iframes. Puedes descargar el PDF aquí:
+    <a href="@url">Descargar PDF</a>
+</iframe>
+
+@code {
+    [Parameter]
+    public int idUser { get; set; }
+    private string? url;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (!isAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+        url = "https://localhost:7111/cursos/report/" + idUser.ToString();
+        
+    }
+}

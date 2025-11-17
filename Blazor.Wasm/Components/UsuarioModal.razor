@@ -217,17 +217,18 @@
             Apellido = usuario.Apellido,
             Email = usuario.Email,
             Habilitado = usuario.Habilitado,
-            Clave=usuario.Clave
-            
+            Clave=usuario.Clave,
+
         };
         formData.Persona = new PersonaDTO
         {
-            Direccion=persona.Direccion,
-            Telefono=persona.Telefono,
-            FechaNac=persona.FechaNac,
-            Legajo=persona.Legajo,
-            TipoPersona=persona.TipoPersona,
-            IdPlan=persona.IdPlan
+            Direccion= persona.Direccion,
+            Telefono= persona.Telefono,
+            FechaNac= persona.FechaNac,
+            Legajo= persona.Legajo,
+            TipoPersona= persona.TipoPersona,
+            IdPlan= persona.IdPlan,
+            Id = usuario.IdPersona
 
         };
         await LoadPlanes();
@@ -250,14 +251,13 @@
             formData.Persona.Apellido = formData.Usuario.Apellido;
             formData.Persona.Email = formData.Usuario.Email;
 
-
             if (mode == FormMode.Add)
             {
                 await UsuarioAPIClient.AddAsync(formData.Usuario,formData.Persona);
             }
             else
             {
-                await UsuarioAPIClient.UpdateAsync(formData.Usuario);
+                await UsuarioAPIClient.UpdateAsync(formData.Usuario, formData.Persona);
             }
 
             await OnUsuarioChanged.InvokeAsync();

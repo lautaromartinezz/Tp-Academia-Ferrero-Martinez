@@ -158,5 +158,19 @@ namespace WindowsForms
             profList.UserId = this.UserId;
             profList.Show();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ReporteCursos reporte = new ReporteCursos();
+            reporte.UserId = this.UserId;
+            reporte.Show();
+        }
+
+        private void reportePlanesButton_Click_1(object sender, EventArgs e)
+        {
+            ReportePlanes reporte = new ReportePlanes();
+            reporte.UserId = this.UserId;
+            reporte.Show();
+        }
     }
 }
