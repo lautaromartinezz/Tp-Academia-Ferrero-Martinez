@@ -41,6 +41,7 @@
             dictadoBttn = new Button();
             profesorBttn = new Button();
             alumnoBttn = new Button();
+            reporteCursosButton = new Button();
             SuspendLayout();
             // 
             // usuarioButton
@@ -173,12 +174,23 @@
             alumnoBttn.UseVisualStyleBackColor = true;
             alumnoBttn.Click += alumnoBttn_Click;
             // 
+            // reporteCursosButton
+            // 
+            reporteCursosButton.Location = new Point(252, 55);
+            reporteCursosButton.Name = "reporteCursosButton";
+            reporteCursosButton.Size = new Size(118, 40);
+            reporteCursosButton.TabIndex = 15;
+            reporteCursosButton.Text = "Reporte Cursos";
+            reporteCursosButton.UseVisualStyleBackColor = true;
+            reporteCursosButton.Click += button2_Click;
+            // 
             // Inicio
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnClose;
             ClientSize = new Size(382, 379);
+            Controls.Add(reporteCursosButton);
             Controls.Add(alumnoBttn);
             Controls.Add(profesorBttn);
             Controls.Add(dictadoBttn);
@@ -213,5 +225,6 @@
         private Button dictadoBttn;
         private Button profesorBttn;
         private Button alumnoBttn;
+        private Button reporteCursosButton;
     }
 }

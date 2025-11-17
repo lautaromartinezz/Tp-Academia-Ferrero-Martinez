@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DevExpress.Win.Navigation" Version="25.1.6" />
+    <PackageReference Include="DevExpress.Win.PdfViewer" Version="25.1.6" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
   </ItemGroup>
 
