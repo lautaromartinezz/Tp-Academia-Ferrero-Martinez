@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(XtraReport1));
             DevExpress.DataAccess.Sql.SelectQuery selectQuery1 = new DevExpress.DataAccess.Sql.SelectQuery();
             DevExpress.DataAccess.Sql.Column column1 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression1 = new DevExpress.DataAccess.Sql.ColumnExpression();
@@ -70,6 +69,7 @@
             DevExpress.DataAccess.Sql.Join join3 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo3 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.Table table5 = new DevExpress.DataAccess.Sql.Table();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(XtraReport1));
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.detailTable = new DevExpress.XtraReports.UI.XRTable();
             this.detailTableRow = new DevExpress.XtraReports.UI.XRTableRow();
@@ -96,7 +96,7 @@
             this.vendorAddressRow = new DevExpress.XtraReports.UI.XRTableRow();
             this.nombreApellidoPersona = new DevExpress.XtraReports.UI.XRTableCell();
             this.vendorEmailRow = new DevExpress.XtraReports.UI.XRTableRow();
-            this.emailPersona = new DevExpress.XtraReports.UI.XRTableCell();
+            this.direcPersona = new DevExpress.XtraReports.UI.XRTableCell();
             this.vendorPhoneRow = new DevExpress.XtraReports.UI.XRTableRow();
             this.telPersona = new DevExpress.XtraReports.UI.XRTableCell();
             this.vendorLogo = new DevExpress.XtraReports.UI.XRPictureBox();
@@ -116,6 +116,8 @@
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.baseControlStyle = new DevExpress.XtraReports.UI.XRControlStyle();
             this.IdPersona = new DevExpress.XtraReports.Parameters.Parameter();
+            this.xrTableRow1 = new DevExpress.XtraReports.UI.XRTableRow();
+            this.emailPersona = new DevExpress.XtraReports.UI.XRTableCell();
             ((System.ComponentModel.ISupportInitialize)(this.detailTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.invoiceInfoTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vendorTable)).BeginInit();
@@ -341,8 +343,9 @@
             this.vendorNameRow,
             this.vendorAddressRow,
             this.vendorEmailRow,
-            this.vendorPhoneRow});
-            this.vendorTable.SizeF = new System.Drawing.SizeF(250F, 110F);
+            this.vendorPhoneRow,
+            this.xrTableRow1});
+            this.vendorTable.SizeF = new System.Drawing.SizeF(250F, 130F);
             // 
             // vendorNameRow
             // 
@@ -360,7 +363,7 @@
             this.datosSolicitante.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.datosSolicitante.StylePriority.UseFont = false;
             this.datosSolicitante.StylePriority.UsePadding = false;
-            this.datosSolicitante.Text = "Datos Solicitante";
+            this.datosSolicitante.Text = "Datos del [Persona.TipoPersona]";
             this.datosSolicitante.Weight = 1D;
             // 
             // vendorAddressRow
@@ -383,17 +386,17 @@
             // vendorEmailRow
             // 
             this.vendorEmailRow.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
-            this.emailPersona});
+            this.direcPersona});
             this.vendorEmailRow.Name = "vendorEmailRow";
             this.vendorEmailRow.Weight = 0.72727266295882731D;
             // 
-            // emailPersona
+            // direcPersona
             // 
-            this.emailPersona.CanShrink = true;
-            this.emailPersona.Name = "emailPersona";
-            this.emailPersona.StylePriority.UseFont = false;
-            this.emailPersona.Text = "VendorEmail";
-            this.emailPersona.Weight = 1D;
+            this.direcPersona.CanShrink = true;
+            this.direcPersona.Name = "direcPersona";
+            this.direcPersona.StylePriority.UseFont = false;
+            this.direcPersona.Text = "[Persona.Direccion]";
+            this.direcPersona.Weight = 1D;
             // 
             // vendorPhoneRow
             // 
@@ -405,6 +408,8 @@
             // telPersona
             // 
             this.telPersona.CanShrink = true;
+            this.telPersona.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Persona].[Telefono]")});
             this.telPersona.Name = "telPersona";
             this.telPersona.StylePriority.UseFont = false;
             this.telPersona.Text = "VendorPhone";
@@ -685,6 +690,23 @@
             this.IdPersona.ValueInfo = "0";
             this.IdPersona.Visible = false;
             // 
+            // xrTableRow1
+            // 
+            this.xrTableRow1.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
+            this.emailPersona});
+            this.xrTableRow1.Name = "xrTableRow1";
+            this.xrTableRow1.Weight = 0.72727273231695466D;
+            // 
+            // emailPersona
+            // 
+            this.emailPersona.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Persona].[Email]")});
+            this.emailPersona.Multiline = true;
+            this.emailPersona.Name = "emailPersona";
+            this.emailPersona.StylePriority.UseFont = false;
+            this.emailPersona.Text = "emailPersona";
+            this.emailPersona.Weight = 1D;
+            // 
             // XtraReport1
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -743,7 +765,7 @@
         private DevExpress.XtraReports.UI.XRTableRow vendorAddressRow;
         private DevExpress.XtraReports.UI.XRTableCell nombreApellidoPersona;
         private DevExpress.XtraReports.UI.XRTableRow vendorEmailRow;
-        private DevExpress.XtraReports.UI.XRTableCell emailPersona;
+        private DevExpress.XtraReports.UI.XRTableCell direcPersona;
         private DevExpress.XtraReports.UI.XRTableRow vendorPhoneRow;
         private DevExpress.XtraReports.UI.XRTableCell telPersona;
         private DevExpress.XtraReports.UI.XRPictureBox vendorLogo;
@@ -763,5 +785,7 @@
         private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
         private DevExpress.XtraReports.UI.XRControlStyle baseControlStyle;
         private DevExpress.XtraReports.Parameters.Parameter IdPersona;
+        private DevExpress.XtraReports.UI.XRTableRow xrTableRow1;
+        private DevExpress.XtraReports.UI.XRTableCell emailPersona;
     }
 }
