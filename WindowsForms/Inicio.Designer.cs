@@ -217,6 +217,7 @@
             Controls.Add(materiaButton);
             Controls.Add(usuarioButton);
             Name = "Inicio";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Academia";
             ResumeLayout(false);
             PerformLayout();
