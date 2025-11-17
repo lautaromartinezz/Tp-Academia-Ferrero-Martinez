@@ -683,8 +683,6 @@
             // IdPersona
             // 
             this.IdPersona.Description = "Parameter1";
-            this.IdPersona.ExpressionBindings.AddRange(new DevExpress.XtraReports.Expressions.BasicExpressionBinding[] {
-            new DevExpress.XtraReports.Expressions.BasicExpressionBinding("Value", "True")});
             this.IdPersona.Name = "IdPersona";
             this.IdPersona.Type = typeof(int);
             this.IdPersona.ValueInfo = "0";
