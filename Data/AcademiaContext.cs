@@ -24,7 +24,7 @@ namespace Data
         public DbSet<Dictado> Dictados { get; set; }
         internal AcademiaContext()
         {
-            // this.Database.EnsureDeleted(); // SOLO EN DEV 
+            //this.Database.EnsureDeleted(); // SOLO EN DEV 
 
             this.Database.EnsureCreated();
         }
@@ -75,11 +75,11 @@ namespace Data
                 entity.HasMany(m => m.Cursos).WithOne(c => c.Materia).HasForeignKey(c => c.IdMateria).OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasData(
-                    new { Id = 1, Descripcion = "desc1MAT", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
-                    new { Id = 2, Descripcion = "desc2MAT", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
-                    new { Id = 3, Descripcion = "desc3MAT", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
-                    new { Id = 4, Descripcion = "desc4MAT", HsSemanales = 1, HsTotales = 2, IdPlan = 2 },
-                    new { Id = 5, Descripcion = "deesc4MAT", HsSemanales = 1, HsTotales = 2, IdPlan = 2 }
+                    new { Id = 1, Descripcion = "Fisica 1", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
+                    new { Id = 2, Descripcion = "Fisica 2", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
+                    new { Id = 3, Descripcion = "Analisis Matematico", HsSemanales = 1, HsTotales = 2, IdPlan = 1 },
+                    new { Id = 4, Descripcion = "Quimica", HsSemanales = 1, HsTotales = 2, IdPlan = 2 },
+                    new { Id = 5, Descripcion = "Gestion", HsSemanales = 1, HsTotales = 2, IdPlan = 2 }
                 );
             });
 
@@ -105,11 +105,11 @@ namespace Data
                     .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasData(
-                    new { Id = 1, Cupo = 1, AnioCalendario = DateTime.Now, IdComision = 2, IdMateria = 1 },
+                    new { Id = 1, Cupo = 12, AnioCalendario = DateTime.Now, IdComision = 2, IdMateria = 1 },
                     new { Id = 2, Cupo = 0, AnioCalendario = new DateTime(2025, 10, 09), IdComision = 2, IdMateria = 1 },
-                    new { Id = 3, Cupo = 2332, AnioCalendario = new DateTime(2025, 09, 09), IdComision = 1, IdMateria = 2 },
-                    new { Id = 4, Cupo = 233, AnioCalendario = new DateTime(2025, 07, 09), IdComision = 1, IdMateria = 2 },
-                    new { Id = 5, Cupo = 1234, AnioCalendario = new DateTime(2025, 10, 10), IdComision = 2, IdMateria = 4 }
+                    new { Id = 3, Cupo = 22, AnioCalendario = new DateTime(2025, 09, 09), IdComision = 1, IdMateria = 2 },
+                    new { Id = 4, Cupo = 33, AnioCalendario = new DateTime(2025, 07, 09), IdComision = 1, IdMateria = 2 },
+                    new { Id = 5, Cupo = 34, AnioCalendario = new DateTime(2025, 10, 10), IdComision = 2, IdMateria = 4 }
                 );
             });
 
@@ -205,8 +205,8 @@ namespace Data
                     .HasForeignKey(c => c.IdPlan)
                     .OnDelete(DeleteBehavior.Cascade);
                 entity.HasData(
-                    new { Id = 1, Descripcion = "Com1", AnioEspecialidad = 2025, IdPlan = 1 },
-                    new { Id = 2, Descripcion = "Com2", AnioEspecialidad = 2024, IdPlan = 2 }
+                    new { Id = 1, Descripcion = "Comision 1", AnioEspecialidad = 2025, IdPlan = 1 },
+                    new { Id = 2, Descripcion = "Comision 2", AnioEspecialidad = 2024, IdPlan = 2 }
                     );
             });
 
